@@ -3,13 +3,13 @@ using System.Collections;
 
 public class PlayerMove : MonoBehaviour
 {
-    /* The Player object's movement logic. 
+	/* The Player object's movement logic. 
 	 * Attached to: GameObject Player.
 	 *	Author: Ville Lohkovuori
 	 */
     
-    // Used for storing the name of the object that the player collided with.
-    private string collidedName;
+	// Used for storing the name of the object that the player collided with.
+	private string collidedName;
 
 	// Flag to check if the user has tapped / clicked.
 	// Set to true on click. Reset to false on reaching destination, or if the Player object has already collided and the new movement location is invalid (sea). <-- Prevents movement stuttering.
@@ -32,25 +32,25 @@ public class PlayerMove : MonoBehaviour
 
 
     
-    void Start()
-    {   
-        // Puts the Player object in the right starting point.
-        gameObject.transform.position = startPos;
-    }
+	void Start ()
+	{   
+		// Puts the Player object in the right starting point.
+		gameObject.transform.position = startPos;
+	}
 
 
-    // What happens when the Player GameObject collides with another GameObject. Called automatically when Player collides with something (Unity behavior).
-    // Strictly speaking, this is not needed, because two bodies with colliders attached will stop automatically upon collision. However, it prevents
-    // movement stuttering, so it's good to have imo.
-    void OnCollisionEnter2D (Collision2D coll)
+	// What happens when the Player GameObject collides with another GameObject. Called automatically when Player collides with something (Unity behavior).
+	// Strictly speaking, this is not needed, because two bodies with colliders attached will stop automatically upon collision. However, it prevents
+	// movement stuttering, so it's good to have imo.
+	void OnCollisionEnter2D (Collision2D coll)
 	{
 		// Prints confirmation that a collision has happened, and the names of the two collided objects (first one should always be 'Player').
 		print ("Collided!");
 		print (GetComponent<CircleCollider2D> ().gameObject.name);
 		print (coll.gameObject.name);
 
-        // Stores the name of the GameObject that the Player collided with, for use in Triggerer.cs.
-        collidedName = coll.gameObject.name;
+		// Stores the name of the GameObject that the Player collided with, for use in Triggerer.cs.
+		collidedName = coll.gameObject.name;
 
 		// The Island surface has the 'passable' tag enabled; in case it's not there, stop movement.
 		// Also sets collidedFlag to 'true'; this is needed in order to prevent movement stuttering.
@@ -61,7 +61,7 @@ public class PlayerMove : MonoBehaviour
 			// Debug message, just so we know the flags have been set.
 			print ("Collided with non-passable!");
 
-        }
+		}
 
 	}
 
@@ -72,34 +72,30 @@ public class PlayerMove : MonoBehaviour
 		print ("No longer collided!");
 	}
 
-    // The getter returns collidedName, for use in Triggerer.cs.
-    public string CollidedName
-    {
-        get { return collidedName; }
-        set { collidedName = value; } // not used anywhere atm, but made as a precaution, and for consistency
-    }
+	// The getter returns collidedName, for use in Triggerer.cs.
+	public string CollidedName {
+		get { return collidedName; }
+		set { collidedName = value; } // not used anywhere atm, but made as a precaution, and for consistency
+	}
 
 
 	// Sets a new moveDuration from outside the class (PlayerStats.cs). Used for simulating the effects of cold and hunger.
-	public float MoveDuration
-	{
-        get { return moveDuration; } // not used atm
+	public float MoveDuration {
+		get { return moveDuration; } // not used atm
 		set { moveDuration = value; }
 	}
 
-    // Used to get and set moveFlag from outside the class.
-	public bool MoveFlag
-	{
+	// Used to get and set moveFlag from outside the class.
+	public bool MoveFlag {
 		get { return moveFlag; }
-        set { moveFlag = value; }
+		set { moveFlag = value; }
 	}
 
-    // Used to get and set collidedFlag from outside the class (if needed; not used anywhere atm).
-    public bool CollidedFlag
-    {
-        get { return collidedFlag; }
-        set { collidedFlag = value; }
-    }
+	// Used to get and set collidedFlag from outside the class (if needed; not used anywhere atm).
+	public bool CollidedFlag {
+		get { return collidedFlag; }
+		set { collidedFlag = value; }
+	}
 
 
 	// Update is called once per frame.
@@ -140,18 +136,17 @@ public class PlayerMove : MonoBehaviour
 
 		}
 
-        // Stop movement if the Player object has collided and you're trying to click on a spot that isn't tagged as 'passable' (i.e. sea). This is needed to prevent movement stuttering.
-        if (collidedFlag == true && hit.collider.gameObject.tag != "passable")
-        {
-            moveFlag = false;
-        }
+		// Stop movement if the Player object has collided and you're trying to click on a spot that isn't tagged as 'passable' (i.e. sea). This is needed to prevent movement stuttering.
+		if (collidedFlag == true && hit.collider.gameObject.tag != "passable") {
+			moveFlag = false;
+		}
 
 		// Check if the flag for movement is 'true' and the current Player object position is not same as the clicked / tapped position.
 		if (moveFlag && !Mathf.Approximately (gameObject.transform.position.magnitude, endPoint.magnitude)) { //&& !(V3Equal(transform.position, endPoint))) {
 			
 			// Move the Player object to the desired position, and continually print the distance to the position.
 			gameObject.transform.position = Vector3.Lerp (gameObject.transform.position, endPoint, (1 / (moveDuration * (Vector3.Distance (gameObject.transform.position, endPoint)))));
-			print (Vector3.Distance (gameObject.transform.position, endPoint));
+			// print (Vector3.Distance (gameObject.transform.position, endPoint));
 
 		} // Set the movement indicator flag to 'false' if the endPoint and current Player object position are equal. Print a debug message.
 		else if (moveFlag && Mathf.Approximately (gameObject.transform.position.magnitude, endPoint.magnitude)) {
