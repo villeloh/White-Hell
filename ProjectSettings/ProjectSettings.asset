@@ -453,8 +453,10 @@ PlayerSettings:
   XboxOnePersistentLocalStorageSize: 0
   vrEditorSettings: {}
   cloudServicesEnabled:
+    Build: 1
+    Collab: 1
     UNet: 1
   cloudProjectId: b2e59a48-5aff-4bd3-8b2b-473052b131e7
-  projectName: White Hell (2)
+  projectName: White Hell x
   organizationId: villelohk
   cloudEnabled: 0
