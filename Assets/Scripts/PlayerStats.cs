@@ -96,15 +96,17 @@ public class PlayerStats : MonoBehaviour
     public void AnimalKill (GameObject animal)
     {
 
-        // Animals should have an 'eatValue' stat. This way, the meat item that is added to inventory upon animal kill can directly inherit the animal's eatValue.
-        Item animalMeat = new Item(animal.EatValue); 
-        AddToInv(animalMeat, "animal's meat"); // I'm not sure how to automate this to give the correct meat item name to each different type of killed animal...
-                                               // Maybe a switch-case type of thingy might work, based on different tags for the types of killed animals?
+    // Animals should have an 'eatValue' stat. This way, the meat item that is added to inventory upon animal kill can directly inherit the animal's eatValue.
+    Item animalMeat = new Item(animal.EatValue); 
+    AddToInv(animalMeat, "animal's meat");
+	// I'm not sure how to automate this to give the correct meat item name to each different type of killed animal...
+    // Maybe a switch-case type of thingy might work, based on different tags for the types of killed animals?
 
-        Destroy(animal); // done after the meat is added to inventory, to avoid a Null Reference Exception
-        CloseEncounter (); // closes the minimap screen and returns to the main map view
-        DisplayKillResultPopUp(); // displays a pop-up that tells you what you obtained from the kill and how much ammo you spent (goes away on click/tap).
-                              // This could be done outside the AnimalKill() method, but as this will always result, I don't see why it can't be put here.
+    Destroy(animal); // done after the meat is added to inventory, to avoid a Null Reference Exception
+    CloseEncounter (); // closes the minimap screen and returns to the main map view
+    DisplayKillResultPopUp(); 
+	// displays a pop-up that tells you what you obtained from the kill and how much ammo you spent (goes away on click/tap).
+    // This could be done outside the AnimalKill() method, but as this will always result, I don't see why it can't be put here.
 
     }
 
@@ -113,9 +115,9 @@ public class PlayerStats : MonoBehaviour
     public void EscapeCombatEncounter ()
     {
 
-        // Polar Bears may not be escaped! :)
-        if (animal.tag != PolarBear) {
-            Destroy(animal)
+     // Polar Bears may not be escaped! :)
+     if (animal.tag != PolarBear) 
+			Destroy(animal)
             CloseEncounter ();
             DisplayEscapePopUp (); // a simple message that you ran away, opting to preserve your bullets
         }
