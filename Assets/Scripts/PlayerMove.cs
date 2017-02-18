@@ -28,7 +28,7 @@ public class PlayerMove : MonoBehaviour
 	private float moveDuration = 50.0f;
 
 	// Determines the start position (Player's x and y (and z) coordinates).
-	private Vector3 startPos = new Vector3 (-2.372225f, -2.225953f, 0);
+	private Vector3 startPos = new Vector3 (-2.372225f, -2.225953f, 0.0f);
 
 
     
@@ -65,10 +65,11 @@ public class PlayerMove : MonoBehaviour
 
 	}
 
-	// When the collision ends, set collidedFlag to 'false', and print a debug message.
+	// When the collision ends, set collidedFlag to 'false', collidedName to an empty string, and print a debug message.
 	void OnCollisionExit2D (Collision2D coll2)
 	{
 		collidedFlag = false;
+        collidedName = "";
 		print ("No longer collided!");
 	}
 
@@ -105,16 +106,16 @@ public class PlayerMove : MonoBehaviour
 		// Check if the screen is touched / clicked.
 		if ((Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began) || (Input.GetMouseButtonDown (0))) {
 
-			// [[[ Leftover stuffs below; may be needed later, when we'll be using touch controls.
+            // [[[ Leftover stuffs below; may be needed later, when we'll be using touch controls.
 
-			//declare a variable of RaycastHit struct
-			//Create a Ray on the tapped / clicked position
-			// Ray ray; ]]]
+            //declare a variable of RaycastHit struct
+            //Create a Ray on the tapped / clicked position
+            // Ray ray; ]]]
 
-			//Controls for unity editor. (#if on nimeltään pre-processor joku-jutska, joka kertoo, mille platformille sitä seuraava määrittely on voimassa.)
-			#if UNITY_EDITOR
-			// 'RaycastHit2D', which is the type of the variable 'hit', is simply an abstract structure I guess. It does contain the x and y coordinates of the place that the cast ray hit
-			// (it's cast from the Main Camera upon mouse click). Later on these will be stored in 'endPoint' and used for determining the direction of movement.
+            //Controls for unity editor. (#if on nimeltään pre-processor joku-jutska, joka kertoo, mille platformille sitä seuraava määrittely on voimassa.)
+            #if UNITY_EDITOR
+            // 'RaycastHit2D' contains the x and y coordinates of the place that the cast ray hit (it's cast from the Main Camera upon mouse click). 
+            // Later on these will be stored in 'endPoint' and used for determining the direction of movement.
 			hit = Physics2D.Raycast (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), Vector2.zero, 0);
 
 			// [[[leftover: ray = Camera.main.ScreenPointToRay (Input.mousePosition); ]]]

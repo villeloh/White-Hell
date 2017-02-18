@@ -6,11 +6,11 @@ public class CameraBehaviour : MonoBehaviour
     // Tarvitaan, jotta voidaan viitata Playeriin. Huom. myös kiinnitettävä Player-objekti CameraBehaviouriin Unityssa.
     public GameObject Player;
 
-	public float zoomSpeed = 1;
-	public float targetOrtho;
-	public float smoothSpeed = 2.0f;
-	public float minOrtho = 1.0f;
-	public float maxOrtho = 7.25f;
+	private float zoomSpeed = 1;
+	private float targetOrtho;
+	private float smoothSpeed = 2.0f;
+	private float minOrtho = 1.0f;
+	private float maxOrtho = 7.25f;
 
     
 
