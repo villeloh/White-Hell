@@ -8,119 +8,177 @@ namespace QuestNamespace {
 public class Quests : MonoBehaviour
 {
 
-    // Needed for reference between MonoBehaviours (I tried to make Quests into a regular class, but Unity wasn't having it... So it's attached to QuestHolder as a MonoBehaviour atm.
-    // While that makes a certain amount of sense, it's ultimately unnecessary.)
-    public PlayerStats PlayerStats;
-    public PlayerMove PlayerMove;
+        // Needed for reference between MonoBehaviours (I tried to make Quests into a regular class, but Unity wasn't having it... So it's attached to QuestHolder as a MonoBehaviour atm.
+        // While that makes a certain amount of sense, it's ultimately unnecessary.)
+        public PlayerStats PlayerStats;
+        public PlayerMove PlayerMove;
     
-    // Stores the map icons that are used for the various quests.
-    public Sprite[] iconSprites;
+        // For storing the map icons & labels that are used for the various quests, and their changed versions.
+        public Sprite[] questIconSprites;
+        public Sprite[] changedQISprites;
+        public Sprite[] questLabelSprites;
 
-    private SpriteRenderer iconRenderer;
-    private CircleCollider2D iconCollider;
+        // Needed for internal reference.
+        private SpriteRenderer iconRenderer;
+        private SpriteRenderer labelRenderer;
+        private CircleCollider2D iconCollider;
     
-    // Needed for switching a quest's background sprite and its displayed text
-    private Image questImage;
-    public Sprite blankQuestImage;
-    public Sprite[] questSprites;
-    private Text questText;
+        // Needed for switching a quest's background sprite as appropriate.
+        private Image questImage;
+        public Sprite[] questBackgroundSprites;
+        public Sprite blankQuestImage;
 
-    // Used for setting the status of quests... I'm not sure whether there's a more elegant way to do this? This will work, at any rate.
-    private bool quest1_Completed = false;
-    private bool quest2_Completed = false;
+        // Used for switching the displayed quest text.
+        private Text questText;
 
-    // Getters and setters to access and alter the quest booleans from outside the class. There must be an easier/better way to do this, but figuring it out would be too time-consuming,
-    // compared to simply using this 'tried and true' method.
-    public bool Quest1_Completed
-    {
-        get { return quest1_Completed; }
-        set { quest1_Completed = value; }
-    }
-
-    public bool Quest2_Completed
-    {
-        get { return quest2_Completed; }
-        set { quest2_Completed = value; }
-    }
+        // Used for setting the status of quests... I'm not sure whether there's a more elegant way to do this? This will work, at any rate.
+        private bool quest1_Completed = false;
+        private bool quest2_Completed = false;
+        private bool quest3_Completed = false;
+        private bool quest4_Completed = false;
+        private bool quest5_Completed = false;
+        private bool quest6_Completed = false;
+        private bool quest7_Completed = false;
+        private bool quest8_Completed = false;
+        private bool quest9_Completed = false;
+        private bool quest10_Completed = false;
+        private bool quest11_Completed = false;
+        private bool quest12_Completed = false;
 
         // Define a list of quest booleans, for use later on.
-        List<bool> questBooleans = new List<bool>();
+        private List<bool> questBooleans = new List<bool>();
 
         // Define a list of quest texts, for use later on.
-        List<string> questTexts = new List<string>();
+        private List<string> questTexts = new List<string>();
 
+        // Methods to access and alter the quest booleans from outside the class (Triggerer.cs). 
+        // It seems that the items have a different identity after being added to the list; manipulating the original values (Quest1_Completed, etc) does nothing unless their use 
+        // is explicitly specified. As the list is quite necessary in a few spots, these methods should be used at all times when it comes to altering the values of the quest booleans.
 
+        public bool GetQuestBoolean (int givenNumber)
+        {
+            return questBooleans[givenNumber];
+        }
 
-
-
-        // There must be a better way to store long strings (database?), but I'd rather spend the time on something else. Ugly as it is, this seems to work for our purposes.
-        private string questText_1 = @"PLANE CRASH
-
-Lying high over a vast plain of shimmering ice, the orange postal plane is impossible to ignore. The crash occurred only a few years ago. The pilot's corpse lies frozen with an eerily serene expression on what used to be his face.
-
-Snapping his frozen fingers in two, I pry open the mail-bag, locating the following:
-
-[REWARD]
-
-Alas, the plane is too cold to be used as a shelter, nor is there any fire-wood available.
-
-The pilot's map has only one new location marked on it, located far to the Southwest.";
-
-        private string questText_2 = "Quest 2:n teksti näyttää tältä, jou";
-
-
+        public void SetQuestBoolean (int givenNumber, bool newValue)
+        {
+            questBooleans[givenNumber] = newValue;
+        }
 
 
         void Start()
         {
-            // Add all the quest booleans to a list (for easy manipulation by the RoutineQuestActions() method).
-            questBooleans.InsertRange(questBooleans.Count, new List<bool> { quest1_Completed, quest2_Completed });
+        // Add all the quest booleans to a list (for easy manipulation by the RoutineQuestActions() method).
+        questBooleans.InsertRange(questBooleans.Count, new List<bool> { quest1_Completed, quest2_Completed, quest3_Completed, quest4_Completed, quest5_Completed, quest6_Completed, quest7_Completed, quest8_Completed, quest9_Completed, quest10_Completed, quest11_Completed, quest12_Completed });
 
-            // Add all the quest texts to a list (for easy manipulation by the RoutineQuestActions() method).
-            questTexts.InsertRange(questTexts.Count, new List<string> { questText_1, questText_2 });
+        // Add all the quest texts to a list (for easy manipulation by the RoutineQuestActions() method).
+        questTexts.InsertRange(questTexts.Count, new List<string> { questText_1, questText_2, questText_3, questText_4, questText_5, questText_6, questText_7, questText_8, questText_9, questText_10, questText_11, questText_12 });
 
-            // Find the quest popup's image and text components and assign them to variables
-            questImage = GameObject.Find("QuestHolder").GetComponent<Image>();
-            questText = GameObject.Find("QuestText").GetComponent<Text>();
+        // Find the quest popup's image and text components and assign them to variables (for easy manipulation later on).
+        questImage = GameObject.Find("QuestHolder").GetComponent<Image>();
+        questText = GameObject.Find("QuestText").GetComponent<Text>();
 
-            // Spawn the quests that exist at game start (or their icons, more precisely, but logically they're pretty much equivalent)
-            SpawnQuestIcon("Shelter", -2.0f, -2.0f, iconSprites[0]);
-            SpawnQuestIcon("Quest_1", -3.17f, 0.59f, iconSprites[1]);
+        // Spawn the quests that exist at game start (or their icons, more precisely, but logically they're pretty much equivalent)
+        SpawnQuestIcon("Boat Wreck", -2.1f, -2.3f, 0);
+        GameObject.Find("Boat Wreck").tag = "shelter";
+
+        SpawnQuestIcon("Quest_1", -6.6f, 0.4f, 1);
+        SpawnQuestIcon("Quest_2", 4.4f, 0.4f, 2);
+        SpawnQuestIcon("Quest_3", 8.8f, -3.7f, 3);
+        GameObject.Find("Quest_3").tag = "shelter";
+        SpawnQuestIcon("Quest_4", -1.9f, 3.9f, 4);
+
         }
 
 
         // I wanted to try using enum + a custom namespace, instead of writing a dozen different quest methods (one for each new quest).
         // I'm not sure if everything is done in a standard way, but this seems to work, so I'm leaving it as it is for now.
-        public enum QuestEnum { Quest_1, Quest_2 };
+        public enum QuestEnum { Quest_1, Quest_2, Quest_3, Quest_4, Quest_5, Quest_6, Quest_7, Quest_8, Quest_9, Quest_10, Quest_11, Quest_12 };
 
         public void ChooseQuest (QuestEnum givenQuest)
+        {
+            RoutineQuestActions(givenQuest);
+
+            switch (givenQuest)
             {
-                RoutineQuestActions(givenQuest);
+                case QuestEnum.Quest_1:
 
-                switch (givenQuest)
-                {
-                    case QuestEnum.Quest_1:
+                    Coat OldPilotJacket = new Coat(30.0f);
+                     PlayerStats.AddToInv(OldPilotJacket, "Old Pilot Jacket");
 
-                        quest1_Completed = true;
-                        FoodItem polarBearMeat = new FoodItem(400);
-                        PlayerStats.AddToInv(polarBearMeat, "Jääkarhunliha");
-                        Debug.Log("Poimit: " + PlayerStats.GetItemName(polarBearMeat));
-                        DestroyQuestIcon(GameObject.Find("Quest_1"));
-                        Debug.Log("EatValue while in inventory: " + polarBearMeat.EatValue);
-                        Debug.Log("CarriedFood: " + PlayerStats.CarriedFood);
-                        PlayerStats.EatFoodItem(polarBearMeat);
+                    PlayerStats.CarriedAmmo += 5;
+                    PlayerStats.MaxAmmoCheck();
 
-                    break;
+                    FoodItem SeagullMeat = new FoodItem(10);
+                    PlayerStats.AddToInv(SeagullMeat, "Seagull Meat");
 
+                break;
 
-                    case QuestEnum.Quest_2:
+                case QuestEnum.Quest_2:
 
-                        // quest 2
+                    // quest 2
 
-                    break;
+                break;
 
+                case QuestEnum.Quest_3:
 
+                    // quest 3
 
+                break;
+
+                case QuestEnum.Quest_4:
+
+                    // quest 4
+
+                break;
+
+                case QuestEnum.Quest_5:
+
+                    // quest 5
+
+                break;
+
+                case QuestEnum.Quest_6:
+
+                    // quest 6
+
+                break;
+
+                case QuestEnum.Quest_7:
+
+                    // quest 7
+
+                break;
+
+                case QuestEnum.Quest_8:
+
+                    // quest 8
+
+                break;
+
+                case QuestEnum.Quest_9:
+
+                    // quest 9
+
+                break;
+
+                case QuestEnum.Quest_10:
+
+                    // quest 10
+
+                break;
+
+                case QuestEnum.Quest_11:
+
+                    // quest 11
+
+                break;
+
+                case QuestEnum.Quest_12:
+
+                    // quest 12
+
+                break;
             }
         }
 
@@ -131,10 +189,14 @@ The pilot's map has only one new location marked on it, located far to the South
             questBooleans[(int)givenQuest] = true;
 
             // Switches the quest's background sprite to the appropriate one
-            questImage.sprite = questSprites[(int)givenQuest];
+            questImage.sprite = questBackgroundSprites[(int)givenQuest];
 
             // Switches the quest's text to the appropriate one
             questText.text = questTexts[(int)givenQuest];
+        
+            // Switches the quest's map icon to the appropriate one.
+            ChangeQuestIcon(GameObject.Find(givenQuest.ToString()));
+
         }
 
 
@@ -146,41 +208,233 @@ The pilot's map has only one new location marked on it, located far to the South
 
 
 
-    // Creates a new quest icon with the given name in spot (x,y). The sprite is chosen from a list that can be made manually in Unity (drag & drop the sprites).
-    public void SpawnQuestIcon(string iconName, float x, float y, Sprite givenSprite)
-        {
-            GameObject questIcon = new GameObject();
-            questIcon.transform.position = new Vector3(x, y, 0.0f);
-            iconRenderer = questIcon.AddComponent<SpriteRenderer>();
-            iconRenderer.sortingOrder = 3;
-            iconRenderer.sprite = givenSprite;
-            iconCollider = questIcon.AddComponent<CircleCollider2D>();
-            iconCollider.radius = 0.15f;
-            questIcon.name = iconName;
-        }
+        // Creates a new quest icon + quest label with the given name in spot (x,y). The sprites are chosen from lists that can be made manually in Unity (just drag & drop the sprites).
+        // NOTE: It would've been simpler to have the labels as texts, but for the life of me I couldn't get this to work. -.- Texts must be attached to a Canvas, but then they will 
+        // *MOVE* with the goddamn canvas... I spent at least 5 hours on this trivial-seeming problem before giving up and going with Sprites instead.
 
-        // Needed in order to prevent buggy behavior when the icon is destroyed before stopping to be collided... Otherwise the regular Destroy() method would've sufficed.
-        public void DestroyQuestIcon(GameObject givenIcon)
+        // NOTE#2: It is in all likelihood a VERY bad practice to associate two Arrays with each other in the way I've done it here. Right now, the int 'iconAndLabel_ID' is the 
+        // ONLY thing that's linking together the chosen quest icons and quest labels. If either Array of Sprites gets 'out of sync', it changes potentially ALL of 
+        // the associated labels/icons to the wrong ones! I tried using a Dictionary to associate the two different Arrays with each other, but the syntax proved 
+        // too hard for me, since the Arrays' contents are defined in the editor and so they can only be referred to in a general way (which I couldn't handle, at present).
+        // So... This is a make-shift solution, very non-ideal, but it works unless someone else goes ahead and decides to break it... :O
+        public void SpawnQuestIcon(string iconName, float x, float y, int iconAndLabel_ID)
+            {
+                GameObject questIcon = new GameObject(iconName);
+                questIcon.transform.position = new Vector3(x, y, 0.0f);
+                iconRenderer = questIcon.AddComponent<SpriteRenderer>();
+                iconRenderer.sortingOrder = 3;
+                iconRenderer.sprite = questIconSprites[iconAndLabel_ID];
+                iconCollider = questIcon.AddComponent<CircleCollider2D>();
+                iconCollider.radius = 0.15f;
+
+                GameObject questLabel = new GameObject(iconName + "_label");
+                questLabel.transform.position = new Vector3(x, y+0.38f, 0.0f);
+                labelRenderer = questLabel.AddComponent<SpriteRenderer>();
+                labelRenderer.sortingOrder = 3;
+                labelRenderer.sprite = questLabelSprites[iconAndLabel_ID];
+
+            }
+
+        // Changes the quest icon to one that indicates the quest has been completed. The collider is destroyed in order to make the quest non-interactable.
+        // Originally, this method *destroyed* the used quest icon, but it's better to have them stay on the map, to track the player's progress.
+        // If the icon is tagged as a shelter, then the method changes its icon to the 'shelter' icon, but leaves the collision intact.
+        public void ChangeQuestIcon(GameObject givenIcon)
         {
-            PlayerMove.CollidedFlag = false;
-            print("No longer collided!");
-            Destroy(givenIcon);
+            if (givenIcon.tag != "shelter")
+            {
+
+                Destroy(givenIcon.GetComponent<CircleCollider2D>());
+
+                PlayerMove.CollidedFlag = false;
+                PlayerMove.CollidedTag = "";
+                PlayerMove.CollidedName = "";
+                print("No longer collided!");
+
+                iconRenderer = givenIcon.GetComponent<SpriteRenderer>();
+                iconRenderer.sprite = changedQISprites[0];
+            } else if (givenIcon.tag == "shelter") {
+                iconRenderer = givenIcon.GetComponent<SpriteRenderer>();
+                iconRenderer.sprite = changedQISprites[1];
+            }
         }
 
         void Update()
         {
             // I see no other way to check for a mouse-click than to put it in 'update'... I couldn't get this to work by clicking on the image object that's attached to QuestHolder;
             // the click always falls through and hits 'Island' instead. This will work to close the quest window, but it's a clumsy waste of resources. As a bonus, this works 
-            // regardless of the clicked location. As a bad side, though, you'll begin moving towards where you clicked, which is highly undesirable, to say the least...
+            // regardless of the clicked location. As a bad side, though, you'll begin moving towards where you clicked, which is highly undesirable, to say the least!
             // There is a class called 'EventTrigger' that could be useful in this situation, but it seems fairly complex and time is of the essence.
             if (Input.GetKeyDown(KeyCode.Return) || Input.GetMouseButtonDown(0))
             {
                 questImage.sprite = blankQuestImage;
                 questText.text = "";
             }
-        } 
+        }
+
+        // There must be a better way to store long strings (database?), but I'd rather spend the time on something else. Ugly as it is, this seems to work for our purposes.
+        private string questText_1 = @"[ PLANE CRASH ]
+
+Lying high over a vast plain of shimmering ice, the orange postal plane is visible from miles away. The crash occurred only a few years ago. The pilot's corpse lies frozen in the cockpit, a serene expression on what used to be his face. 
+
+Having removed his jacket, I pry open the small mail bag. His fingers make a funny sound as they snap in two. In total I gather the following: 
+
+ - 1 x Old Pilot Jacket (30)
+ - 5 x Rifle Ammo
+ - 1 x Seagull Meat (canned)
+
+Alas, the plane is too cold to be used as a shelter, nor is there any fire-wood available.
+
+The pilot's map does have one new location marked on it, located far to the Southwest.";
+
+        private string questText_2 = @"[ SEALING CAMP ]
+
+At last, the old sealing camp appears on the horizon, Northeast from Half Moon Bay. As I recall, there have been many companies operating here over the years, leaving behind a lot of their old equipment.
+
+Hoping for a lucky break, it turns out I hit one, as I was able to salvage a small bounty of items: 
+
+ - 1 x Seal-Skin Coat
+ - 10 x Rifle Ammo
+ - 3 x Seal Meat(canned)]
+
+The seal-skin coat in particular is a great find, putting me that much closer to salvation.
+
+I'm surprised there's no parts for the radio.I wonder if someone else has salvaged them before me -- and if so, where did they head from here?
+
+While the buildings are in a fair enough condition, and there's fire-wood available, the terrain is too rough around this place to make it into a worthy camp site. Bummer.";
+
+        private string questText_3 = @"[ SHIPWRECK ] 
+
+Tossed far inland by a giant wave, the wreck of the New Erebus is a true landmark of the Eastern fjords. Cpt. Roberts went in search of the Northwest Passage after Franklin, in 1865. While the name of the ship may have been an omen, they were ill-equipped for the journey and were half dead when they landed.
+
+Given their dire circumstances, and the age of the wreck, I wasn't expecting too many finds here. When it came to goods, I was right indeed, as there was nothing usable.
+
+
+To my delight, however, the captain's cabin is intact and may be used as a shelter, and the entire rest of the ship may be burned for warmth!
+
+Even more miraculously, the log-book of the ship was located in a locked box and had been spared from the elements. Quite a treasure-trove by itself, as I was able to mark another two dots onto my map.";
+
+        private string questText_4 = @"[ OLD RUNWAY CAMPSITE ]
+
+In the days when gold-mining was attempted on the island, one of the northern lakes was used as a make-shift runway. Although it was buried under snow-banks a decade ago, the camp beside it still remains, in a surprisingly good condition.
+
+It takes me a while to clear away the snow in front of the entrance, but the main building yields the following:
+
+ - 1 x RadioPart (Antenna)
+ - 5 x Rifle Ammo
+ - 2 x Seagull Meat (canned)
+
+Having found the antenna is a cause for great joy, of course. But I'm wary of excessive grins, as there's no guarantee that I'll find any further parts.
+
+This site would be useful as a shelter but for the lack of suitable fire-wood. The gas stoves they originally used have long since been removed by parties unknown. Better luck next time, I hope.
+
+A map in the control office puts two new dots on my map -- the very mines which were using the airfield.";
+
+        private string questText_5 = @" [ SCIENTIFIC EXPEDITION ]
+
+It all makes perfect sense now. The pilot must've air-dropped some mail to the scientific expedition that was camped here several years ago.To study the island's birdlife, as I recall. Too scrawny to waste a bullet on, great flocks of puffins congregate annually on the cliffs around Devil's Anvil.
+
+At first I thought the scientists had taken all their gear back home with them, but underneath a collapsed tent I stumble upon a fantastic discovery: 
+
+ - 1 x RadioPart (Batteries)
+
+Probably some extra batteries for someone's personal radio, left behind in a hurry. Eureka!
+
+Ravaged by the elements, the camp is too damaged to serve as a shelter.
+
+As I prepare to leave, I find a map with C. W.Emerson's old polar camp marked onto it! He was a pioneer in the footsteps of Nansen and Amundsen, but met with tragedy on these blighted plains.";
+
+        private string questText_6 = @"[ OLD COAL MINE ]
+            
+A long, but mercifully flat trek away from the runway site lies the site of an old coal mine. Upon first glance, it seems an ideal shelter, and that conviction is cemented as I locate a huge oven, custom-made to burn the very coal that's taken from the ground.
+
+The foreman's quarters afford the following loot:
+
+ - 1 x Coal Miner's Jacket
+ - 1 x Seal Meat (canned)
+
+The miner's jacket is an improvement over my original anorak, but not by much. The real treasure of this place lies in its use as a shelter, although I do get to etch one new mark onto my map.";
+
+        private string questText_7 = @" [ OLD GOLD MINE ]
+
+Finally I made it around Clear Lake to the old gold mining site. Even though it should be frozen solid, I'm wary of taking any risks with the lake. Getting wet at these temperatures would mean near instant death. 
+
+The mine is not much to write home about. It operated only briefly before closing due to dwindling gold prices.
+
+Nevertheless, I manage the following salvages:
+
+ - 5 x Rifle Ammo
+ - 2 x Seal Meat (canned)
+
+The mine contains too little firewood to be used as a shelter. Bummer.
+
+The foreman's old map yields one new notch on my own.";
+
+        private string questText_8 = @" [ SUPPLY CACHE ]
+
+Cpt. Roberts' supply cache took some effort to locate, but I finally found it, tucked under a rocky outcropping of Point Blake. Roberts was facing a mutiny and stored these supplies in case he would be thrown out of his main camp. His intuition proved correct; only his crew ended up killing him instead of mere eviction, leaving the supply cache untouched for the many decades to follow.
+
+Breaking the frost-damaged lock with a single blow, I obtain the following: 
+
+ - 15 x Rifle Ammo
+ - 1 x Seaman's Greatcoat
+
+The cache cannot be used a shelter, nor are there any new clues for new locations. Nevermind -- its contents are reward enough by themselves.";
+
+        private string questText_9 = @" [ MUTINEERS' CAMP ]
+
+The mutineers of the New Erebus made their way here after an agonizing march through the wilderness. They made the trip to evade the authorities, but also on account of the copious herds of seals and walruses that dwell on these shores.
+
+The buildings are old and weathered; almost nothing of note remains. Or so I thought, until I stumbled upon this find in a modern shipping container:
+
+ - 1 x Radio Part (Wiring)
+
+The container must've dropped from a passing cargo ship somehow. This is a tremendous stroke of luck, as the wires I found are enough to fix any model of modern radio.
+
+The camp is too old and looted clean to be of use as a shelter -- to my chagrin, as the area would be ideal otherwise.";
+
+        private string questText_10 = @"[ OLD POLAR CAMP ]
+
+Snow-blind and half-dead from the cold, I stumble into the old camp of Cpt. Emerson & Co. Theirs is a sad story. Caught up in a freak blizzard during summer, they only made it back to camp to find the entrance buried under an avalanche. Already weak from the frost, the men died in a heap, trying to dig their way back in with their bare hands.
+
+As I rummage through the bodies, it occurs to me that decency is a luxury affordable to angels alone. Regardless of any ill feelings, my search yields the following:
+
+[REWARD]
+
+Even better, I realize that this camp may be used as a shelter for future excursions, as there's still plenty of fire-wood available.
+
+Oddly enough, no new locations of interest can be found on any of Emerson's old maps.";
+
+        private string questText_11 = @"[ URANIUM MINE ]
+
+It's clear to me upon my arrival that this mining operation must've presented a major challenge. Whoever operated it had to brave 10-15 meter waves leaping across the sheer cliff faces surrounding the place in three directions. The salty water has corroded almost everything, yet a few trinkets linger in the stricken ruins:
+
+ - 1 x RadioPart (Receiver)
+ - 10 x Rifle Ammo
+
+// +++ Different descriptions based on whether Sealing Camp has been visited or not";
+
+        private string questText_12 = @"[ NUCLEAR TEST SITE ]
+
+Finally! I never expected to be delighted at the site of radiation signs. While the blasts occurred a long time ago, and my situation leaves me no alternative, I'm very quick in my search of the small bunker.
+
+I knew I wouldn't be disappointed, but this time the catch is truly remarkable:
+
+ - 1 x Special Forces Uniform 
+ - 20 x Rifle Ammo
+ - 1 x Radio Part (Transmitter)
+ - 8 x Seagull Meat (canned)
+
+Atop the mummified remains of Col. Caldwell, I find his old diary and read the final entry:
+'Having gathered enough supplies, I'll be heading out in the next few days. As soon as the fever subsides...'
+
+Shivering, I salute what remains of the brave Colonel.";
+
+
+
+
 
     }
+
 }
 
 

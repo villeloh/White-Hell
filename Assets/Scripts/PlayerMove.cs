@@ -10,6 +10,7 @@ public class PlayerMove : MonoBehaviour
     
 	// Used for storing the name of the object that the player collided with.
 	private string collidedName;
+    private string collidedTag;
 
 	// Flag to check if the user has tapped / clicked.
 	// Set to true on click. Reset to false on reaching destination, or if the Player object has already collided and the new movement location is invalid (sea). <-- Prevents movement stuttering.
@@ -28,7 +29,7 @@ public class PlayerMove : MonoBehaviour
 	private float moveDuration = 50.0f;
 
 	// Determines the start position (Player's x and y (and z) coordinates).
-	private Vector3 startPos = new Vector3 (-2.372225f, -2.225953f, 0.0f);
+	private Vector3 startPos = new Vector3 (-2.8f, -2.4f, 0.0f);
 
 
     
@@ -49,8 +50,9 @@ public class PlayerMove : MonoBehaviour
 		print (GetComponent<CircleCollider2D> ().gameObject.name);
 		print (coll.gameObject.name);
 
-		// Stores the name of the GameObject that the Player collided with, for use in Triggerer.cs.
+		// Store the name and tag of the GameObject that the Player collided with, for use in Triggerer.cs.
 		collidedName = coll.gameObject.name;
+        collidedTag = coll.gameObject.tag;
 
 		// The Island surface has the 'passable' tag enabled; in case it's not there, stop movement.
 		// Also sets collidedFlag to 'true'; this is needed in order to prevent movement stuttering.
@@ -65,11 +67,12 @@ public class PlayerMove : MonoBehaviour
 
 	}
 
-	// When the collision ends, set collidedFlag to 'false', collidedName to an empty string, and print a debug message.
+	// When the collision ends, set collidedFlag to 'false', collidedName and collidedTag to empty strings, and print a debug message.
 	void OnCollisionExit2D (Collision2D coll2)
 	{
 		collidedFlag = false;
         collidedName = "";
+        collidedTag = "";
 		print ("No longer collided!");
 	}
 
@@ -79,9 +82,16 @@ public class PlayerMove : MonoBehaviour
 		set { collidedName = value; } // not used anywhere atm, but made as a precaution, and for consistency
 	}
 
+    // The getter returns collidedTag, for use in Triggerer.cs.
+    public string CollidedTag
+    {
+        get { return collidedTag; }
+        set { collidedTag = value; } // not used anywhere atm, but made as a precaution, and for consistency
+    }
 
-	// Sets a new moveDuration from outside the class (PlayerStats.cs). Used for simulating the effects of cold and hunger.
-	public float MoveDuration {
+
+    // Sets a new moveDuration from outside the class (PlayerStats.cs). Used for simulating the effects of cold and hunger.
+    public float MoveDuration {
 		get { return moveDuration; } // not used atm
 		set { moveDuration = value; }
 	}
@@ -145,7 +155,7 @@ public class PlayerMove : MonoBehaviour
 		// Check if the flag for movement is 'true' and the current Player object position is not same as the clicked / tapped position.
 		if (moveFlag && !Mathf.Approximately (gameObject.transform.position.magnitude, endPoint.magnitude)) { //&& !(V3Equal(transform.position, endPoint))) {
 			
-			// Move the Player object to the desired position, and continually print the distance to the position.
+			// Move the Player object to the desired position
 			gameObject.transform.position = Vector3.Lerp (gameObject.transform.position, endPoint, (1 / (moveDuration * (Vector3.Distance (gameObject.transform.position, endPoint)))));
 			// print (Vector3.Distance (gameObject.transform.position, endPoint));
 

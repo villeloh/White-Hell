@@ -6,6 +6,7 @@ TagManager:
   tags:
   - passable
   - quest
+  - shelter
   layers:
   - Default
   - TransparentFX

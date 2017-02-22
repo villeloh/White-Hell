@@ -13,7 +13,7 @@ public class FoodItem : Item
 		this.eatValue = givenEatValue;
 	}
 
-	// allows an item's eatValue to be accessed from outside the class (in PlayerStats.cs).
+	// Allows an item's eatValue to be accessed from outside the class.
 	public int EatValue {
 		get { return eatValue; }
 		set { eatValue = value; }
