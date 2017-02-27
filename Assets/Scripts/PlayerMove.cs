@@ -4,17 +4,20 @@ using System.Collections;
 public class PlayerMove : MonoBehaviour
 {
 	/* The Player object's movement logic. 
-	 * Attached to: GameObject Player.
+	 * Attached to: GameObject 'Player'.
 	 *	Author: Ville Lohkovuori
 	 */
     
-	// Used for storing the name of the object that the player collided with.
+	// Used for storing the name and collision status of the object that the player collided with.
 	private string collidedName;
-    private string collidedTag;
+	private string collidedTag;
 
 	// Flag to check if the user has tapped / clicked.
 	// Set to true on click. Reset to false on reaching destination, or if the Player object has already collided and the new movement location is invalid (sea). <-- Prevents movement stuttering.
-	private bool moveFlag = false;
+	private bool clickFlag = false;
+
+	// Flag to allow movement (really: to cast a ray to the point of mouse-click). Needed to prevent the player moving after clicking to exit a quest popup.
+	private bool allowMove = true;
 
 	// Checks whether the GameObject (Player) is already collided. Needed in order to prevent stuttering when collided.
 	private bool collidedFlag = false;
@@ -32,11 +35,12 @@ public class PlayerMove : MonoBehaviour
 	private Vector3 startPos = new Vector3 (-2.8f, -2.4f, 0.0f);
 
 
-    
 	void Start ()
 	{   
 		// Puts the Player object in the right starting point.
 		gameObject.transform.position = startPos;
+
+		AllowMove = false;
 	}
 
 
@@ -52,57 +56,55 @@ public class PlayerMove : MonoBehaviour
 
 		// Store the name and tag of the GameObject that the Player collided with, for use in Triggerer.cs.
 		collidedName = coll.gameObject.name;
-        collidedTag = coll.gameObject.tag;
+		collidedTag = coll.gameObject.tag;
 
 		// The Island surface has the 'passable' tag enabled; in case it's not there, stop movement.
 		// Also sets collidedFlag to 'true'; this is needed in order to prevent movement stuttering.
 		if ((coll.gameObject.tag != "passable")) {
-			moveFlag = false;
+			clickFlag = false;
 			collidedFlag = true;
 
 			// Debug message, just so we know the flags have been set.
 			print ("Collided with non-passable!");
-
 		}
-
 	}
 
-	// When the collision ends, set collidedFlag to 'false', collidedName and collidedTag to empty strings, and print a debug message.
+	// When the collision ends, set various stats to false/empty, to ensure appropriate behaviour when the next collision occurs.
 	void OnCollisionExit2D (Collision2D coll2)
 	{
 		collidedFlag = false;
-        collidedName = "";
-        collidedTag = "";
-		print ("No longer collided!");
+		collidedName = "";
+		collidedTag = "";
+		print ("No longer collided!"); // debug
 	}
 
-	// The getter returns collidedName, for use in Triggerer.cs.
+
+	// Properties for accessing various values from outside the class (mainly in Triggerer.cs).
 	public string CollidedName {
 		get { return collidedName; }
 		set { collidedName = value; } // not used anywhere atm, but made as a precaution, and for consistency
 	}
 
-    // The getter returns collidedTag, for use in Triggerer.cs.
-    public string CollidedTag
-    {
-        get { return collidedTag; }
-        set { collidedTag = value; } // not used anywhere atm, but made as a precaution, and for consistency
-    }
+	public string CollidedTag {
+		get { return collidedTag; }
+		set { collidedTag = value; } // not used anywhere atm, but made as a precaution, and for consistency
+	}
 
-
-    // Sets a new moveDuration from outside the class (PlayerStats.cs). Used for simulating the effects of cold and hunger.
-    public float MoveDuration {
+	public float MoveDuration {
 		get { return moveDuration; } // not used atm
 		set { moveDuration = value; }
 	}
 
-	// Used to get and set moveFlag from outside the class.
-	public bool MoveFlag {
-		get { return moveFlag; }
-		set { moveFlag = value; }
+	public bool ClickFlag {
+		get { return clickFlag; }
+		set { clickFlag = value; }
 	}
 
-	// Used to get and set collidedFlag from outside the class (if needed; not used anywhere atm).
+	public bool AllowMove {
+		get { return allowMove; }
+		set { allowMove = value; }
+	}
+
 	public bool CollidedFlag {
 		get { return collidedFlag; }
 		set { collidedFlag = value; }
@@ -116,17 +118,19 @@ public class PlayerMove : MonoBehaviour
 		// Check if the screen is touched / clicked.
 		if ((Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began) || (Input.GetMouseButtonDown (0))) {
 
-            // [[[ Leftover stuffs below; may be needed later, when we'll be using touch controls.
+			// [[[ Leftover stuffs below; may be needed later, when we'll be using touch controls.
 
-            //declare a variable of RaycastHit struct
-            //Create a Ray on the tapped / clicked position
-            // Ray ray; ]]]
+			//declare a variable of RaycastHit struct
+			//Create a Ray on the tapped / clicked position
+			// Ray ray; ]]]
 
-            //Controls for unity editor. (#if on nimeltään pre-processor joku-jutska, joka kertoo, mille platformille sitä seuraava määrittely on voimassa.)
-            #if UNITY_EDITOR
-            // 'RaycastHit2D' contains the x and y coordinates of the place that the cast ray hit (it's cast from the Main Camera upon mouse click). 
-            // Later on these will be stored in 'endPoint' and used for determining the direction of movement.
-			hit = Physics2D.Raycast (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), Vector2.zero, 0);
+			//Controls for unity editor. (#if on nimeltään pre-processor joku-jutska, joka kertoo, mille platformille sitä seuraava määrittely on voimassa.)
+			#if UNITY_EDITOR
+			// 'RaycastHit2D' contains the x and y coordinates of the place that the cast ray hit (it's cast from the Main Camera upon mouse click). 
+			// Later on these will be stored in 'endPoint' and used for determining the direction of movement.
+			if (allowMove == true) {
+				hit = Physics2D.Raycast (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), Vector2.zero, 0);
+			}
 
 			// [[[leftover: ray = Camera.main.ScreenPointToRay (Input.mousePosition); ]]]
 
@@ -139,7 +143,7 @@ public class PlayerMove : MonoBehaviour
 			if (hit) {
 				print ("Object hit is: " + hit.collider.gameObject.name);
 				// Set a flag to indicate to move the Player object.
-				moveFlag = true;
+				clickFlag = true;
 				// Save the click / tap position, and print it.
 				endPoint = hit.point;
 				print (endPoint);
@@ -149,20 +153,20 @@ public class PlayerMove : MonoBehaviour
 
 		// Stop movement if the Player object has collided and you're trying to click on a spot that isn't tagged as 'passable' (i.e. sea). This is needed to prevent movement stuttering.
 		if (collidedFlag == true && hit.collider.gameObject.tag != "passable") {
-			moveFlag = false;
+			clickFlag = false;
 		}
 
 		// Check if the flag for movement is 'true' and the current Player object position is not same as the clicked / tapped position.
-		if (moveFlag && !Mathf.Approximately (gameObject.transform.position.magnitude, endPoint.magnitude)) { //&& !(V3Equal(transform.position, endPoint))) {
+		if (clickFlag && !Mathf.Approximately (gameObject.transform.position.magnitude, endPoint.magnitude)) { //&& !(V3Equal(transform.position, endPoint))) {
 			
 			// Move the Player object to the desired position
 			gameObject.transform.position = Vector3.Lerp (gameObject.transform.position, endPoint, (1 / (moveDuration * (Vector3.Distance (gameObject.transform.position, endPoint)))));
 			// print (Vector3.Distance (gameObject.transform.position, endPoint));
 
 		} // Set the movement indicator flag to 'false' if the endPoint and current Player object position are equal. Print a debug message.
-		else if (moveFlag && Mathf.Approximately (gameObject.transform.position.magnitude, endPoint.magnitude)) {
-			moveFlag = false;
-			print ("I am here");
+		else if (clickFlag && Mathf.Approximately (gameObject.transform.position.magnitude, endPoint.magnitude)) {
+			clickFlag = false;
+			print ("I am here"); // debug
 		}
 
 	}
