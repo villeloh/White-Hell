@@ -5,33 +5,34 @@ using QuestNamespace;
 
 public class Triggerer : MonoBehaviour
 {
+    /*
+     * Triggers events based on various conditions. (There's probably a better way to do this, but we didn't know about it... In any case a regular class seems to work fine for this purpose.)
+     * Attached to: 'Player' GameObject
+     * Author: Ville Lohkovuori
+     */
+
 	// Needed for reference between the different scripts (Unity requirement for MonoBehaviours).
 	public PlayerMove PlayerMove;
 	public PlayerStats PlayerStats;
     public Quests Quests;
 
-	// Use this for initialization
-	void Start ()
-	{
-	}
-
-	// Update is called once per frame
-	void Update ()
-	{
-
-		// questFlag oli tässä turha... Objektin nimi, johon Player törmää, on riittävä ehto questin triggeröimiselle.
-		// Yritin saada quest triggereitä toimimaan pelkän törmäyksen perusteella, mutta en onnistunut... nyt on pakko tsekata joka freimi, mikä on järjetötä resurssien tuhlausta! -.-
-        // Mahdollisesti auttaisi, jos Triggerer olisi Playerissa kiinni, mutta se on turhan epäloogista...
-		if (PlayerMove.CollidedName == "Quest_1" && Quests.GetQuestBoolean(0) == false) {
-			Quests.ChooseQuest (Quests.QuestEnum.Quest_1);
-            Quests.SpawnQuestIcon("Quest_5", -11.6f, -5.5f, 5);           
+    void OnCollisionEnter2D(Collision2D coll)
+    {
+        // The boolean 'questFlag' was unnecessary... The name of the object that the player collides with is a sufficient condition for triggering a quest.
+        // I've attached Triggerer to the Player GameObject (instead of GameHolder); this made the quest triggering work without putting the logic into 'Update()'. Woohoo! ^^
+        if (PlayerMove.CollidedName == "Quest_1" && Quests.GetQuestBoolean(0) == false)
+        {
+            Quests.ChooseQuest(Quests.QuestEnum.Quest_1);
+            Quests.SpawnQuestIcon("Quest_5", -11.6f, -5.5f, 5);
         }
 
-		if (PlayerMove.CollidedName == "Quest_2" && Quests.GetQuestBoolean(1) == false) {
+        if (PlayerMove.CollidedName == "Quest_2" && Quests.GetQuestBoolean(1) == false)
+        {
             Quests.ChooseQuest(Quests.QuestEnum.Quest_2);
         }
 
-        if (PlayerMove.CollidedName == "Quest_3" && Quests.GetQuestBoolean(2) == false) {
+        if (PlayerMove.CollidedName == "Quest_3" && Quests.GetQuestBoolean(2) == false)
+        {
             Quests.ChooseQuest(Quests.QuestEnum.Quest_3);
             Quests.SpawnQuestIcon("Quest_8", 1.2f, -6.3f, 8);
             Quests.SpawnQuestIcon("Quest_9", 9.8f, 1.8f, 9);
@@ -89,24 +90,23 @@ public class Triggerer : MonoBehaviour
             Quests.ChooseQuest(Quests.QuestEnum.Quest_12);
         }
 
-
-
-
-
         // When you get back to a shelter, your cold value gets reset to zero. (It being instant is a tad unrealistic, but it's also easy and convenient.)
-        if (PlayerMove.CollidedTag == "shelter") {
-			PlayerStats.Cold = 0.0f;
-		}
+        if (PlayerMove.CollidedTag == "shelter")
+        {
+            PlayerStats.Cold = 0.0f;
+        }
 
+        // Trigger Player's death if hunger or cold reaches the maximum allowed value.
+        if (PlayerStats.Hunger == PlayerStats.DeathHunger || PlayerStats.Cold == PlayerStats.DeathCold)
+        {
+            PlayerStats.PlayerDeath();
+        }
 
-		// Trigger Player's death if hunger or cold reaches the maximum allowed value.
-		if (PlayerStats.Hunger == PlayerStats.DeathHunger || PlayerStats.Cold == PlayerStats.DeathCold) {
-			PlayerStats.PlayerDeath ();
-		}
+        // When the player has enough Radio Parts, the game ends.
+        if (PlayerStats.RadioPartCount == 5)
+        {
+            // ++ lopeta peli ja triggeröi loppuintro
+        }
+    }
 
-		if (PlayerStats.RadioPartCount == 5) {
-			// ++ lopeta peli ja triggeröi loppuintro
-		}
-
-	}
 }

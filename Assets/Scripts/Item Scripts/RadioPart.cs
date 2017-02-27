@@ -5,15 +5,21 @@ using UnityEngine;
 public class RadioPart : Item
 {
 
-	private int partNumber;
+/*
+ * Used for making 'RadioPart' items (regular objects, not GameObjects).
+ * Attached to: nothing
+ * Author: Ville Lohkovuori
+ */
 
-	// create new Item of type RadioPart
+    private int partNumber;
+
+	// Create new Item of type 'RadioPart'.
 	public RadioPart (int givenNumber)
 	{
 		this.partNumber = givenNumber;
 	}
 
-	// get and set partNumber from outside the class
+	// Get and set 'partNumber' from outside the class.
 	public int PartNumber {
 		get { return partNumber; }
 		set { partNumber = value; }

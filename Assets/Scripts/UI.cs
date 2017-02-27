@@ -17,9 +17,9 @@ public class UI : MonoBehaviour
 	Button eatFox;
 	Button eatPolarBear;
 	Button closeMenu;
-	public PlayerStats PlayerStats;
+    Text SeagullMeatText;
 
-
+    public PlayerStats PlayerStats;
 
 
 	void Start ()
@@ -35,8 +35,9 @@ public class UI : MonoBehaviour
 		eatFox = GameObject.Find ("EatArcticFoxMeat").GetComponent<Button> ();
 		eatPolarBear = GameObject.Find ("EatPolarBearMeat").GetComponent<Button> ();
 		closeMenu = GameObject.Find ("CloseMenu").GetComponent<Button> ();
-		//pelin alussa seuraavat painikkeet eivät ole näkyvissä
-		closeMenu.gameObject.SetActive (false);
+        SeagullMeatText = GameObject.Find("SeagullMeatText").GetComponent<Text>();
+        //pelin alussa seuraavat painikkeet eivät ole näkyvissä
+        closeMenu.gameObject.SetActive (false);
 		eatSeagul.gameObject.SetActive (false);
 		eatFox.gameObject.SetActive (false);
 		eatSeal.gameObject.SetActive (false);
@@ -44,9 +45,9 @@ public class UI : MonoBehaviour
 		eatPolarBear.gameObject.SetActive (false);
 		eatFood.onClick.AddListener (() => openVisibility (eatFood)); //metodilla muut painikkeet näkyviin ja eatFood pois näkyvistä
 		closeMenu.onClick.AddListener (() => closeVisibility (closeMenu)); //metodilla painikkeet pois näkyvistä ja eatFood näkyviin
+        eatSeagul.onClick.AddListener(() => PlayerStats.EatFoodItem(PlayerStats.GetFoodItem("Seagull Meat")));
 
-
-	}
+    }
 
 	void openVisibility (Button eatFood)
 	{
@@ -82,6 +83,13 @@ public class UI : MonoBehaviour
 		currentCold.text = PlayerStats.Cold + "/100"; //näyttää nykyisen kylmyysarvon
 		currentResistance.text = PlayerStats.CurrentCoat.ColdResistance + ""; //näyttää nykysen kylmyydenkestävyyden
 
+        if (PlayerStats.NumberOfSeagullMeats > 0)
+        {
+            SeagullMeatText.text = PlayerStats.NumberOfSeagullMeats + " x Seagull meat (10)";
+        } else if (PlayerStats.NumberOfSeagullMeats == 0) {
+            SeagullMeatText.text = "Out of seagull meat!";
+        }
 
-	}
+
+    }
 }

@@ -414,7 +414,6 @@ GameObject:
   m_Component:
   - component: {fileID: 258580925}
   - component: {fileID: 258580927}
-  - component: {fileID: 258580928}
   - component: {fileID: 258580926}
   m_Layer: 0
   m_Name: GameHolder
@@ -459,20 +458,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerMove: {fileID: 1788575123}
---- !u!114 &258580928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 258580924}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4663c2d9fb571fb42b5d50d2a8702dcd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PlayerMove: {fileID: 1788575123}
-  PlayerStats: {fileID: 1788575124}
-  Quests: {fileID: 2055786726}
 --- !u!1 &324508156
 GameObject:
   m_ObjectHideFlags: 0
@@ -748,7 +733,7 @@ Prefab:
         type: 2}
       propertyPath: Triggerer
       value: 
-      objectReference: {fileID: 258580928}
+      objectReference: {fileID: 0}
     - target: {fileID: 114289136679293154, guid: b976ffa0f3c39de42896df533bcf6127,
         type: 2}
       propertyPath: boxTexture
@@ -1490,7 +1475,7 @@ GameObject:
   - component: {fileID: 672847627}
   - component: {fileID: 672847626}
   m_Layer: 5
-  m_Name: Text
+  m_Name: SeagullMeatText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1535,10 +1520,10 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 20
+    m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 2
+    m_MinSize: 1
     m_MaxSize: 40
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -3429,6 +3414,7 @@ GameObject:
   - component: {fileID: 1788575122}
   - component: {fileID: 1788575123}
   - component: {fileID: 1788575124}
+  - component: {fileID: 1788575125}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -3548,6 +3534,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerMove: {fileID: 1788575123}
   GameTime: {fileID: 258580927}
+--- !u!114 &1788575125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1788575118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4663c2d9fb571fb42b5d50d2a8702dcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerMove: {fileID: 1788575123}
+  PlayerStats: {fileID: 1788575124}
+  Quests: {fileID: 2055786726}
 --- !u!1 &1962045391
 GameObject:
   m_ObjectHideFlags: 0

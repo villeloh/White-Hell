@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PlayerMove : MonoBehaviour
 {
-	/* The Player object's movement logic. 
+	/* The Player GameObject's movement logic. 
 	 * Attached to: GameObject 'Player'.
 	 *	Author: Ville Lohkovuori
 	 */
@@ -12,15 +12,16 @@ public class PlayerMove : MonoBehaviour
 	private string collidedName;
 	private string collidedTag;
 
-	// Flag to check if the user has tapped / clicked.
-	// Set to true on click. Reset to false on reaching destination, or if the Player object has already collided and the new movement location is invalid (sea). <-- Prevents movement stuttering.
-	private bool clickFlag = false;
+    // Checks whether the GameObject (Player) is already collided. Needed in order to prevent stuttering when collided.
+    private bool collidedFlag = false;
 
-	// Flag to allow movement (really: to cast a ray to the point of mouse-click). Needed to prevent the player moving after clicking to exit a quest popup.
+    // Flag to check if the user has tapped / clicked.
+    // Set to true on click. Reset to false on reaching destination, or if the Player object has already collided and the new movement location is invalid (sea). 
+    // This will prevent movement stuttering that would occur otherwise.
+    private bool clickFlag = false;
+
+	// Flag to allow movement (really: to cast a ray to the point of mouse-click). Needed to prevent the player moving directly after clicking to exit a quest popup.
 	private bool allowMove = true;
-
-	// Checks whether the GameObject (Player) is already collided. Needed in order to prevent stuttering when collided.
-	private bool collidedFlag = false;
 
 	// Needed for internal reference; explained later.
 	private RaycastHit2D hit;
@@ -28,7 +29,7 @@ public class PlayerMove : MonoBehaviour
 	// Used for storing the clicked destination point (I *think* it must be a Vector3, even if we're dealing with 2D.).
 	private Vector3 endPoint;
 	// Alter this to change the speed of the movement of the Player GameObject. NOTE! If this is made public, Unity ignores it for some reason !!!
-	// NOTE: currently overridden (as it should be) by the value defined in PlayerStats (according to hunger and cold values)!
+	// NOTE: currently overridden (as it should be) by the value defined in PlayerStats.cs (according to the hunger and cold values)!
 	private float moveDuration = 50.0f;
 
 	// Determines the start position (Player's x and y (and z) coordinates).
@@ -40,16 +41,17 @@ public class PlayerMove : MonoBehaviour
 		// Puts the Player object in the right starting point.
 		gameObject.transform.position = startPos;
 
+        // Disallows movement, until it's enabled by the player clicking away the name input field.
 		AllowMove = false;
 	}
 
 
 	// What happens when the Player GameObject collides with another GameObject. Called automatically when Player collides with something (Unity behavior).
 	// Strictly speaking, this is not needed, because two bodies with colliders attached will stop automatically upon collision. However, it prevents
-	// movement stuttering, so it's good to have imo.
+	// movement stuttering, which is a good enough reason to have it.
 	void OnCollisionEnter2D (Collision2D coll)
 	{
-		// Prints confirmation that a collision has happened, and the names of the two collided objects (first one should always be 'Player').
+		// Debug. Prints confirmation that a collision has happened, and the names of the two collided objects (first one should always be 'Player').
 		print ("Collided!");
 		print (GetComponent<CircleCollider2D> ().gameObject.name);
 		print (coll.gameObject.name);
@@ -69,7 +71,7 @@ public class PlayerMove : MonoBehaviour
 		}
 	}
 
-	// When the collision ends, set various stats to false/empty, to ensure appropriate behaviour when the next collision occurs.
+	// When the collision ends, set various stats to false/empty, to ensure appropriate behaviour until the next collision occurs.
 	void OnCollisionExit2D (Collision2D coll2)
 	{
 		collidedFlag = false;
@@ -87,7 +89,7 @@ public class PlayerMove : MonoBehaviour
 
 	public string CollidedTag {
 		get { return collidedTag; }
-		set { collidedTag = value; } // not used anywhere atm, but made as a precaution, and for consistency
+		set { collidedTag = value; } // not used anywhere atm
 	}
 
 	public float MoveDuration {
@@ -163,7 +165,7 @@ public class PlayerMove : MonoBehaviour
 			gameObject.transform.position = Vector3.Lerp (gameObject.transform.position, endPoint, (1 / (moveDuration * (Vector3.Distance (gameObject.transform.position, endPoint)))));
 			// print (Vector3.Distance (gameObject.transform.position, endPoint));
 
-		} // Set the movement indicator flag to 'false' if the endPoint and current Player object position are equal. Print a debug message.
+		} // Set the movement indicator flag to 'false' if the endPoint and current Player object position are (almost) equal.
 		else if (clickFlag && Mathf.Approximately (gameObject.transform.position.magnitude, endPoint.magnitude)) {
 			clickFlag = false;
 			print ("I am here"); // debug

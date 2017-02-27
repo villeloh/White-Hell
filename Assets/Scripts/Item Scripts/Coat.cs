@@ -5,15 +5,21 @@ using UnityEngine;
 public class Coat : Item
 {
 
-	private float coldResistance;
+/*
+ * Used for making 'Coat' items (regular objects, not GameObjects).
+ * Attached to: nothing
+ * Author: Ville Lohkovuori
+ */
 
-	// create new Item of type Coat
+    private float coldResistance;
+
+	// Create new Item of type 'Coat'.
 	public Coat (float givenRes)
 	{
 		this.coldResistance = givenRes;
 	}
 
-	// get and set coldResistance from outside the class
+	// Get and set coldResistance from outside the class.
 	public float ColdResistance {
 		get { return coldResistance; }
 		set { coldResistance = value; }

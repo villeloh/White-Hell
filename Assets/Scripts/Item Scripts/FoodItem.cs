@@ -5,7 +5,13 @@ using UnityEngine;
 public class FoodItem : Item
 {
 
-	private int eatValue;
+/*
+ * Used for making 'FoodItem' items (regular objects, not GameObjects).
+ * Attached to: nothing
+ * Author: Ville Lohkovuori
+ */
+
+    private int eatValue;
 
 	// For creating food items.
 	public FoodItem (int givenEatValue)

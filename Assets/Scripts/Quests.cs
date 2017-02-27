@@ -9,9 +9,14 @@ namespace QuestNamespace
 	public class Quests : MonoBehaviour
 	{
 
-		// Needed for reference between MonoBehaviours (I tried to make Quests into a regular class, but Unity wasn't having it... So it's attached to QuestHolder as a MonoBehaviour atm.
-		// While that makes a certain amount of sense, it's ultimately unnecessary.)
-		public PlayerStats PlayerStats;
+        /* Stores all the info relating to quests (pop-up events which occur when hitting various GameObjects). 
+        * Attached to: GameObject 'QuestHolder'.
+        * Author: Ville Lohkovuori
+        */
+
+        // Needed for reference between MonoBehaviours (I tried to make Quests into a regular class, but Unity wasn't having it... So it's attached to QuestHolder as a MonoBehaviour atm.
+        // While that makes a certain amount of sense, it seems to be ultimately unnecessary.)
+        public PlayerStats PlayerStats;
 		public PlayerMove PlayerMove;
     
 		// For storing the map icons & labels that are used for the various quests, and their changed versions.
@@ -19,21 +24,19 @@ namespace QuestNamespace
 		public Sprite[] changedQISprites;
 		public Sprite[] questLabelSprites;
 
-		// Needed for internal reference.
-		private SpriteRenderer iconRenderer;
+        // Stores the quests' background images (currently the same one is used for all quests).
+        public Sprite[] questBackgroundSprites;
+
+        // Needed when spawning text icons on the map from a prefab (the logic is a bit fuzzy to me still, but this seems to work).
+        public Transform TextIcon;
+
+        // Needed for internal reference.
+        private SpriteRenderer iconRenderer;
 		private SpriteRenderer labelRenderer;
 		private CircleCollider2D iconCollider;
-    
-		// Needed for switching a quest's background sprite as appropriate.
-		private Image questImage;
-		public Sprite[] questBackgroundSprites;
-
-		// Used for switching the displayed quest text.
-		private Text questText;
-
-		public Transform TextIcon;
-
-		private GameObject questHolderHolder;
+        private GameObject questHolderHolder;
+        private Text questText;
+        private Image questImage;
 
 		// Used for setting the status of quests... I'm not sure whether there's a more elegant way to do this? This will work, at any rate.
 		private bool quest1_Completed = false;
@@ -55,32 +58,12 @@ namespace QuestNamespace
 		// Define a list of quest texts, for use later on.
 		private List<string> questTexts = new List<string> ();
 
-		// Methods to access and alter the quest booleans from outside the class (Triggerer.cs).
-		// It seems that the items have a different identity after being added to the list; manipulating the original values (Quest1_Completed, etc) does nothing unless their use
-		// is explicitly specified. As the list is quite necessary in a few spots, these methods should be used at all times when it comes to altering the values of the quest booleans.
-
-		public bool GetQuestBoolean (int givenNumber)
-		{
-			return questBooleans [givenNumber];
-		}
-
-		public void SetQuestBoolean (int givenNumber, bool newValue)
-		{
-			questBooleans [givenNumber] = newValue;
-		}
-
-		// Toggles the 'active' status of the 'QuestHolder' Game Object (and, by proxy, its Image component, which would otherwise block
-		// certain clicks that are needed when dealing with pop-ups.).
-		public void ToggleQuestHolderActive ()
-		{
-			questHolderHolder.SetActive (!questHolderHolder.activeSelf);
-		}
-
 
 		void Start ()
 		{
 
 			// Add all the quest booleans to a list (for easy manipulation by the RoutineQuestActions() method).
+            // NOTE: The 'inner new List' thingy is copied from the internet, and I'm a bit fuzzy about its internal logic. But it works, so, meh. :p
 			questBooleans.InsertRange (questBooleans.Count, new List<bool> {
 				quest1_Completed,
 				quest2_Completed,
@@ -120,7 +103,7 @@ namespace QuestNamespace
 			questHolderHolder = GameObject.Find ("QuestHolder");
 			questHolderHolder.SetActive (false);
 
-			// Spawn the quests that exist at game start (or their icons, more precisely, but logically they're pretty much equivalent)
+			// Spawn the quests that exist at game start (or their icons, more precisely, but logically they're pretty much equivalent).
 			SpawnQuestIcon ("Boat Wreck", -2.1f, -2.3f, 0);
 			GameObject.Find ("Boat Wreck").tag = "shelter";
 
@@ -130,14 +113,39 @@ namespace QuestNamespace
 			GameObject.Find ("Quest_3").tag = "shelter";
 			SpawnQuestIcon ("Quest_4", -1.9f, 3.9f, 4);
 
+            // Testing text icon spawning.
+            // NOTE: The coordinates are scaled with the canvas, which means that replacing the existing quest labels with plain text would be too tedious for the meager benefit.
+            // Therefore I've opted to keep the labels as Sprites, and use the new SpawnTextIcon() method for spawning place names only.
 			SpawnTextIcon ("Half Moon Bay", -182.0f, -457.0f);
 
 		}
 
 
-		// I wanted to try using enum + a custom namespace, instead of writing a dozen different quest methods (one for each new quest).
-		// I'm not sure if everything is done in a standard way, but this seems to work, so I'm leaving it as it is for now.
-		public enum QuestEnum
+
+        // Methods for accessing the quest booleans from outside the class (in Triggerer.cs).
+        // IMPORTANT NOTE: It seems that the booleans have a different identity after being added to the list; manipulating the original values (Quest1_Completed, etc) does nothing unless their use
+        // is explicitly specified beforehand. As the list is quite necessary in a few spots, these methods should be used at all times when it comes to altering the values of the quest booleans.
+
+        public bool GetQuestBoolean(int givenNumber)
+        {
+            return questBooleans[givenNumber];
+        }
+
+        public void SetQuestBoolean(int givenNumber, bool newValue)
+        {
+            questBooleans[givenNumber] = newValue;
+        }
+
+        // Toggles the 'active' status of the 'QuestHolder' Game Object (and, by proxy, its Image component, which would otherwise block
+        // certain clicks that are needed when dealing with pop-ups.).
+        public void ToggleQuestHolderActive()
+        {
+            questHolderHolder.SetActive(!questHolderHolder.activeSelf);
+        }
+
+        // I wanted to try using enum + a custom namespace, instead of writing a dozen different quest methods (one for each new quest).
+        // I'm not sure if everything is done in a standard way, but this seems to work, so I'm leaving it as it is for now.
+        public enum QuestEnum
 		{
 			Quest_1,
 			Quest_2,
@@ -150,9 +158,7 @@ namespace QuestNamespace
 			Quest_9,
 			Quest_10,
 			Quest_11,
-			Quest_12}
-
-		;
+			Quest_12 }
 
 		public void ChooseQuest (QuestEnum givenQuest)
 		{
@@ -244,13 +250,13 @@ namespace QuestNamespace
 		private void RoutineQuestActions (QuestEnum givenQuest)
 		{       
 
-			// Sets the 'quest_Completed' status flag of the quest in question to 'true', preventing the quest from triggering ever again
+			// Sets the 'quest_Completed' status flag of the quest in question to 'true', preventing the quest from triggering ever again.
 			questBooleans [(int)givenQuest] = true;
 
-			// Stops the player from moving on first click after the quest popup comes up.
+			// Stops the player from moving on the first click after the quest popup comes up.
 			PlayerMove.AllowMove = false;
 
-			// Enables the QuestHolder GameObject (and, by proxy, its image and text component).
+			// Activates the QuestHolder GameObject (and, by proxy, its script, image and text components).
 			ToggleQuestHolderActive ();
 
 			// Switches the quest's background sprite to the appropriate one
@@ -265,14 +271,14 @@ namespace QuestNamespace
 		}
 			
 		// Creates a new quest icon + quest label with the given name in spot (x,y). The sprites are chosen from lists that can be made manually in Unity (just drag & drop the sprites).
-		// NOTE: It would've been simpler to have the labels as texts, but for the life of me I couldn't get this to work. -.- Texts must be attached to a Canvas, but then they will
-		// *MOVE* with the goddamn canvas... I spent at least 5 hours on this trivial-seeming problem before giving up and going with Sprites instead.
+		// NOTE #1: It would've been simpler to have the labels as texts, but for the life of me I couldn't get this to work. And when I finally did, a new complication arose (shifted 
+        // coordinates due to scaling), so, I've opted to keep the labels as Sprites for now.
 
-		// NOTE#2: It is in all likelihood a VERY bad practice to associate two Arrays with each other in the way I've done it here. Right now, the int 'iconAndLabel_ID' is the
+		// NOTE #2: It is in all likelihood a VERY bad practice to associate two Arrays with each other in the way I've done it here. Right now, the int 'iconAndLabel_ID' is the
 		// ONLY thing that's linking together the chosen quest icons and quest labels. If either Array of Sprites gets 'out of sync', it changes potentially ALL of
 		// the associated labels/icons to the wrong ones! I tried using a Dictionary to associate the two different Arrays with each other, but the syntax proved
 		// too hard for me, since the Arrays' contents are defined in the editor and so they can only be referred to in a general way (which I couldn't handle, at present).
-		// So... This is a make-shift solution, very non-ideal, but it works unless someone else goes ahead and decides to break it... :O
+		// So... This is a make-shift solution, very non-ideal, but it works (unless someone else goes ahead and decides to break it...). :O
 		public void SpawnQuestIcon (string iconName, float x, float y, int iconAndLabel_ID)
 		{
 			GameObject questIcon = new GameObject (iconName);
@@ -281,7 +287,7 @@ namespace QuestNamespace
 			iconRenderer.sortingOrder = 3;
 			iconRenderer.sprite = questIconSprites [iconAndLabel_ID];
 			iconCollider = questIcon.AddComponent<CircleCollider2D> ();
-			iconCollider.radius = 0.15f;
+			iconCollider.radius = 0.18f;
 
 			GameObject questLabel = new GameObject (iconName + "_label");
 			questLabel.transform.position = new Vector3 (x, y + 0.38f, 0.0f);
@@ -303,7 +309,7 @@ namespace QuestNamespace
 				PlayerMove.CollidedFlag = false;
 				PlayerMove.CollidedTag = "";
 				PlayerMove.CollidedName = "";
-				print ("No longer collided!");
+				print ("No longer collided!"); // debug
 
 				iconRenderer = givenIcon.GetComponent<SpriteRenderer> ();
 				iconRenderer.sprite = changedQISprites [0];
@@ -315,11 +321,13 @@ namespace QuestNamespace
 
 		// Spawns text icons on the map... This had to be done with a Text prefab, because Unity doesn't allow
 		// for direct modification of the text component of a newly created Text object ('protection level' error).
+        // ... Or maybe it does, and I simply missed something trivial. Anyway, prefabs are a superior way of dealing
+        // with numerous GameObjects, and should be used on all occasions like this one.
 		public void SpawnTextIcon (string givenText, float x, float y)
 		{
 			Transform icon = Instantiate (TextIcon, new Vector3 (x, y, 0.0f), Quaternion.identity);
 			icon.transform.SetParent (GameObject.Find ("MapIconCanvas").transform, false);
-			icon.name = givenText;
+			icon.name = givenText + "_icon";
 			Text textIconText = icon.GetComponent<Text> ();
 			textIconText.text = givenText;
 		}
@@ -328,15 +336,15 @@ namespace QuestNamespace
 		{
 			// I see no other way to check for a mouse-click than to put it in 'update'... I couldn't get this to work by clicking on the image object that's attached to QuestHolder;
 			// the click always falls through and hits 'Island' instead. This will work to close the quest window, but it's a clumsy waste of resources. As a bonus, this works 
-			// regardless of the clicked location. As a bad side, though, you'll begin moving towards where you clicked, which is highly undesirable, to say the least!
-			// There is a class called 'EventTrigger' that could be useful in this situation, but it seems fairly complex and time is of the essence.
+			// regardless of the clicked location. There is a class called 'EventTrigger' that could be useful in this situation, but it seems fairly complex and time is of the essence.
 			if (Input.GetKeyDown (KeyCode.Return) || Input.GetMouseButtonDown (0)) {
-				questText.text = "";
+				questText.text = ""; // unnecessary, I guess, but meh, might as well keep it
 				ToggleQuestHolderActive ();
 				PlayerMove.AllowMove = true;
 			}
 		}
 
+        // All the quest texts are stored at the bottom of the file, to reduce needless scrolling.
 		// There must be a better way to store long strings (database?), but I'd rather spend the time on something else. Ugly as it is, this seems to work for our purposes.
 		private string questText_1 = @"[ PLANE CRASH ]
 
@@ -494,10 +502,6 @@ Atop the mummified remains of Col. Caldwell, I find his old diary and read the f
 'Having gathered enough supplies, I'll be heading out in the next few days. As soon as the fever subsides...'
 
 Shivering, I salute what remains of the brave Colonel.";
-
-
-
-
 
 	}
 
