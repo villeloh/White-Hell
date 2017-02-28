@@ -7,15 +7,15 @@ using System.Linq;
 public class PlayerStats : MonoBehaviour
 {
 
-/* 
+	/* 
  * Stores all the Player GameObject's statuses. 
  * Attached to: GameObject 'Player'.
  *	Author: Ville Lohkovuori
  */
 
 
-    // Needed for reference between classes in Unity.
-    public PlayerMove PlayerMove;
+	// Needed for reference between classes in Unity.
+	public PlayerMove PlayerMove;
 	public GameTime GameTime;
     
 	// Internal reference variables for various stats.
@@ -31,19 +31,24 @@ public class PlayerStats : MonoBehaviour
 	private Coat currentCoat;
 	private Dictionary<Item, string> inventory;
 
-    private int numberOfSeagullMeats = 0;
-    private int numberOfPolarFoxMeats = 0;
-    private int numberOfWalrusMeats = 0;
-    private int numberOfSealMeats = 0;
-    private int numberOfPolarBearMeats = 0;
+	private int numberOfSeagullMeats = 0;
+	private int numberOfPolarFoxMeats = 0;
+	private int numberOfWalrusMeats = 0;
+	private int numberOfSealMeats = 0;
+	private int numberOfPolarBearMeats = 0;
+
+	private const int seagullEatValue = 10;
+	private const int polarFoxEatValue = 20;
+	private const int sealEatValue = 30;
+	private const int walrusEatValue = 40;
+	private const int polarBearEatValue = 60;
+
+	private float score = 0.0f;
 
 
 	// Stores the name of the player that is given via an input field, at game start.
 	private string playerName = "";
-
-	// Stores the game score.
-	private float score = 0;
-    
+	    
 	// Use this for initialization.
 	void Start ()
 	{
@@ -61,11 +66,11 @@ public class PlayerStats : MonoBehaviour
 		// Give the Player 20 rifle bullets to start with.
 		carriedAmmo = 20;
 
-        // Testing food item creation.
-        FoodItem SeagullMeat = new FoodItem(10);
-        AddToInv(SeagullMeat, "Seagull Meat");
-        print(SeagullMeat.EatValue);
-    }
+		// Testing food item creation.
+		FoodItem SeagullMeat = new FoodItem (10);
+		AddToInv (SeagullMeat, "Seagull Meat");
+		print (SeagullMeat.EatValue);
+	}
 
 	// The method to add items to inventory.
 	// As typically only a small number of items will be created at once, imo it's not worth it to give a 'number' parameter to the method.
@@ -80,39 +85,41 @@ public class PlayerStats : MonoBehaviour
 			inventory.Add (item, itemName);
 			FoodItemCheck ((FoodItem)item);
 
-            switch (((FoodItem)item).EatValue) {
+			switch (((FoodItem)item).EatValue) {
 
-                case 10:
+			// currently 10
+			case seagullEatValue: 
 
-                    numberOfSeagullMeats++;
-                    print("number of seagull meat items + 1!"); // debug
+				numberOfSeagullMeats++;
+				print ("number of seagull meat items + 1!"); // debug
 
-                break;
+				break;
 
-                case 20:
+			case polarFoxEatValue: // currently 20
 
-                    numberOfPolarFoxMeats++;
+				numberOfPolarFoxMeats++;
 
-                break;
+				break;
 
-                case 30:
+			case sealEatValue: // currently 30
 
-                    numberOfSealMeats++;
+				numberOfSealMeats++;
 
-                break;
+				break;
 
-                case 40:
+			case walrusEatValue: // currently 40
 
-                    numberOfWalrusMeats++;
+				numberOfWalrusMeats++;
 
-                break;
+				break;
 
-                case 60:
+			case polarBearEatValue: // currently 60
 
-                    numberOfPolarBearMeats++;
+				numberOfPolarBearMeats++;
 
-                break;
-            }
+				break;
+
+			}
 
 		} else if (item is Coat) {
 			inventory.Add (item, itemName + " (" + ((Coat)item).ColdResistance + ")");
@@ -144,8 +151,8 @@ public class PlayerStats : MonoBehaviour
 		carriedFood += foodItem.EatValue;
 	}
 
-	// Similarly to FoodItemCheck(), this check is called after adding a Coat item to inventory. If the new Coat's coldResistance value 
-    // is bigger than the current Coat's, it replaces the current one as the 'active' coat. If not, it gets discarded instead.
+	// Similarly to FoodItemCheck(), this check is called after adding a Coat item to inventory. If the new Coat's coldResistance value
+	// is bigger than the current Coat's, it replaces the current one as the 'active' coat. If not, it gets discarded instead.
 	private void CoatCheck (Coat coat)
 	{
 		if (currentCoat.ColdResistance < coat.ColdResistance) {
@@ -181,81 +188,76 @@ public class PlayerStats : MonoBehaviour
 	// The placement of this method is debatable. It alters a player stat, so I put it here, but it could be in Item.cs instead.
 	public void EatFoodItem (FoodItem meat)
 	{
-        // The null check is needed when the method is called from UI.cs (since the click is always possible, regardless if you have any food items or not).
-        if (meat != null)
-        {
-            print("hunger ennen syöntiä:" + hunger); // debug
+		// The null check is needed when the method is called from UI.cs (since the click is always possible, regardless if you have any food items or not).
+		if (meat != null) {
+			print ("hunger ennen syöntiä:" + hunger); // debug
 
-            // Added a check to ensure that hunger won't go below zero under any circumstances.
-            if (hunger >= meat.EatValue)
-            {
-                hunger -= meat.EatValue;
-            }
-            else if (hunger < meat.EatValue)
-            {
-                hunger = 0.0f;
-            }
+			// Added a check to ensure that hunger won't go below zero under any circumstances.
+			if (hunger >= meat.EatValue) {
+				hunger -= meat.EatValue;
+			} else if (hunger < meat.EatValue) {
+				hunger = 0.0f;
+			}
 
-            carriedFood -= meat.EatValue; // even without any checks, carriedFood should never go below zero, because it has previously been increased by the same amount (when adding the item to inventory)
+			carriedFood -= meat.EatValue; // even without any checks, carriedFood should never go below zero, because it has previously been increased by the same amount (when adding the item to inventory)
 
-            switch (meat.EatValue)
-            {
+			switch (meat.EatValue) {
 
-                case 10:
+			// currently 10
+			case seagullEatValue: 
 
-                    numberOfSeagullMeats--;
-                    print("number of seagull meat items - 1!"); // debug
+				numberOfSeagullMeats--;
+				print ("number of seagull meat items - 1!"); // debug
 
-                    break;
+				break;
 
-                case 20:
+			case polarFoxEatValue: // currently 20
 
-                    numberOfPolarFoxMeats--;
+				numberOfPolarFoxMeats--;
 
-                    break;
+				break;
 
-                case 30:
+			case sealEatValue: // currently 30
 
-                    numberOfSealMeats--;
+				numberOfSealMeats--;
 
-                    break;
+				break;
 
-                case 40:
+			case walrusEatValue: // currently 40
 
-                    numberOfWalrusMeats--;
+				numberOfWalrusMeats--;
 
-                    break;
+				break;
 
-                case 60:
+			case polarBearEatValue: // currently 60
 
-                    numberOfPolarBearMeats--;
+				numberOfPolarBearMeats--;
 
-                    break;
-            }
+				break;
+			}
 
 
-            RemoveFromInv(meat);
+			RemoveFromInv (meat);
 
-            print("hunger syönnin jälkeen: " + hunger); // debug
-        }
+			print ("hunger syönnin jälkeen: " + hunger); // debug
+		}
 	}
 
-    // Returns the item (key) by its given name (value), from the inventory.
-    // This procedure is apparently frought with considerable peril when it comes to Dictionaries.
-    // Let's just hope that this thing works (I found it on the internet...), and get along, as time is of the essence.
-    public FoodItem GetFoodItem(string itemName)
-    {
-        FoodItem key = (FoodItem)inventory.FirstOrDefault(x => x.Value == itemName).Key;
-        return key;
-    }
+	// Returns the item (key) by its given name (value), from the inventory.
+	// This procedure is apparently frought with considerable peril when it comes to Dictionaries.
+	// Let's just hope that this thing works (I found it on the internet...), and get along, as time is of the essence.
+	public FoodItem GetFoodItem (string itemName)
+	{
+		FoodItem key = (FoodItem)inventory.FirstOrDefault (x => x.Value == itemName).Key;
+		return key;
+	}
 
 
-    public void PlayerDeath ()
+	public void PlayerDeath ()
 	{
 		// ++ invoke different outros based on the cause of death (hunger, cold, polar bear). will be called from Triggerer.cs
 	}
-
-
+		
 	// Properties for accessing various values from outside the class (mainly in Triggerer.cs).
 	public Coat CurrentCoat {
 		get { return currentCoat; }
@@ -302,52 +304,55 @@ public class PlayerStats : MonoBehaviour
 		set { playerName = value; }
 	}
 
-    public int NumberOfSeagullMeats {
-        get { return numberOfSeagullMeats; }
-        set { numberOfSeagullMeats = value; }
-    }
+	public int NumberOfSeagullMeats {
+		get { return numberOfSeagullMeats; }
+		set { numberOfSeagullMeats = value; }
+	}
 
-    public int NumberOfPolarFoxMeats
-    {
-        get { return numberOfPolarFoxMeats; }
-        set { numberOfPolarFoxMeats = value; }
-    }
+	public int NumberOfPolarFoxMeats {
+		get { return numberOfPolarFoxMeats; }
+		set { numberOfPolarFoxMeats = value; }
+	}
 
-    public int NumberOfWalrusMeats
-    {
-        get { return numberOfWalrusMeats; }
-        set { numberOfWalrusMeats = value; }
-    }
+	public int NumberOfWalrusMeats {
+		get { return numberOfWalrusMeats; }
+		set { numberOfWalrusMeats = value; }
+	}
 
-    public int NumberOfSealMeats
-    {
-        get { return numberOfSealMeats; }
-        set { numberOfSealMeats = value; }
-    }
+	public int NumberOfSealMeats {
+		get { return numberOfSealMeats; }
+		set { numberOfSealMeats = value; }
+	}
 
-    public int NumberOfPolarBearMeats
-    {
-        get { return numberOfPolarBearMeats; }
-        set { numberOfPolarBearMeats = value; }
-    }
+	public int NumberOfPolarBearMeats {
+		get { return numberOfPolarBearMeats; }
+		set { numberOfPolarBearMeats = value; }
+	}
+
+	public float Score {
+		get { return score; }
+		set { score = value; }
+	}
 
 
 
-    // Update is called once per frame.
-    void Update ()
+	// Update is called once per frame.
+	void Update ()
 	{
-        // Increase the hunger and cold values with elapsed movement frames.
-        // In addition, make it so that the cold value is affected by the coldResistance stat on the worn coat as well.
-        if (PlayerMove.ClickFlag == true)
-        {
-            // cold += 0.03f * (85.0f / currentCoat.ColdResistance); // 85.0f is the value of the best Coat, which should act to nullify the effect of cold completely.
-            // hunger += 0.08f;
-        }
+		// Increase the hunger and cold values with elapsed movement frames.
+		// In addition, make it so that the cold value is affected by the coldResistance stat on the worn coat as well.
+		if (PlayerMove.ClickFlag == true) {
+			// cold += 0.03f * (85.0f / currentCoat.ColdResistance); // 85.0f is the value of the best Coat, which should act to nullify the effect of cold completely.
+			// hunger += 0.08f;
+		}
 
 		// Set movement rate according to cold and hunger values (the first value is the initial rate, as hunger and cold are zero in the beginning).
 		// The larger this value is, the slower the Player's movement speed becomes.
 		// NOTE: This could also be done in PlayerMove.cs. It's a matter of taste where the logic is located.
 		PlayerMove.MoveDuration = (50.0f + cold + hunger);
+
+		score += GameTime.GlobalTime;
+
 	}
 
 }

@@ -5,13 +5,14 @@ using UnityEngine;
 public class GameTime : MonoBehaviour
 {
 
-/*
+	/*
  * Stores a time-like value that keeps track of the elapsed time since the start of the game.
  * Attached to: 'GameHolder' GameObject
  * Author: Ville Lohkovuori
  */
 
-    private float globalTime = 0.0f;
+	private float globalTime = 0.0f;
+
 	public PlayerMove PlayerMove;
 
 	// Returns the total elapsed time (in pseudo-units, not real seconds) since the start of the game.
