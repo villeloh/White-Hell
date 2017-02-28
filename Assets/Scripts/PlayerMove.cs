@@ -12,13 +12,13 @@ public class PlayerMove : MonoBehaviour
 	private string collidedName;
 	private string collidedTag;
 
-    // Checks whether the GameObject (Player) is already collided. Needed in order to prevent stuttering when collided.
-    private bool collidedFlag = false;
+	// Checks whether the GameObject (Player) is already collided. Needed in order to prevent stuttering when collided.
+	private bool collidedFlag = false;
 
-    // Flag to check if the user has tapped / clicked.
-    // Set to true on click. Reset to false on reaching destination, or if the Player object has already collided and the new movement location is invalid (sea). 
-    // This will prevent movement stuttering that would occur otherwise.
-    private bool clickFlag = false;
+	// Flag to check if the user has tapped / clicked.
+	// Set to true on click. Reset to false on reaching destination, or if the Player object has already collided and the new movement location is invalid (sea).
+	// This will prevent movement stuttering that would occur otherwise.
+	private bool clickFlag = false;
 
 	// Flag to allow movement (really: to cast a ray to the point of mouse-click). Needed to prevent the player moving directly after clicking to exit a quest popup.
 	private bool allowMove = true;
@@ -41,7 +41,7 @@ public class PlayerMove : MonoBehaviour
 		// Puts the Player object in the right starting point.
 		gameObject.transform.position = startPos;
 
-        // Disallows movement, until it's enabled by the player clicking away the name input field.
+		// Disallows movement, until it's enabled by the player clicking away the name input field.
 		AllowMove = false;
 	}
 
@@ -120,12 +120,6 @@ public class PlayerMove : MonoBehaviour
 		// Check if the screen is touched / clicked.
 		if ((Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began) || (Input.GetMouseButtonDown (0))) {
 
-			// [[[ Leftover stuffs below; may be needed later, when we'll be using touch controls.
-
-			//declare a variable of RaycastHit struct
-			//Create a Ray on the tapped / clicked position
-			// Ray ray; ]]]
-
 			//Controls for unity editor. (#if on nimeltään pre-processor joku-jutska, joka kertoo, mille platformille sitä seuraava määrittely on voimassa.)
 			// #if UNITY_EDITOR
 			// 'RaycastHit2D' contains the x and y coordinates of the place that the cast ray hit (it's cast from the Main Camera upon mouse click). 
@@ -137,9 +131,12 @@ public class PlayerMove : MonoBehaviour
 			// [[[leftover: ray = Camera.main.ScreenPointToRay (Input.mousePosition); ]]]
 
 			// for touch device
-			#if (UNITY_ANDROID || UNITY_IPHONE || UNITY_WP8)
-			ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
-			#endif
+			// #if (UNITY_ANDROID || UNITY_IPHONE || UNITY_WP8)
+			//declare a variable of RaycastHit struct
+			//Create a Ray on the tapped / clicked position
+			// Ray ray;
+			// ray = Camera.main.ScreenPointToRay (Input.GetTouch (0).position);
+			// #endif
 
 			// Check if the cast ray hits any collider, and if so, print the name of the GameObject that it hit.
 			if (hit) {
