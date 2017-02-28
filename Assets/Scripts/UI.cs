@@ -102,7 +102,7 @@ public class UI : MonoBehaviour
 		currentHunger.text = "Hunger: " + Mathf.Round(PlayerStats.Hunger * 10f) / 10f + "/100"; //näyttää nykyisen nälkäarvon 
 		currentCold.text = "Cold " + Mathf.Round(PlayerStats.Cold * 10f) / 10f + "/100"; //näyttää nykyisen kylmyysarvon
 		currentResistance.text = PlayerStats.CurrentCoat.ColdResistance + ""; //näyttää nykysen kylmyydenkestävyyden
-		kello.text = Mathf.Round(GameTime.GlobalTime* 10f) / 10f + " Days";
+		kello.text = "Day " + Mathf.Round(GameTime.GlobalTime* 1f) / 1f;
 		// If lausekkeet painikkeiden tekstien muuttamiseen
 		//1. lokinlihapainike
         if (PlayerStats.NumberOfSeagullMeats > 0)
@@ -114,21 +114,21 @@ public class UI : MonoBehaviour
 		//2. hylkeenlihapainike
 		if (PlayerStats.NumberOfSealMeats > 0)
 		{
-			SealMeatText.text = PlayerStats.NumberOfSealMeats + " x Seal meat (20)";
+			SealMeatText.text = PlayerStats.NumberOfSealMeats + " x Seal meat (30)";
 		} else if (PlayerStats.NumberOfSealMeats == 0) {
 			SealMeatText.text = "Out of seal meat!";
 		}
 		//3. mursunlihapainike
 		if (PlayerStats.NumberOfWalrusMeats > 0)
 		{
-			WalrusMeatText.text = PlayerStats.NumberOfWalrusMeats + " x Walrus meat (30)";
+			WalrusMeatText.text = PlayerStats.NumberOfWalrusMeats + " x Walrus meat (40)";
 		} else if (PlayerStats.NumberOfWalrusMeats == 0) {
 			WalrusMeatText.text = "Out of Walrus meat!";
 		}
 		//4. naalinlihapainike
 		if (PlayerStats.NumberOfPolarFoxMeats > 0)
 		{
-			FoxMeatText.text = PlayerStats.NumberOfPolarFoxMeats + " x Arctic fox meat (40)";
+			FoxMeatText.text = PlayerStats.NumberOfPolarFoxMeats + " x Arctic fox meat (20)";
 		} else if (PlayerStats.NumberOfPolarFoxMeats == 0) {
 			FoxMeatText.text = "Out of Arctic fox meat!";
 		}

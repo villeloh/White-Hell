@@ -27,7 +27,7 @@ namespace QuestNamespace
         // Stores the quests' background images (currently the same one is used for all quests).
         public Sprite[] questBackgroundSprites;
 
-        // Needed when spawning text icons on the map from a prefab (the logic is a bit fuzzy to me still, but this seems to work).
+        // Needed when spawning text icons on the map from a prefab.
         public Transform TextIcon;
 
         // Needed for internal reference.
@@ -113,10 +113,20 @@ namespace QuestNamespace
 			GameObject.Find ("Quest_3").tag = "shelter";
 			SpawnQuestIcon ("Quest_4", -1.9f, 3.9f, 4);
 
-            // Testing text icon spawning.
+            // Spawn text icons on the map (for place names).
             // NOTE: The coordinates are scaled with the canvas, which means that replacing the existing quest labels with plain text would be too tedious for the meager benefit.
             // Therefore I've opted to keep the labels as Sprites, and use the new SpawnTextIcon() method for spawning place names only.
 			SpawnTextIcon ("Half Moon Bay", -182.0f, -457.0f);
+            SpawnTextIcon ("Devil's Anvil", -1200.0f, -535.0f);
+            SpawnTextIcon ("Clear Lake", -370.0f, 420.0f);
+            SpawnTextIcon ("Ore Lake", -990.0f, 320.0f);
+            SpawnTextIcon ("Point Hope", -350.0f, -820.0f);
+            SpawnTextIcon ("Point Blake", 50.0f, -800.0f);
+            SpawnTextIcon ("Western Cliffs", -1230.0f, 0.0f);
+            SpawnTextIcon ("Walrus Bay", 510.0f, 100.0f);
+            SpawnTextIcon ("Mount Blake", 950.0f, 340.0f);
+            SpawnTextIcon ("Eastern Fjords", 950.0f, -530.0f);
+            SpawnTextIcon ("Mount Smoke", 520.0f, 370.0f);
 
 		}
 
@@ -165,6 +175,8 @@ namespace QuestNamespace
 			RoutineQuestActions (givenQuest);
 
 			switch (givenQuest) {
+
+            // Plane crash
 			case QuestEnum.Quest_1:
 
 				Coat OldPilotJacket = new Coat (30.0f);
@@ -177,72 +189,147 @@ namespace QuestNamespace
 				PlayerStats.AddToInv (SeagullMeat, "Seagull Meat");
 
 				break;
-
+            
+            // Sealing Camp
 			case QuestEnum.Quest_2:
 
-                    // quest 2
+                    Coat SealSkinCoat = new Coat(40.0f);
+                    PlayerStats.AddToInv(SealSkinCoat, "Seal-Skin Coat");
 
-				break;
+                    PlayerStats.CarriedAmmo += 10;
+                    PlayerStats.MaxAmmoCheck ();
 
+                    FoodItem SealMeat = new FoodItem (30);
+                    PlayerStats.AddToInv(SealMeat, "Seal Meat");
+                    FoodItem SealMeat2 = new FoodItem(30);
+                    PlayerStats.AddToInv(SealMeat2, "Seal Meat");
+
+                    break;
+           
+            // 'New Erebus' shipwreck (s.)
 			case QuestEnum.Quest_3:
 
-                    // quest 3
+                    // no reward, other than the new shelter + new map locations
 
 				break;
 
+            // Old Runway Campsite
 			case QuestEnum.Quest_4:
 
-                    // quest 4
+                    PlayerStats.RadioPartCount += 1;
 
-				break;
+                    PlayerStats.CarriedAmmo += 5;
+                    PlayerStats.MaxAmmoCheck();
 
+                    FoodItem SeagullMeat3 = new FoodItem(10);
+                    PlayerStats.AddToInv(SeagullMeat3, "Seagull Meat");
+                    FoodItem SeagullMeat4 = new FoodItem(10);
+                    PlayerStats.AddToInv(SeagullMeat4, "Seagull Meat");
+
+                    break;
+             
+            // Scientific Expedition
 			case QuestEnum.Quest_5:
 
-                    // quest 5
+                    PlayerStats.RadioPartCount += 1;
 
-				break;
+                    break;
 
+            // Coal Mine (s.)
 			case QuestEnum.Quest_6:
 
-                    // quest 6
+                    Coat CoalMinersJacket = new Coat(35.0f);
+                    PlayerStats.AddToInv(CoalMinersJacket, "Coal Miner's Jacket");
 
-				break;
+                    FoodItem SealMeat3 = new FoodItem(30);
+                    PlayerStats.AddToInv(SealMeat3, "Seal Meat");
 
+                    break;
+           
+            // Gold Mine
 			case QuestEnum.Quest_7:
 
-                    // quest 7
+                    PlayerStats.CarriedAmmo += 5;
+                    PlayerStats.MaxAmmoCheck();
 
-				break;
+                    FoodItem PolarFoxMeat = new FoodItem(20);
+                    PlayerStats.AddToInv(PolarFoxMeat, "Arctic Fox Meat");
 
+                    break;
+
+            // Supply Cache
 			case QuestEnum.Quest_8:
 
-                    // quest 8
+                    PlayerStats.CarriedAmmo += 15;
+                    PlayerStats.MaxAmmoCheck();
 
-				break;
+                    Coat SeamansGreatCoat = new Coat(50.0f);
+                    PlayerStats.AddToInv(SeamansGreatCoat, "Seaman's Greatcoat");
 
+                    break;
+
+            // Mutineers' Camp
 			case QuestEnum.Quest_9:
 
-                    // quest 9
+                    PlayerStats.RadioPartCount += 1;
 
-				break;
+                    break;
 
+            // Polar Camp
 			case QuestEnum.Quest_10:
 
-                    // quest 10
+                    PlayerStats.CarriedAmmo += 5;
+                    PlayerStats.MaxAmmoCheck();
 
-				break;
+                    FoodItem PolarFoxMeat2 = new FoodItem(20);
+                    PlayerStats.AddToInv(PolarFoxMeat2, "Arctic Fox Meat");
+                    FoodItem PolarFoxMeat3 = new FoodItem(20);
+                    PlayerStats.AddToInv(PolarFoxMeat3, "Arctic Fox Meat");
+                    FoodItem PolarFoxMeat4 = new FoodItem(20);
+                    PlayerStats.AddToInv(PolarFoxMeat4, "Arctic Fox Meat");
 
+                    Coat SturdyOldGreatCoat = new Coat(60.0f);
+                    PlayerStats.AddToInv(SturdyOldGreatCoat, "Sturdy Old Greatcoat");
+
+                    break;
+
+            // Uranium Mine
 			case QuestEnum.Quest_11:
 
-                    // quest 11
+                    PlayerStats.RadioPartCount += 1;
 
-				break;
+                    PlayerStats.CarriedAmmo += 10;
+                    PlayerStats.MaxAmmoCheck();
 
+                    break;
+
+            // Nuclear Test Site
 			case QuestEnum.Quest_12:
 
-                    // quest 12
+                    PlayerStats.RadioPartCount += 1;
 
-				break;
+                    PlayerStats.CarriedAmmo += 20;
+                    PlayerStats.MaxAmmoCheck();
+
+                    Coat SpecialForcesUniform = new Coat(75.0f);
+                    PlayerStats.AddToInv(SpecialForcesUniform, "Special Forces Uniform");
+
+                    FoodItem SeagullMeat5 = new FoodItem(10);
+                    PlayerStats.AddToInv(SeagullMeat5, "Seagull Meat");
+                    FoodItem SeagullMeat6 = new FoodItem(10);
+                    PlayerStats.AddToInv(SeagullMeat6, "Seagull Meat");
+                    FoodItem SeagullMeat7 = new FoodItem(10);
+                    PlayerStats.AddToInv(SeagullMeat7, "Seagull Meat");
+                    FoodItem SeagullMeat8 = new FoodItem(10);
+                    PlayerStats.AddToInv(SeagullMeat8, "Seagull Meat");
+                    FoodItem SeagullMeat9 = new FoodItem(10);
+                    PlayerStats.AddToInv(SeagullMeat9, "Seagull Meat");
+                    FoodItem SeagullMeat10 = new FoodItem(10);
+                    PlayerStats.AddToInv(SeagullMeat10, "Seagull Meat");
+
+
+
+                    break;
 			}
 		}
 
@@ -272,13 +359,13 @@ namespace QuestNamespace
 			
 		// Creates a new quest icon + quest label with the given name in spot (x,y). The sprites are chosen from lists that can be made manually in Unity (just drag & drop the sprites).
 		// NOTE #1: It would've been simpler to have the labels as texts, but for the life of me I couldn't get this to work. And when I finally did, a new complication arose (shifted 
-        // coordinates due to scaling), so, I've opted to keep the labels as Sprites for now.
+        // coordinates due to canvas scaling), so, I've opted to keep the labels as Sprites for now.
 
 		// NOTE #2: It is in all likelihood a VERY bad practice to associate two Arrays with each other in the way I've done it here. Right now, the int 'iconAndLabel_ID' is the
 		// ONLY thing that's linking together the chosen quest icons and quest labels. If either Array of Sprites gets 'out of sync', it changes potentially ALL of
 		// the associated labels/icons to the wrong ones! I tried using a Dictionary to associate the two different Arrays with each other, but the syntax proved
 		// too hard for me, since the Arrays' contents are defined in the editor and so they can only be referred to in a general way (which I couldn't handle, at present).
-		// So... This is a make-shift solution, very non-ideal, but it works (unless someone else goes ahead and decides to break it...). :O
+		// So... This is a make-shift solution, very non-ideal, but it works (unless someone else goes ahead and decides to break it... :O ).
 		public void SpawnQuestIcon (string iconName, float x, float y, int iconAndLabel_ID)
 		{
 			GameObject questIcon = new GameObject (iconName);
@@ -290,7 +377,7 @@ namespace QuestNamespace
 			iconCollider.radius = 0.18f;
 
 			GameObject questLabel = new GameObject (iconName + "_label");
-			questLabel.transform.position = new Vector3 (x, y + 0.38f, 0.0f);
+			questLabel.transform.position = new Vector3 (x, y + 0.42f, 0.0f);
 			labelRenderer = questLabel.AddComponent<SpriteRenderer> ();
 			labelRenderer.sortingOrder = 3;
 			labelRenderer.sprite = questLabelSprites [iconAndLabel_ID];
@@ -299,7 +386,7 @@ namespace QuestNamespace
 
 		// Changes the quest icon to one that indicates the quest has been completed. The collider is destroyed in order to make the quest non-interactable.
 		// Originally, this method *destroyed* the used quest icon, but it's better to have them stay on the map, to track the player's progress.
-		// If the icon is tagged as a shelter, then the method changes its icon to the 'shelter' icon, but leaves the collision intact.
+		// If the icon is tagged as a shelter, then the method changes its icon to the 'shelter' icon, but leaves the collider intact.
 		public void ChangeQuestIcon (GameObject givenIcon)
 		{
 			if (givenIcon.tag != "shelter") {
@@ -348,9 +435,11 @@ namespace QuestNamespace
 		// There must be a better way to store long strings (database?), but I'd rather spend the time on something else. Ugly as it is, this seems to work for our purposes.
 		private string questText_1 = @"[ PLANE CRASH ]
 
-Lying high over a vast plain of shimmering ice, the orange postal plane is visible from miles away. The crash occurred only a few years ago. The pilot's corpse lies frozen in the cockpit, a serene expression on what used to be his face. 
+Lying high over a vast plain of shimmering ice, the orange postal plane is visible from miles away. The crash occurred only a few years ago. The pilot's corpse lies frozen in the cockpit, a serene expression on what remains of his face. 
 
-Having removed his jacket, I pry open the small mail bag. His fingers make a funny sound as they snap in two. In total I gather the following: 
+Having removed his jacket, I pry open the small mail bag. His fingers make a funny sound as they snap in two. 
+
+In total I gather the following: 
 
  - 1 x Old Pilot Jacket (30)
  - 5 x Rifle Ammo
@@ -368,101 +457,101 @@ Hoping for a lucky break, it turns out I hit one, as I was able to salvage a sma
 
  - 1 x Seal-Skin Coat
  - 10 x Rifle Ammo
- - 3 x Seal Meat(canned)]
+ - 2 x Seal Meat (canned)
 
-The seal-skin coat in particular is a great find, putting me that much closer to salvation.
-
-I'm surprised there's no parts for the radio.I wonder if someone else has salvaged them before me -- and if so, where did they head from here?
+I'm surprised by the lack of any radio parts. I wonder if someone else has salvaged them before me -- and if so, where did they head from here?
 
 While the buildings are in a fair enough condition, and there's fire-wood available, the terrain is too rough around this place to make it into a worthy camp site. Bummer.";
 
 		private string questText_3 = @"[ SHIPWRECK ] 
 
-Tossed far inland by a giant wave, the wreck of the New Erebus is a true landmark of the Eastern fjords. Cpt. Roberts went in search of the Northwest Passage after Franklin, in 1865. While the name of the ship may have been an omen, they were ill-equipped for the journey and were half dead when they landed.
+Tossed far inland by a giant wave, the wreck of the New Erebus is a true landmark of the Eastern fjords. Cpt. Roberts & Co. went in search of the Northwest Passage after Franklin, in 1865. While the name of the ship may have been an omen, they were ill-equipped for the journey and were half dead when they landed.
 
-Given their dire circumstances, and the age of the wreck, I wasn't expecting too many finds here. When it came to goods, I was right indeed, as there was nothing usable.
+Given the crew's dire circumstances, and the age of the wreck, I wasn't expecting too many finds here. When it comes to goods, I was right indeed, as there was nothing usable.
 
 
 To my delight, however, the captain's cabin is intact and may be used as a shelter, and the entire rest of the ship may be burned for warmth!
 
-Even more miraculously, the log-book of the ship was located in a locked box and had been spared from the elements. Quite a treasure-trove by itself, as I was able to mark another two dots onto my map.";
+Even more miraculously, the log-book of the ship was stowed away in a locked metal box and had been spared from the elements. Quite a treasure-trove by itself, as I was able to mark another two dots onto my map.";
 
 		private string questText_4 = @"[ OLD RUNWAY CAMPSITE ]
 
-In the days when gold-mining was attempted on the island, one of the northern lakes was used as a make-shift runway. Although it was buried under snow-banks a decade ago, the camp beside it still remains, in a surprisingly good condition.
+In the days when gold-mining was attempted on the island, one of the northern lakes was used as a make-shift runway. Although buried under snow-banks a decade ago, the camp beside it still remains, in a surprisingly good condition.
 
 It takes me a while to clear away the snow in front of the entrance, but the main building yields the following:
 
- - 1 x RadioPart (Antenna)
+ - 1 x Radio Part (Antenna)
  - 5 x Rifle Ammo
  - 2 x Seagull Meat (canned)
 
-Having found the antenna is a cause for great joy, of course. But I'm wary of excessive grins, as there's no guarantee that I'll find any further parts.
+Having found the antenna is a cause for joy, of course. But I'm wary of excessive grins, as there's no guarantee that I'll find any further parts.
 
-This site would be useful as a shelter but for the lack of suitable fire-wood. The gas stoves they originally used have long since been removed by parties unknown. Better luck next time, I hope.
+This site would be useful as a shelter but for the lack of suitable fire-wood. The gas stoves they originally used have long since been removed by parties unknown.
 
-A map in the control office puts two new dots on my map -- the very mines which were using the airfield.";
+A map in the control office puts two new dots on my own -- the very mines which were using the airfield.";
 
-		private string questText_5 = @" [ SCIENTIFIC EXPEDITION ]
+		private string questText_5 = @"[ SCIENTIFIC EXPEDITION ]
 
-It all makes perfect sense now. The pilot must've air-dropped some mail to the scientific expedition that was camped here several years ago.To study the island's birdlife, as I recall. Too scrawny to waste a bullet on, great flocks of puffins congregate annually on the cliffs around Devil's Anvil.
+It all makes perfect sense now. The pilot must've air-dropped some mail to the scientific expedition that was camped here several years ago. To study the island's birdlife, as I recall. Too scrawny to waste a bullet on, great flocks of rainbow puffins congregate annually on the cliffs around Devil's Anvil.
 
-At first I thought the scientists had taken all their gear back home with them, but underneath a collapsed tent I stumble upon a fantastic discovery: 
+At first I thought the scientists had departed with all their gear, but underneath a collapsed tent I stumble upon a fantastic find: 
 
  - 1 x RadioPart (Batteries)
 
-Probably some extra batteries for someone's personal radio, left behind in a hurry. Eureka!
+Probably some extra batteries for someone's personal radio, left behind in a hurry. They glitter like little nuggets of gold in my frostbit hands.
 
-Ravaged by the elements, the camp is too damaged to serve as a shelter.
-
-As I prepare to leave, I find a map with C. W.Emerson's old polar camp marked onto it! He was a pioneer in the footsteps of Nansen and Amundsen, but met with tragedy on these blighted plains.";
+As if my luck could never end, upon preparing to leave, I find a map with C.W. Emerson's old polar camp marked onto it! He was a pioneer in the footsteps of Nansen and Amundsen, but met with tragedy on these blighted plains.";
 
 		private string questText_6 = @"[ OLD COAL MINE ]
             
-A long, but mercifully flat trek away from the runway site lies the site of an old coal mine. Upon first glance, it seems an ideal shelter, and that conviction is cemented as I locate a huge oven, custom-made to burn the very coal that's taken from the ground.
+A long, but mercifully flat trek away from the runway lies the site of an old coal mine. Upon first glance, it appears an ideal shelter, and that conviction is cemented as I locate a huge oven, custom-built to burn the very coal that's taken from the ground.
 
 The foreman's quarters afford the following loot:
 
  - 1 x Coal Miner's Jacket
  - 1 x Seal Meat (canned)
 
-The miner's jacket is an improvement over my original anorak, but not by much. The real treasure of this place lies in its use as a shelter, although I do get to etch one new mark onto my map.";
+While the miner's jacket is a sturdy piece, it is by no means ideal. The real treasure of this place lies in its use as a shelter, although I do get to etch one new mark onto my map.";
 
-		private string questText_7 = @" [ OLD GOLD MINE ]
+		private string questText_7 = @"[ OLD GOLD MINE ]
 
-Finally I made it around Clear Lake to the old gold mining site. Even though it should be frozen solid, I'm wary of taking any risks with the lake. Getting wet at these temperatures would mean near instant death. 
+Finally I made it around Clear Lake to the old gold mining site. Even though it should be frozen solid, I'm wary of taking any risks with the lake. Moisture in these temperatures spells a very swift, almost instant death. 
 
 The mine is not much to write home about. It operated only briefly before closing due to dwindling gold prices.
 
 Nevertheless, I manage the following salvages:
 
  - 5 x Rifle Ammo
- - 2 x Seal Meat (canned)
+ - 2 x Arctic Fox Meat (canned)
 
 The mine contains too little firewood to be used as a shelter. Bummer.
 
 The foreman's old map yields one new notch on my own.";
 
-		private string questText_8 = @" [ SUPPLY CACHE ]
+		private string questText_8 = @"[ SUPPLY CACHE ]
 
-Cpt. Roberts' supply cache took some effort to locate, but I finally found it, tucked under a rocky outcropping of Point Blake. Roberts was facing a mutiny and stored these supplies in case he would be thrown out of his main camp. His intuition proved correct; only his crew ended up killing him instead of mere eviction, leaving the supply cache untouched for the many decades to follow.
+Cpt. Roberts' supply cache took some effort to locate, but I finally found it, tucked under a rocky outcropping at Point Blake. 
+
+Roberts was facing a mutiny and stored these supplies in case he'd be thrown out of his main camp. His intuition proved correct; however, he failed to foresee that his crew would end up killing him instead of mere eviction, leaving the cache untouched for all this time.
 
 Breaking the frost-damaged lock with a single blow, I obtain the following: 
 
  - 15 x Rifle Ammo
  - 1 x Seaman's Greatcoat
 
-The cache cannot be used a shelter, nor are there any new clues for new locations. Nevermind -- its contents are reward enough by themselves.";
+How curious..! There's a hand-written note here, left by a US military Colonel named Caldwell: 
 
-		private string questText_9 = @" [ MUTINEERS' CAMP ]
+'Only took what I needed. Stranded on island for 2 months now. Not at liberty to disclose shelter location. Good luck to whoever finds this, and godspeed.'";
+
+		private string questText_9 = @"[ MUTINEERS' CAMP ]
 
 The mutineers of the New Erebus made their way here after an agonizing march through the wilderness. They made the trip to evade the authorities, but also on account of the copious herds of seals and walruses that dwell on these shores.
 
-The buildings are old and weathered; almost nothing of note remains. Or so I thought, until I stumbled upon this find in a modern shipping container:
+The buildings are old and weathered; almost nothing of note remains. Or so I thought, until I stumbled upon this find in a broken-down, modern shipping container:
 
  - 1 x Radio Part (Wiring)
 
-The container must've dropped from a passing cargo ship somehow. This is a tremendous stroke of luck, as the wires I found are enough to fix any model of modern radio.
+The container must've dropped from a passing cargo ship! This is a tremendous stroke of luck, as the wires are enough to fix any model of modern radio.
 
 The camp is too old and looted clean to be of use as a shelter -- to my chagrin, as the area would be ideal otherwise.";
 
@@ -472,33 +561,40 @@ Snow-blind and half-dead from the cold, I stumble into the old camp of Cpt. Emer
 
 As I rummage through the bodies, it occurs to me that decency is a luxury affordable to angels alone. Regardless of any ill feelings, my search yields the following:
 
-[REWARD]
+ - 1 x Sturdy Old Greatcoat (Emerson's)
+ - 3 x Arctic Fox Meat (canned)
+ - 5 x Rifle Ammo
 
 Even better, I realize that this camp may be used as a shelter for future excursions, as there's still plenty of fire-wood available.
 
-Oddly enough, no new locations of interest can be found on any of Emerson's old maps.";
+Oddly enough, no new locations of interest can be found on any of Emerson's old maps. Perhaps I should search further to the South or West?";
 
 		private string questText_11 = @"[ URANIUM MINE ]
 
 It's clear to me upon my arrival that this mining operation must've presented a major challenge. Whoever operated it had to brave 10-15 meter waves leaping across the sheer cliff faces surrounding the place in three directions. The salty water has corroded almost everything, yet a few trinkets linger in the stricken ruins:
 
- - 1 x RadioPart (Receiver)
+ - 1 x Radio Part (Receiver)
  - 10 x Rifle Ammo
 
-// +++ Different descriptions based on whether Sealing Camp has been visited or not";
+While the new radio part makes me shiver with joy (to bring a change from the cold), the real treasure of this site is another note by Col. Caldwell: 
+
+'The salvage effort has proved itself useless. Full report next month. Departed NE for X-site at 0600 hours. Leaving behind a radio as a safety precaution.'
+
+Assuming his party kept going Northeast, I now have a general location for Col. Caldwell's 'X-site', based on this note and his earlier one!";
 
 		private string questText_12 = @"[ NUCLEAR TEST SITE ]
 
-Finally! I never expected to be delighted at the site of radiation signs. While the blasts occurred a long time ago, and my situation leaves me no alternative, I'm very quick in my search of the small bunker.
+I never expected to be delighted at the site of radiation signs! While the blasts occurred some time ago, and my situation leaves me no alternative, I'm very quick in my search of the small bunker.
 
 I knew I wouldn't be disappointed, but this time the catch is truly remarkable:
 
  - 1 x Special Forces Uniform 
  - 20 x Rifle Ammo
  - 1 x Radio Part (Transmitter)
- - 8 x Seagull Meat (canned)
+ - 6 x Seagull Meat (canned)
 
-Atop the mummified remains of Col. Caldwell, I find his old diary and read the final entry:
+Among the mummified remains of Col. Caldwell, I find his old diary, reading the final entry:
+
 'Having gathered enough supplies, I'll be heading out in the next few days. As soon as the fever subsides...'
 
 Shivering, I salute what remains of the brave Colonel.";

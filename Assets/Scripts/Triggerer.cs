@@ -23,7 +23,7 @@ public class Triggerer : MonoBehaviour
         if (PlayerMove.CollidedName == "Quest_1" && Quests.GetQuestBoolean(0) == false)
         {
             Quests.ChooseQuest(Quests.QuestEnum.Quest_1);
-            Quests.SpawnQuestIcon("Quest_5", -11.6f, -5.5f, 5);
+            Quests.SpawnQuestIcon("Quest_5", -11.6f, -6.2f, 5);
         }
 
         if (PlayerMove.CollidedName == "Quest_2" && Quests.GetQuestBoolean(1) == false)
@@ -56,17 +56,35 @@ public class Triggerer : MonoBehaviour
         if (PlayerMove.CollidedName == "Quest_6" && Quests.GetQuestBoolean(5) == false)
         {
             Quests.ChooseQuest(Quests.QuestEnum.Quest_6);
+
+            // If quest 7 is not yet done, spawn quest 11.
+            if (Quests.GetQuestBoolean(6) == false)
+            {
+                Quests.SpawnQuestIcon("Quest_11", -12.7f, -1.0f, 11);
+            }
+
         }
 
         if (PlayerMove.CollidedName == "Quest_7" && Quests.GetQuestBoolean(6) == false)
         {
             Quests.ChooseQuest(Quests.QuestEnum.Quest_7);
-            Quests.SpawnQuestIcon("Quest_11", -12.7f, -1.0f, 11);
+
+            // If quest 6 is not yet done, spawn quest 11.
+            if (Quests.GetQuestBoolean(5) == false) {
+                Quests.SpawnQuestIcon("Quest_11", -12.7f, -1.0f, 11);
+            }
+
         }
 
         if (PlayerMove.CollidedName == "Quest_8" && Quests.GetQuestBoolean(7) == false)
         {
             Quests.ChooseQuest(Quests.QuestEnum.Quest_8);
+
+            // If quest 11 is already done, spawn quest 12.
+            if (Quests.GetQuestBoolean(10) == true)
+            {
+                Quests.SpawnQuestIcon("Quest_12", 8.5f, 5.6f, 12);
+            }
         }
 
         if (PlayerMove.CollidedName == "Quest_9" && Quests.GetQuestBoolean(8) == false)
@@ -82,7 +100,11 @@ public class Triggerer : MonoBehaviour
         if (PlayerMove.CollidedName == "Quest_11" && Quests.GetQuestBoolean(10) == false)
         {
             Quests.ChooseQuest(Quests.QuestEnum.Quest_11);
-            Quests.SpawnQuestIcon("Quest_12", 8.5f, 5.6f, 12);
+
+            // If quest 8 is already done, spawn quest 12.
+            if (Quests.GetQuestBoolean(7) == true) {
+                Quests.SpawnQuestIcon("Quest_12", 8.5f, 5.6f, 12);
+            }
         }
 
         if (PlayerMove.CollidedName == "Quest_12" && Quests.GetQuestBoolean(11) == false)
