@@ -342,8 +342,10 @@ public class PlayerStats : MonoBehaviour
 		// Increase the hunger and cold values with elapsed movement frames.
 		// In addition, make it so that the cold value is affected by the coldResistance stat on the worn coat as well.
 		if (PlayerMove.ClickFlag == true) {
-			// cold += 0.03f * (85.0f / currentCoat.ColdResistance); // 85.0f is the value of the best Coat, which should act to nullify the effect of cold completely.
-			// hunger += 0.08f;
+			 cold += 0.005f * (85.0f / currentCoat.ColdResistance); // 85.0f is the value of the best Coat, which should act to nullify the effect of cold completely.
+			 hunger += 0.01f; //hunger kasvaa noin puolet hitaammin kuin cold, tämä on OK
+
+	
 		}
 
 		// Set movement rate according to cold and hunger values (the first value is the initial rate, as hunger and cold are zero in the beginning).

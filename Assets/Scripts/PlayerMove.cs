@@ -127,7 +127,7 @@ public class PlayerMove : MonoBehaviour
 			// Ray ray; ]]]
 
 			//Controls for unity editor. (#if on nimeltään pre-processor joku-jutska, joka kertoo, mille platformille sitä seuraava määrittely on voimassa.)
-			#if UNITY_EDITOR
+			// #if UNITY_EDITOR
 			// 'RaycastHit2D' contains the x and y coordinates of the place that the cast ray hit (it's cast from the Main Camera upon mouse click). 
 			// Later on these will be stored in 'endPoint' and used for determining the direction of movement.
 			if (allowMove == true) {
@@ -137,7 +137,7 @@ public class PlayerMove : MonoBehaviour
 			// [[[leftover: ray = Camera.main.ScreenPointToRay (Input.mousePosition); ]]]
 
 			// for touch device
-			#elif (UNITY_ANDROID || UNITY_IPHONE || UNITY_WP8)
+			#if (UNITY_ANDROID || UNITY_IPHONE || UNITY_WP8)
 			ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
 			#endif
 
@@ -169,6 +169,7 @@ public class PlayerMove : MonoBehaviour
 		else if (clickFlag && Mathf.Approximately (gameObject.transform.position.magnitude, endPoint.magnitude)) {
 			clickFlag = false;
 			print ("I am here"); // debug
+
 		}
 
 	}

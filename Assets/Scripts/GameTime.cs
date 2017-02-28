@@ -27,7 +27,8 @@ public class GameTime : MonoBehaviour
 		// globalTime will be used in showing the time (in the UI overlay) that has elapsed since the start of the game. Its value will eventually be honed to the point 
 		// where it gives a convinving illusion of elapsed 'days', given your average movement rate along the course of a typical game. Currently it has a placeholder value.
 		if (PlayerMove.ClickFlag == true) {
-			globalTime += 4.0f; 
+
+			globalTime += 0.004f; 
 		}
 
 	}
