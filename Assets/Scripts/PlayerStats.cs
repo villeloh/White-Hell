@@ -31,14 +31,14 @@ public class PlayerStats : MonoBehaviour
 	private Coat currentCoat;
 	private Dictionary<Item, string> inventory;
 
-    // For tracking the number of different food items that the player has. (This must be doable through the Dictionary somehow, but I'd rather not try it at present.)
+	// For tracking the number of different food items that the player has. (This must be doable through the Dictionary somehow, but I'd rather not try it at present.)
 	private int numberOfSeagullMeats = 0;
 	private int numberOfPolarFoxMeats = 0;
 	private int numberOfWalrusMeats = 0;
 	private int numberOfSealMeats = 0;
 	private int numberOfPolarBearMeats = 0;
 
-    // These ints need to be constants because the switch-case thingy won't work otherwise.
+	// These ints need to be constants because the switch-case thingy won't work otherwise.
 	private const int seagullEatValue = 10;
 	private const int polarFoxEatValue = 20;
 	private const int sealEatValue = 30;
@@ -335,8 +335,8 @@ public class PlayerStats : MonoBehaviour
 		// Increase the hunger and cold values with elapsed movement frames.
 		// In addition, make it so that the cold value is affected by the coldResistance stat on the worn coat as well.
 		if (PlayerMove.ClickFlag == true) {
-			 // cold += 0.005f * (85.0f / currentCoat.ColdResistance); // 85.0f is the value of the best Coat, which should act to nullify the effect of cold completely.
-			 // hunger += 0.01f; //hunger kasvaa noin puolet hitaammin kuin cold, tämä on OK
+			cold += 0.005f * (85.0f / currentCoat.ColdResistance); // 85.0f is the value of the best Coat, which should act to nullify the effect of cold completely.
+			hunger += 0.01f; //hunger kasvaa noin puolet hitaammin kuin cold, tämä on OK
 
 	
 		}
