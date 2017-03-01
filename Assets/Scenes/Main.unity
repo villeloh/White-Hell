@@ -866,6 +866,11 @@ Prefab:
       propertyPath: m_SortingOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 114289136679293154, guid: b976ffa0f3c39de42896df533bcf6127,
+        type: 2}
+      propertyPath: PlayerMove
+      value: 
+      objectReference: {fileID: 1788575123}
     m_RemovedComponents:
     - {fileID: 0}
   m_ParentPrefab: {fileID: 100100000, guid: b976ffa0f3c39de42896df533bcf6127, type: 2}
@@ -3572,7 +3577,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1788575118}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a90fb819af8cc548afbfb58f5a6c2a7, type: 3}
+  m_Script: {fileID: 11500000, guid: 943cbf448cd9b8242833aa283dd62b56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerMove: {fileID: 1788575123}

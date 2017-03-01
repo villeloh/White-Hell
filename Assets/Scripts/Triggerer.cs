@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using QuestNamespace;
+using UnityEngine.SceneManagement;
 
 public class Triggerer : MonoBehaviour
 {
@@ -11,10 +12,12 @@ public class Triggerer : MonoBehaviour
      * Author: Ville Lohkovuori
      */
 
-	// Needed for reference between the different scripts (Unity requirement for MonoBehaviours).
-	public PlayerMove PlayerMove;
-	public PlayerStats PlayerStats;
+    // Needed for reference between the different scripts (Unity requirement for MonoBehaviours).
+    public PlayerMove PlayerMove;
+    public PlayerStats PlayerStats;
     public Quests Quests;
+
+    private bool outroFlag = false;
 
     void OnCollisionEnter2D(Collision2D coll)
     {
@@ -70,7 +73,8 @@ public class Triggerer : MonoBehaviour
             Quests.ChooseQuest(Quests.QuestEnum.Quest_7);
 
             // If quest 6 is not yet done, spawn quest 11.
-            if (Quests.GetQuestBoolean(5) == false) {
+            if (Quests.GetQuestBoolean(5) == false)
+            {
                 Quests.SpawnQuestIcon("Quest_11", -12.7f, -1.0f, 11);
             }
 
@@ -85,6 +89,7 @@ public class Triggerer : MonoBehaviour
             {
                 Quests.SpawnQuestIcon("Quest_12", 8.5f, 5.6f, 12);
             }
+
         }
 
         if (PlayerMove.CollidedName == "Quest_9" && Quests.GetQuestBoolean(8) == false)
@@ -102,7 +107,8 @@ public class Triggerer : MonoBehaviour
             Quests.ChooseQuest(Quests.QuestEnum.Quest_11);
 
             // If quest 8 is already done, spawn quest 12.
-            if (Quests.GetQuestBoolean(7) == true) {
+            if (Quests.GetQuestBoolean(7) == true)
+            {
                 Quests.SpawnQuestIcon("Quest_12", 8.5f, 5.6f, 12);
             }
         }
@@ -117,18 +123,25 @@ public class Triggerer : MonoBehaviour
         {
             PlayerStats.Cold = 0.0f;
         }
-
-        // Trigger Player's death if hunger or cold reaches the maximum allowed value.
-        if (PlayerStats.Hunger == PlayerStats.DeathHunger || PlayerStats.Cold == PlayerStats.DeathCold)
-        {
-            PlayerStats.PlayerDeath();
-        }
-
-        // When the player has enough Radio Parts, the game ends.
-        if (PlayerStats.RadioPartCount == 5)
-        {
-            // ++ lopeta peli ja triggeröi loppuintro
-        }
     }
+
+    void Update()
+    {
+        // Trigger Player's death if hunger or cold reaches the maximum allowed value.
+        // The boolean 'outroFlag' is needed because since the Player object continues to exist, so will the scripts that are attached to it... Meaning that the Outro scene will be loaded every frame(!)
+        // unless that's prevented by using a flag such as this.
+        if ((PlayerStats.Hunger >= PlayerStats.DeathHunger || PlayerStats.Cold == PlayerStats.DeathCold) && outroFlag == false)
+        {
+            outroFlag = true;
+            SceneManager.LoadScene("Outro");
+        }
+
+        // When the player has enough Radio Parts, the game ends in victory.
+        if (PlayerStats.RadioPartCount == 5 && outroFlag == false)
+        {
+            outroFlag = true;
+            SceneManager.LoadScene("Outro");
+        }
+    } 
 
 }

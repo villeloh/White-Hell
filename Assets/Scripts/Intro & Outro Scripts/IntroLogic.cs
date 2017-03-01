@@ -7,6 +7,12 @@ using UnityEngine.UI;
 public class IntroLogic : MonoBehaviour
 {
 
+    /* 
+     * Handles the switching of texts and images for the intro slides, and the starting of the actual game.
+     * Attached to: slideHolder
+     * Author: Ville Lohkovuori
+     */
+
     // Variables for internal reference.
     private Image slides;
     private Text introText;
@@ -40,7 +46,9 @@ public class IntroLogic : MonoBehaviour
         {
             SceneManager.LoadScene("Main");
 
-        } else if (Input.GetKeyDown(KeyCode.Return) || Input.GetMouseButtonDown(0)) {
+        }
+        else if (Input.GetKeyDown(KeyCode.Return) || Input.GetMouseButtonDown(0))
+        {
 
             // Switches to the next slide + text on Enter-press or left mouseclick
             slides.sprite = sprites[currentSprite];
@@ -51,7 +59,7 @@ public class IntroLogic : MonoBehaviour
 
     }
 
-    private string introText_1 = @"[ SHIPWRECKED! ] 
+    private string introText_1 = @"[ SHIPWRECKED ! ] 
 
 A heavy storm took hold of the boat and there was nothing I could do to steer it clear of the rocks...
 
@@ -72,6 +80,6 @@ Meanwhile, I must hunt for wild animals in order to survive. If only I had on me
 On ALICE ISLAND
 **.**.19**,
 
-Cpt. ........."; 
+Cpt. .........";
 
 }
