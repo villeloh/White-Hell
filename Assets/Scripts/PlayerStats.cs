@@ -17,11 +17,11 @@ public class PlayerStats : MonoBehaviour
     public PlayerMove PlayerMove;
     public GameTime GameTime;
 
-    // Internal reference variables for various stats.
+    // Internal (and outer) reference variables for various stats.
     private float hunger = 0.0f;
     private float cold = 0.0f;
     private float deathCold = 100.0f;
-    private float deathHunger = 100.0f;
+    private float deathHunger = 2.0f;
     private int carriedFood = 0;
     private int maxCarriedFood = 100;
     private int carriedAmmo;

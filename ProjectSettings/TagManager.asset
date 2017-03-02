@@ -7,6 +7,7 @@ TagManager:
   - passable
   - quest
   - shelter
+  - nuke_site
   layers:
   - Default
   - TransparentFX

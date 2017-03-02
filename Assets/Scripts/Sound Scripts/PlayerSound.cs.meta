@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: fcab35861151be743b69c3d839d397e5
+timeCreated: 1488469305
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - PlayerMove: {instanceID: 0}
+  - walkSound_1: {fileID: 8300000, guid: bf61ca848474fe248a8f034211762847, type: 3}
+  - walkSound_2: {fileID: 8300000, guid: 5bd3bb994f66052408fe3abfc705cf73, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

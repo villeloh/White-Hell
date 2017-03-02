@@ -23,8 +23,6 @@ public class IntroLogic : MonoBehaviour
 
     private List<string> introTexts = new List<string>();
 
-
-
     void Start()
     {
         // Locate the image subobject of the holder object; assign the first slide to it.
@@ -36,6 +34,13 @@ public class IntroLogic : MonoBehaviour
         // Add all the intro texts to a list, for easy future use.
         introTexts.InsertRange(introTexts.Count, new List<string> { introText_1, introText_2, introText_3 });
 
+    }
+
+    // Needed for playing a sound effect at the correct time, in IntroSound.cs.
+    public int CurrentSprite
+    {
+        get { return currentSprite; }
+        set { currentSprite = value; }
     }
 
     void Update()

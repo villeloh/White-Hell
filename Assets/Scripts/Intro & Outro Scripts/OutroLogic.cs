@@ -50,11 +50,11 @@ public class OutroLogic : MonoBehaviour {
 HOME, after so long..! I can hardly BELIEVE it ...";
 
         // Vary the text and image based on different conditions.
-        if (playerStats.Cold == playerStats.DeathCold) {
+        if (playerStats.Cold >= playerStats.DeathCold) {
 
             slide.sprite = sprites[0];
             outroText.text = coldDeath_text;
-        } else if (playerStats.Hunger == playerStats.DeathHunger) {
+        } else if (playerStats.Hunger >= playerStats.DeathHunger) {
 
             slide.sprite = sprites[0];
             outroText.text = hungerDeath_text;

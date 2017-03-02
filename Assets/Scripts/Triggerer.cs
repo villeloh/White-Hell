@@ -88,6 +88,7 @@ public class Triggerer : MonoBehaviour
             if (Quests.GetQuestBoolean(10) == true)
             {
                 Quests.SpawnQuestIcon("Quest_12", 8.5f, 5.6f, 12);
+                GameObject.Find("Quest_12").tag = "nuke_site";
             }
 
         }
@@ -110,6 +111,7 @@ public class Triggerer : MonoBehaviour
             if (Quests.GetQuestBoolean(7) == true)
             {
                 Quests.SpawnQuestIcon("Quest_12", 8.5f, 5.6f, 12);
+                GameObject.Find("Quest_12").tag = "nuke_site";
             }
         }
 
@@ -125,12 +127,19 @@ public class Triggerer : MonoBehaviour
         }
     }
 
+    public bool OutroFlag
+    {
+        get { return outroFlag; }
+        set { outroFlag = value; }
+    }
+
     void Update()
     {
+
         // Trigger Player's death if hunger or cold reaches the maximum allowed value.
         // The boolean 'outroFlag' is needed because since the Player object continues to exist, so will the scripts that are attached to it... Meaning that the Outro scene will be loaded every frame(!)
         // unless that's prevented by using a flag such as this.
-        if ((PlayerStats.Hunger >= PlayerStats.DeathHunger || PlayerStats.Cold == PlayerStats.DeathCold) && outroFlag == false)
+        if ((PlayerStats.Hunger >= PlayerStats.DeathHunger || PlayerStats.Cold >= PlayerStats.DeathCold) && outroFlag == false)
         {
             outroFlag = true;
             SceneManager.LoadScene("Outro");

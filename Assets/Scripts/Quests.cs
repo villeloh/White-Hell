@@ -392,6 +392,7 @@ namespace QuestNamespace
             iconRenderer.sprite = questIconSprites[iconAndLabel_ID];
             iconCollider = questIcon.AddComponent<CircleCollider2D>();
             iconCollider.radius = 0.18f;
+            questIcon.tag = "quest";
 
             GameObject questLabel = new GameObject(iconName + "_label");
             questLabel.transform.position = new Vector3(x, y + 0.42f, 0.0f);
@@ -412,7 +413,7 @@ namespace QuestNamespace
                 Destroy(givenIcon.GetComponent<CircleCollider2D>());
 
                 PlayerMove.CollidedFlag = false;
-                PlayerMove.CollidedTag = "";
+                // PlayerMove.CollidedTag = ""; // disabled because of conflicts with the sound system... it should be ok since CollisionExit2D does the same thing a bit later.
                 PlayerMove.CollidedName = "";
                 print("No longer collided!"); // debug
 
