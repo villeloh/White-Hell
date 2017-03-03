@@ -24,6 +24,13 @@ public class UI : MonoBehaviour
 	Text WalrusMeatText;
 	Text FoxMeatText;
 	Text PolarBearMeatText;
+	Text inventorySpace;
+	Text ammoPouch;
+	Text wearing;
+	Text quitText;
+	Button quitPrompt;
+	Button quitNo;
+	Button quitYes;
 	public PlayerStats PlayerStats;
 	public GameTime GameTime;
 
@@ -36,6 +43,10 @@ public class UI : MonoBehaviour
 		currentResistance = GameObject.Find ("Resistance").GetComponent<Text> ();
 		radioParts = GameObject.Find ("RadioParts").GetComponent<Text> ();
 		kello = GameObject.Find ("KELLO").GetComponent<Text> ();
+		quitText = GameObject.Find ("QuitText").GetComponent<Text> ();
+		wearing = GameObject.Find ("Wearing").GetComponent<Text> ();
+		ammoPouch = GameObject.Find ("AmmoPouch").GetComponent<Text> ();
+		inventorySpace = GameObject.Find ("InventorySpace").GetComponent<Text> ();
 		//painikkeet
 		eatFood = GameObject.Find ("EatingButton").GetComponent<Button> ();
 		eatSeagul = GameObject.Find ("EatSeagulMeat").GetComponent<Button> ();
@@ -44,6 +55,9 @@ public class UI : MonoBehaviour
 		eatFox = GameObject.Find ("EatArcticFoxMeat").GetComponent<Button> ();
 		eatPolarBear = GameObject.Find ("EatPolarBearMeat").GetComponent<Button> ();
 		closeMenu = GameObject.Find ("CloseMenu").GetComponent<Button> ();
+		quitPrompt  = GameObject.Find ("QuitPrompt").GetComponent<Button> ();
+		quitYes = GameObject.Find ("QuitYes").GetComponent<Button> ();
+		quitNo  = GameObject.Find ("QuitNo").GetComponent<Button> ();
 		//painikkeiden tekstit
 		SeagullMeatText = GameObject.Find ("SeagullMeatText").GetComponent<Text> ();
 		SealMeatText = GameObject.Find ("SealMeatText").GetComponent<Text> ();
@@ -57,6 +71,12 @@ public class UI : MonoBehaviour
 		eatSeal.gameObject.SetActive (false);
 		eatWalrus.gameObject.SetActive (false);
 		eatPolarBear.gameObject.SetActive (false);
+		inventorySpace.gameObject.SetActive (false);
+		ammoPouch.gameObject.SetActive (false);
+		wearing.gameObject.SetActive (false);
+		quitNo.gameObject.SetActive (false);
+		quitYes.gameObject.SetActive (false);
+		quitText.gameObject.SetActive (false);
 		eatFood.onClick.AddListener (() => openVisibility (eatFood)); //metodilla muut painikkeet näkyviin ja eatFood pois näkyvistä
 		closeMenu.onClick.AddListener (() => closeVisibility (closeMenu)); //metodilla painikkeet pois näkyvistä ja eatFood näkyviin
 		//onclick metodit eri lihojen syöntiin
@@ -65,6 +85,10 @@ public class UI : MonoBehaviour
 		eatWalrus.onClick.AddListener (() => PlayerStats.EatFoodItem (PlayerStats.GetFoodItem ("Walrus Meat")));
 		eatFox.onClick.AddListener (() => PlayerStats.EatFoodItem (PlayerStats.GetFoodItem ("ArcticFox Meat")));
 		eatPolarBear.onClick.AddListener (() => PlayerStats.EatFoodItem (PlayerStats.GetFoodItem ("Polarbear Meat")));
+		//onClickit pelin lopetus nappuloille
+		quitPrompt.onClick.AddListener (() => askToQuit (quitPrompt));
+		quitNo.onClick.AddListener (() => noToQuit (quitNo));
+		quitYes.onClick.AddListener (() => yesToQuit (quitYes));
 	}
 
 	void openVisibility (Button eatFood)
@@ -79,6 +103,10 @@ public class UI : MonoBehaviour
 		eatSeal.gameObject.SetActive (true);
 		eatWalrus.gameObject.SetActive (true);
 		eatPolarBear.gameObject.SetActive (true);
+		inventorySpace.gameObject.SetActive (true);
+		ammoPouch.gameObject.SetActive (true);
+		wearing.gameObject.SetActive (true);
+
 	}
 
 	void closeVisibility (Button closemenu)
@@ -91,15 +119,45 @@ public class UI : MonoBehaviour
 		eatSeal.gameObject.SetActive (false);
 		eatWalrus.gameObject.SetActive (false);
 		eatPolarBear.gameObject.SetActive (false);
-
+		inventorySpace.gameObject.SetActive (false);
+		ammoPouch.gameObject.SetActive (false);
+		wearing.gameObject.SetActive (false);
 
 	}
+	void askToQuit (Button quitPrompt)
+	{
+		quitNo.gameObject.SetActive (true);
+		quitText.gameObject.SetActive (true);
+		quitYes.gameObject.SetActive (true);
+	}
+	void noToQuit (Button quitNo)
+	{
+		quitNo.gameObject.SetActive (false);
+		quitText.gameObject.SetActive (false);
+		quitYes.gameObject.SetActive (false);
+	}
+	void yesToQuit(Button quitYes)
+	{
+		Debug.Log ("quitting");
+		Application.Quit();
+	}
 
-	 
+
 	// Update is called once per frame
 	void Update ()
 	{
+		if (PlayerStats.CarriedFood >= 0) {
+			inventorySpace.text = "Inventory: " + PlayerStats.CarriedFood + "/" + PlayerStats.MaxCarriedFood;
+		} else if (PlayerStats.CarriedFood >= PlayerStats.MaxCarriedFood) {
+			inventorySpace.text = "Inventory is full!";
+		}
 
+		if (PlayerStats.CarriedAmmo >= 0) {
+			ammoPouch.text = "Ammo pouch: " + PlayerStats.CarriedAmmo.ToString () + "/" + PlayerStats.MaxCarriedAmmo.ToString();
+		} else if (PlayerStats.CarriedAmmo >= PlayerStats.MaxCarriedAmmo) {
+			inventorySpace.text = "Ammo pouch is full";
+		}
+		wearing.text = "Currently wearing: " + PlayerStats.GetItemName(PlayerStats.CurrentCoat);
 		radioParts.text = "Radio Parts: " + PlayerStats.RadioPartCount + "/5";
 		currentHunger.text = "Hunger: " + Mathf.Round (PlayerStats.Hunger * 1f) / 1f + "/100"; //näyttää nykyisen nälkäarvon 
 		currentCold.text = "Cold: " + Mathf.Round (PlayerStats.Cold * 1f) / 1f + "/100"; //näyttää nykyisen kylmyysarvon

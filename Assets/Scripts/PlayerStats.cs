@@ -21,7 +21,7 @@ public class PlayerStats : MonoBehaviour
     private float hunger = 0.0f;
     private float cold = 0.0f;
     private float deathCold = 100.0f;
-    private float deathHunger = 2.0f;
+    private float deathHunger = 100.0f;
     private int carriedFood = 0;
     private int maxCarriedFood = 100;
     private int carriedAmmo;
@@ -354,7 +354,17 @@ public class PlayerStats : MonoBehaviour
         get { return numberOfPolarBearMeats; }
         set { numberOfPolarBearMeats = value; }
     }
+	public int MaxCarriedAmmo
+	{
+		get { return maxCarriedAmmo; }
+		set { maxCarriedAmmo = value; }
+	}
 
+	public int MaxCarriedFood
+	{
+		get { return maxCarriedFood; }
+		set { maxCarriedFood = value; }
+	}
 
     // Update is called once per frame.
     void Update()
