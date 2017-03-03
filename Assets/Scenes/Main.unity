@@ -301,6 +301,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerStats: {fileID: 1788575124}
   GameTime: {fileID: 258580927}
+  PlayerMove: {fileID: 1788575123}
 --- !u!114 &16719980
 MonoBehaviour:
   m_ObjectHideFlags: 0

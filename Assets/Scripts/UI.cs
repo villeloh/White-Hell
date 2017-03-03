@@ -33,7 +33,7 @@ public class UI : MonoBehaviour
 	Button quitYes;
 	public PlayerStats PlayerStats;
 	public GameTime GameTime;
-
+	public PlayerMove PlayerMove;
 	void Start ()
 	{
 		//haetaan eri gameobjectit
@@ -93,8 +93,8 @@ public class UI : MonoBehaviour
 
 	void openVisibility (Button eatFood)
 	{
+		PlayerMove.AllowMove = false;
 		Debug.Log ("painoit nappia " + eatFood);
-
 
 		eatFood.gameObject.SetActive (false);
 		closeMenu.gameObject.SetActive (true);
@@ -106,12 +106,13 @@ public class UI : MonoBehaviour
 		inventorySpace.gameObject.SetActive (true);
 		ammoPouch.gameObject.SetActive (true);
 		wearing.gameObject.SetActive (true);
-
+		//PlayerMove.AllowMove = true;
+		Debug.Log (PlayerMove.AllowMove);
 	}
 
 	void closeVisibility (Button closemenu)
 	{
-
+		
 		eatFood.gameObject.SetActive (true);
 		closeMenu.gameObject.SetActive (false);
 		eatSeagul.gameObject.SetActive (false);
