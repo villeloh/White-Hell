@@ -72,11 +72,12 @@ public class PlayerMove : MonoBehaviour
 	}
 
 	// When the collision ends, set various stats to false/empty, to ensure appropriate behaviour until the next collision occurs.
+    // NOTE: does not work if the object is destroyed (counts as collided still)!!!
 	void OnCollisionExit2D (Collision2D coll2)
 	{
 		collidedFlag = false;
 		collidedName = "";
-		collidedTag = "";
+		collidedTag = null;
 		print ("No longer collided!"); // debug
 	}
 

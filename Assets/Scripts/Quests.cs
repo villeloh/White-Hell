@@ -393,6 +393,8 @@ namespace QuestNamespace
             iconCollider = questIcon.AddComponent<CircleCollider2D>();
             iconCollider.radius = 0.18f;
             questIcon.tag = "quest";
+            questIcon.AddComponent<AudioSource> ();
+            questIcon.AddComponent<QuestSound> ();
 
             GameObject questLabel = new GameObject(iconName + "_label");
             questLabel.transform.position = new Vector3(x, y + 0.42f, 0.0f);
@@ -409,16 +411,16 @@ namespace QuestNamespace
         {
             if (givenIcon.tag != "shelter")
             {
-
                 Destroy(givenIcon.GetComponent<CircleCollider2D>());
 
                 PlayerMove.CollidedFlag = false;
-                // PlayerMove.CollidedTag = ""; // disabled because of conflicts with the sound system... it should be ok since CollisionExit2D does the same thing a bit later.
                 PlayerMove.CollidedName = "";
                 print("No longer collided!"); // debug
 
                 iconRenderer = givenIcon.GetComponent<SpriteRenderer>();
                 iconRenderer.sprite = changedQISprites[0];
+
+                Invoke("TagNuller", 0.3f);
             }
             else if (givenIcon.tag == "shelter")
             {
@@ -438,6 +440,13 @@ namespace QuestNamespace
             icon.name = givenText + "_icon";
             Text textIconText = icon.GetComponent<Text>();
             textIconText.text = givenText;
+        }
+
+        // Called above in ChangeQuestIcon(). Needed to prevent an issue with the quest sound effect not playing; the tag that triggers the effect was nulled instantly upon collision.
+        // By using the Invoke() method with a delay of 0.3 seconds, the effect has time to fire before the tag is nulled.
+        private void TagNuller ()
+        {
+            PlayerMove.CollidedTag = null;
         }
 
         void Update()

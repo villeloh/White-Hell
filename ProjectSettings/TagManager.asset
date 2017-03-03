@@ -8,6 +8,7 @@ TagManager:
   - quest
   - shelter
   - nuke_site
+  - sea
   layers:
   - Default
   - TransparentFX
