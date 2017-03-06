@@ -10,7 +10,7 @@ public class PlayerStats : MonoBehaviour
     /* 
      * Stores all the Player GameObject's statuses. 
      * Attached to: GameObject 'Player'.
-     *	Author: Ville Lohkovuori
+     * Author: Ville Lohkovuori
      */
 
     // Needed for reference between classes in Unity.
@@ -30,7 +30,7 @@ public class PlayerStats : MonoBehaviour
     private Coat currentCoat;
     private Dictionary<Item, string> inventory;
 
-    // For tracking the number of different food items that the player has. (This must be doable through the Dictionary somehow, but I'd rather not try it at present.)
+    // For tracking the numbers of different food items that the player has.
     private int numberOfSeagullMeats = 0;
     private int numberOfPolarFoxMeats = 0;
     private int numberOfWalrusMeats = 0;
@@ -45,13 +45,13 @@ public class PlayerStats : MonoBehaviour
     private const int polarBearEatValue = 60;
 
     // Stores the name of the player that is given via an input field, at game start.
-    private string playerName = "";
+    private string playerName = "Default";
+    
 
-    // Use this for initialization.
     void Start()
     {
         // Ensure that the Player object continues to exist in the next scene. This is needed because its stored info will need to be utilized in the OutroLogic script.
-        // A dedicated object to store global values seems to be a standard policy when working with Unity. We'll remember it for the next project.
+        // (A dedicated object for storing global values seems to be a standard policy when working with Unity. We'll remember it for the next project.)
         DontDestroyOnLoad(transform.gameObject);
 
         // Create the Player's inventory (NOTE: it stores REGULAR objects, not GameObjects).
@@ -73,11 +73,14 @@ public class PlayerStats : MonoBehaviour
         print(SeagullMeat.EatValue);
     }
 
+    /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  */
+
+    /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   INVENTORY METHODS   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  */
+
+
     // The method to add items to inventory.
     // As typically only a small number of items will be created at once, imo it's not worth it to give a 'number' parameter to the method.
     // One can simply call the method x number of times, if multiple items need to be created.
-
-    // I originally tried to make this method also *create* the Item object, but that lead to a virtual horde of issues... Best to keep the creation process separate (for now at least).
     public void AddToInv(Item item, string itemName)
     {
 
@@ -87,6 +90,7 @@ public class PlayerStats : MonoBehaviour
             inventory.Add(item, itemName);
             FoodItemCheck((FoodItem)item);
 
+            // The 'numberOf' values are needed in UI.cs, for displaying the amount of different food items that the player is carrying.
             switch (((FoodItem)item).EatValue)
             {
 
@@ -98,25 +102,29 @@ public class PlayerStats : MonoBehaviour
 
                     break;
 
-                case polarFoxEatValue: // currently 20
+                // currently 20
+                case polarFoxEatValue: 
 
                     numberOfPolarFoxMeats++;
 
                     break;
 
-                case sealEatValue: // currently 30
+                // currently 30
+                case sealEatValue: 
 
                     numberOfSealMeats++;
 
                     break;
 
-                case walrusEatValue: // currently 40
+                // currently 40
+                case walrusEatValue: 
 
                     numberOfWalrusMeats++;
 
                     break;
 
-                case polarBearEatValue: // currently 60
+                // currently 60
+                case polarBearEatValue: 
 
                     numberOfPolarBearMeats++;
 
@@ -136,6 +144,84 @@ public class PlayerStats : MonoBehaviour
         // than the number (all text relating to them can be handled in the quest popups).
 
     }
+
+    // Removes item from inventory.
+    public void RemoveFromInv(Item item)
+    {
+        inventory.Remove(item);
+    }
+
+    // Makes the player eat a specified food item.
+    public void EatFoodItem(FoodItem meat)
+    {
+        // The null check is needed for when the method is called from UI.cs (since the click is always possible, regardless if you have any food items or not).
+        if (meat != null)
+        {
+            print("hunger ennen syöntiä:" + hunger); // debug
+
+            // Added a check to ensure that hunger won't go below zero under any circumstances.
+            if (hunger >= meat.EatValue)
+            {
+                hunger -= meat.EatValue;
+            }
+            else if (hunger < meat.EatValue)
+            {
+                hunger = 0.0f;
+            }
+
+            // even without any checks, carriedFood should never go below zero, because it has previously been increased by the same amount (when adding the item to inventory)
+            carriedFood -= meat.EatValue;
+
+            switch (meat.EatValue)
+            {
+
+                // currently 10
+                case seagullEatValue:
+
+                    numberOfSeagullMeats--;
+                    print("number of seagull meat items - 1!"); // debug
+
+                    break;
+
+                // currently 20
+                case polarFoxEatValue:
+
+                    numberOfPolarFoxMeats--;
+
+                    break;
+
+                // currently 30
+                case sealEatValue:
+
+                    numberOfSealMeats--;
+
+                    break;
+
+                // currently 40
+                case walrusEatValue:
+
+                    numberOfWalrusMeats--;
+
+                    break;
+
+                // currently 60
+                case polarBearEatValue:
+
+                    numberOfPolarBearMeats--;
+
+                    break;
+            }
+
+            RemoveFromInv(meat);
+
+            print("hunger syönnin jälkeen: " + hunger); // debug
+        }
+    }
+
+    /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  */
+
+    /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   HELPER METHODS   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  */
+
 
     // Called upon adding new food items to inventory. Makes it so that if the picking up of a new food item would put the Player
     // over the max carryable food amount, the 'extra' food gets substracted from the item's eatValue stat. As a further check,
@@ -185,80 +271,11 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
-    // Removes item from inventory.
-    public void RemoveFromInv(Item item)
-    {
-        inventory.Remove(item);
-    }
-
     // Gets the name of the item from outside the class.
     // (I don't know the right syntax for a property in this context, so I made this into a regular method instead.)
     public string GetItemName(Item item)
     {
         return inventory[item];
-    }
-
-    // Makes the player eat a specified food item.
-    // The placement of this method is debatable. It alters a player stat, so I put it here, but it could be in FoodItem.cs instead.
-    public void EatFoodItem(FoodItem meat)
-    {
-        // The null check is needed when the method is called from UI.cs (since the click is always possible, regardless if you have any food items or not).
-        if (meat != null)
-        {
-            print("hunger ennen syöntiä:" + hunger); // debug
-
-            // Added a check to ensure that hunger won't go below zero under any circumstances.
-            if (hunger >= meat.EatValue)
-            {
-                hunger -= meat.EatValue;
-            }
-            else if (hunger < meat.EatValue)
-            {
-                hunger = 0.0f;
-            }
-
-            carriedFood -= meat.EatValue; // even without any checks, carriedFood should never go below zero, because it has previously been increased by the same amount (when adding the item to inventory)
-
-            switch (meat.EatValue)
-            {
-
-
-                case seagullEatValue: // currently 10
-
-                    numberOfSeagullMeats--;
-                    print("number of seagull meat items - 1!"); // debug
-
-                    break;
-
-                case polarFoxEatValue: // currently 20
-
-                    numberOfPolarFoxMeats--;
-
-                    break;
-
-                case sealEatValue: // currently 30
-
-                    numberOfSealMeats--;
-
-                    break;
-
-                case walrusEatValue: // currently 40
-
-                    numberOfWalrusMeats--;
-
-                    break;
-
-                case polarBearEatValue: // currently 60
-
-                    numberOfPolarBearMeats--;
-
-                    break;
-            }
-
-            RemoveFromInv(meat);
-
-            print("hunger syönnin jälkeen: " + hunger); // debug
-        }
     }
 
     // Returns the item (key) by its given name (value), from the inventory.
@@ -269,6 +286,11 @@ public class PlayerStats : MonoBehaviour
         FoodItem key = (FoodItem)inventory.FirstOrDefault(x => x.Value == itemName).Key;
         return key;
     }
+
+    /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  */
+
+    /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   ACCESSIBLE PROPERTIES + UPDATE ()  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  */
+
 
     // Properties for accessing various values from outside the class (mainly in Triggerer.cs).
     public Coat CurrentCoat
@@ -365,8 +387,8 @@ public class PlayerStats : MonoBehaviour
 		get { return maxCarriedFood; }
 		set { maxCarriedFood = value; }
 	}
+    
 
-    // Update is called once per frame.
     void Update()
     {
         // Increase the hunger and cold values with elapsed movement frames.
@@ -379,7 +401,6 @@ public class PlayerStats : MonoBehaviour
 
         // Set movement rate according to cold and hunger values (the first value is the initial rate, as hunger and cold are zero in the beginning).
         // The larger this value is, the slower the Player's movement speed becomes.
-        // NOTE: This could also be done in PlayerMove.cs. It's a matter of taste where the logic is located.
         PlayerMove.MoveDuration = (50.0f + cold + hunger);
 
     }

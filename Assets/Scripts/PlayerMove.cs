@@ -3,7 +3,8 @@ using System.Collections;
 
 public class PlayerMove : MonoBehaviour
 {
-	/* The Player GameObject's movement logic. 
+	/* 
+     * The Player GameObject's movement logic. 
 	 * Attached to: GameObject 'Player'.
 	 *	Author: Ville Lohkovuori
 	 */
@@ -28,6 +29,7 @@ public class PlayerMove : MonoBehaviour
 
 	// Used for storing the clicked destination point (I *think* it must be a Vector3, even if we're dealing with 2D.).
 	private Vector3 endPoint;
+
 	// Alter this to change the speed of the movement of the Player GameObject. NOTE! If this is made public, Unity ignores it for some reason !!!
 	// NOTE: currently overridden (as it should be) by the value defined in PlayerStats.cs (according to the hunger and cold values)!
 	private float moveDuration = 50.0f;
@@ -45,11 +47,15 @@ public class PlayerMove : MonoBehaviour
 		AllowMove = false;
 	}
 
+    /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  */
 
-	// What happens when the Player GameObject collides with another GameObject. Called automatically when Player collides with something (Unity behavior).
-	// Strictly speaking, this is not needed, because two bodies with colliders attached will stop automatically upon collision. However, it prevents
-	// movement stuttering, which is a good enough reason to have it.
-	void OnCollisionEnter2D (Collision2D coll)
+    /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   COLLISION LOGIC  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  */
+
+
+    // What happens when the Player GameObject collides with another GameObject. Called automatically when Player collides with something (Unity behavior).
+    // Strictly speaking, this is not needed, because two bodies with colliders attached will stop automatically upon collision. However, it prevents
+    // movement stuttering, which is a good enough reason to have it.
+    void OnCollisionEnter2D (Collision2D coll)
 	{
 		// Debug. Prints confirmation that a collision has happened, and the names of the two collided objects (first one should always be 'Player').
 		print ("Collided!");
@@ -81,9 +87,13 @@ public class PlayerMove : MonoBehaviour
 		print ("No longer collided!"); // debug
 	}
 
+    /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  */
 
-	// Properties for accessing various values from outside the class (mainly in Triggerer.cs).
-	public string CollidedName {
+    /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   HELPER PROPERTIES + METHODS  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  */
+
+
+    // Properties for accessing various values from outside the class (mainly in Triggerer.cs).
+    public string CollidedName {
 		get { return collidedName; }
 		set { collidedName = value; } // not used anywhere atm, but made as a precaution, and for consistency
 	}
@@ -113,39 +123,30 @@ public class PlayerMove : MonoBehaviour
 		set { collidedFlag = value; }
 	}
 
-
+    // Called in UI.cs. Needed in order to stop all movement when clicking various menu buttons.
 	public void StopMove () 
 	{
 		allowMove = false;
-		hit = Physics2D.Raycast (gameObject.transform.position, Vector2.zero, 0);
 		clickFlag = false;
-	}
+        hit = Physics2D.Raycast(gameObject.transform.position, Vector2.zero, 0);
+    }
+
+    /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  */
+
+    /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   MOVEMENT LOGIC  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  */
 
 
-	// Update is called once per frame.
-	void Update ()
+    void Update ()
 	{
         
 		// Check if the screen is touched / clicked.
 		if ((Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began) || (Input.GetMouseButtonDown (0))) {
 
-			//Controls for unity editor. (#if on nimeltään pre-processor joku-jutska, joka kertoo, mille platformille sitä seuraava määrittely on voimassa.)
-			// #if UNITY_EDITOR
-			// 'RaycastHit2D' contains the x and y coordinates of the place that the cast ray hit (it's cast from the Main Camera upon mouse click). 
+			// 'RaycastHit2D' contains the x and y coordinates of the place that the cast ray hit. 
 			// Later on these will be stored in 'endPoint' and used for determining the direction of movement.
 			if (allowMove == true) {
 				hit = Physics2D.Raycast (new Vector2 (Camera.main.ScreenToWorldPoint (Input.mousePosition).x, Camera.main.ScreenToWorldPoint (Input.mousePosition).y), Vector2.zero, 0);
 			}
-
-			// [[[leftover: ray = Camera.main.ScreenPointToRay (Input.mousePosition); ]]]
-
-			// for touch device
-			// #if (UNITY_ANDROID || UNITY_IPHONE || UNITY_WP8)
-			//declare a variable of RaycastHit struct
-			//Create a Ray on the tapped / clicked position
-			// Ray ray;
-			// ray = Camera.main.ScreenPointToRay (Input.GetTouch (0).position);
-			// #endif
 
 			// Check if the cast ray hits any collider, and if so, print the name of the GameObject that it hit.
 			if (hit) {
@@ -165,18 +166,17 @@ public class PlayerMove : MonoBehaviour
 		}
 
 		// Check if the flag for movement is 'true' and the current Player object position is not same as the clicked / tapped position.
-		if (clickFlag && !Mathf.Approximately (gameObject.transform.position.magnitude, endPoint.magnitude)) { //&& !(V3Equal(transform.position, endPoint))) {
-			
+		if (clickFlag && !Mathf.Approximately (gameObject.transform.position.magnitude, endPoint.magnitude)) {
+
 			// Move the Player object to the desired position
 			if (allowMove == true) {
 			gameObject.transform.position = Vector3.Lerp (gameObject.transform.position, endPoint, (1 / (moveDuration * (Vector3.Distance (gameObject.transform.position, endPoint)))));
-			// print (Vector3.Distance (gameObject.transform.position, endPoint));
+
 			}
 		} // Set the movement indicator flag to 'false' if the endPoint and current Player object position are (almost) equal.
 		else if (clickFlag && Mathf.Approximately (gameObject.transform.position.magnitude, endPoint.magnitude)) {
 			clickFlag = false;
 			print ("I am here"); // debug
-
 		}
 
 	}

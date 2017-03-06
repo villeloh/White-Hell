@@ -7,22 +7,34 @@ using UnityEngine.SceneManagement;
 public class Triggerer : MonoBehaviour
 {
     /*
-     * Triggers events based on various conditions. (There's probably a better way to do this, but we didn't know about it... In any case a regular class seems to work fine for this purpose.)
+     * Triggers events based on various conditions.
      * Attached to: 'Player' GameObject
      * Author: Ville Lohkovuori
      */
 
-    // Needed for reference between the different scripts (Unity requirement for MonoBehaviours).
+    // Needed for reference between the different scripts.
     public PlayerMove PlayerMove;
     public PlayerStats PlayerStats;
     public Quests Quests;
+    public PlayerSound PlayerSound;
+    private QuestSound questSound;
 
+    // Needed for triggering the outro.
     private bool outroFlag = false;
+
+    void Start ()
+    {
+        
+    } 
 
     void OnCollisionEnter2D(Collision2D coll)
     {
-        // The boolean 'questFlag' was unnecessary... The name of the object that the player collides with is a sufficient condition for triggering a quest.
-        // I've attached Triggerer to the Player GameObject (instead of GameHolder); this made the quest triggering work without putting the logic into 'Update()'. Woohoo! ^^
+        // The quests are triggered based on the name of the object that Player collided with.
+        // I've attached Triggerer to the Player GameObject (instead of GameHolder); this made the quest triggering work without putting the logic into 'Update()'.
+
+        GameObject hitQuest = GameObject.FindGameObjectWithTag(PlayerMove.CollidedTag);
+        questSound = hitQuest.GetComponent<QuestSound> ();
+
         if (PlayerMove.CollidedName == "Quest_1" && Quests.GetQuestBoolean(0) == false)
         {
             Quests.ChooseQuest(Quests.QuestEnum.Quest_1);
@@ -127,30 +139,22 @@ public class Triggerer : MonoBehaviour
         }
     }
 
-    public bool OutroFlag
-    {
-        get { return outroFlag; }
-        set { outroFlag = value; }
-    }
 
     void Update()
     {
 
-        // Trigger Player's death if hunger or cold reaches the maximum allowed value.
-        // The boolean 'outroFlag' is needed because since the Player object continues to exist, so will the scripts that are attached to it... Meaning that the Outro scene will be loaded every frame(!)
-        // unless that's prevented by using a flag such as this.
-        if ((PlayerStats.Hunger >= PlayerStats.DeathHunger || PlayerStats.Cold >= PlayerStats.DeathCold) && outroFlag == false)
+        // Trigger Player's death if hunger or cold reaches the maximum allowed value. 
+        // When the player has enough Radio Parts, the game ends in victory instead.
+        // The boolean 'outroFlag' is needed because since the Player object continues to exist, so will the scripts that are attached to it... 
+        // Meaning that the Outro scene will be loaded every frame(!) unless that's prevented by using a flag such as this.
+        if ((PlayerStats.Hunger >= PlayerStats.DeathHunger || PlayerStats.Cold >= PlayerStats.DeathCold || PlayerStats.RadioPartCount == 5) && outroFlag == false)
         {
             outroFlag = true;
+            PlayerSound.MuteWalkSound ();
+            questSound.MuteQuestSound ();
             SceneManager.LoadScene("Outro");
         }
 
-        // When the player has enough Radio Parts, the game ends in victory.
-        if (PlayerStats.RadioPartCount == 5 && outroFlag == false)
-        {
-            outroFlag = true;
-            SceneManager.LoadScene("Outro");
-        }
     } 
 
 }

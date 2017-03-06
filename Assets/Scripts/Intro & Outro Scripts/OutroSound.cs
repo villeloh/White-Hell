@@ -40,7 +40,10 @@ public class OutroSound : MonoBehaviour {
 	void Update ()
     {
         // The clip is cut short if there's a tap / mouse click. This is needed because there's no scene change between these slides and the credits.
-        if ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) || (Input.GetMouseButtonDown(0))) { source.Stop(); }
+        if ((Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began) || (Input.GetMouseButtonDown(0)))
+        {
+            source.Stop();
+        }
 
         if (!stopFlag) {
             if (playerStats2.Hunger >= playerStats2.DeathHunger && !source.isPlaying)

@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class QuestSound : MonoBehaviour {
+public class QuestSound : MonoBehaviour
+{
 
     /*
      * A class for handling the quest sound effects.
@@ -11,11 +12,10 @@ public class QuestSound : MonoBehaviour {
      */
 
     private PlayerMove playerMove;
-    private Triggerer triggerer;
 
-    private AudioClip[] questPopupSounds = new AudioClip[4];
-    private AudioClip shelterSound;
-    private AudioClip nukeSound;
+    public AudioClip[] questPopupSounds = new AudioClip[4];
+    public AudioClip shelterSound;
+    public AudioClip nukeSound;
 
     private AudioSource source;
 
@@ -25,25 +25,16 @@ public class QuestSound : MonoBehaviour {
     private float volumeMax = 1.0f;
 
     // Use this for initialization
-    void Start ()
+    void Start()
     {
-
-        // Fetch the correct script from the persistent 'Player' GameObject.
-        GameObject player = GameObject.Find("Player");
-        playerMove = player.GetComponent<PlayerMove>();
-        triggerer = player.GetComponent<Triggerer> ();
 
         // Find the audio source and assign the various sounds to variables.
         source = gameObject.GetComponent<AudioSource>();
-
-        shelterSound = Resources.Load("Sounds/ShelterBurn") as AudioClip;
-        nukeSound = Resources.Load("Sounds/Geiger Counter") as AudioClip;
-
-        questPopupSounds[0] = Resources.Load("Sounds/QuestSound_1") as AudioClip;
-        questPopupSounds[1] = Resources.Load("Sounds/QuestSound_2") as AudioClip;
-        questPopupSounds[2] = Resources.Load("Sounds/QuestSound_3") as AudioClip;
-        questPopupSounds[3] = Resources.Load("Sounds/QuestSound_4") as AudioClip;
-
+        
+       // Find the PlayerMove script and assign it to this script as a reference... It seems you cannot do this in the inspector, even with prefabs,
+       // as the reference is lost when the prefab is spawned from code.
+       PlayerMove script = GameObject.Find("Player").GetComponent<PlayerMove>();
+       playerMove = script;
     }
 
     // Upon collision with Player, play an appropriate sound effect, with varying pitch and volume.
@@ -72,16 +63,10 @@ public class QuestSound : MonoBehaviour {
         }
     }
 
-    // Update is called once per frame
-    void Update () {
-
-        // If a quest sound is playing and the outro is triggered, stop the sound.
-        if (source.isPlaying) {
-
-            if (triggerer.OutroFlag == true)
-            {
-                source.Stop();
-            }
-        }
+    // Called in Triggerer.cs to silence the sounds when the outro is triggered.
+    public void MuteQuestSound ()
+    {
+        source.Stop();
     }
+
 }
