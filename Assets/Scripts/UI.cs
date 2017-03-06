@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class UI : MonoBehaviour
 {
 
@@ -31,9 +32,13 @@ public class UI : MonoBehaviour
 	Button quitPrompt;
 	Button quitNo;
 	Button quitYes;
+	Button menuButton;
+	Button closeActualMenu;
+	Button soundSwitch;
 	public PlayerStats PlayerStats;
 	public GameTime GameTime;
 	public PlayerMove PlayerMove;
+	Image menuBg;
 	void Start ()
 	{
 		//haetaan eri gameobjectit
@@ -47,6 +52,7 @@ public class UI : MonoBehaviour
 		wearing = GameObject.Find ("Wearing").GetComponent<Text> ();
 		ammoPouch = GameObject.Find ("AmmoPouch").GetComponent<Text> ();
 		inventorySpace = GameObject.Find ("InventorySpace").GetComponent<Text> ();
+		menuBg  = GameObject.Find ("MenuBg").GetComponent<Image> ();
 		//painikkeet
 		eatFood = GameObject.Find ("EatingButton").GetComponent<Button> ();
 		eatSeagul = GameObject.Find ("EatSeagulMeat").GetComponent<Button> ();
@@ -58,13 +64,16 @@ public class UI : MonoBehaviour
 		quitPrompt  = GameObject.Find ("QuitPrompt").GetComponent<Button> ();
 		quitYes = GameObject.Find ("QuitYes").GetComponent<Button> ();
 		quitNo  = GameObject.Find ("QuitNo").GetComponent<Button> ();
+		menuButton = GameObject.Find ("MenuButton").GetComponent<Button> ();
+		closeActualMenu = GameObject.Find ("CloseActualMenu").GetComponent<Button> ();
+		soundSwitch = GameObject.Find ("SoundSwitch").GetComponent<Button> ();
 		//painikkeiden tekstit
 		SeagullMeatText = GameObject.Find ("SeagullMeatText").GetComponent<Text> ();
 		SealMeatText = GameObject.Find ("SealMeatText").GetComponent<Text> ();
 		WalrusMeatText = GameObject.Find ("WalrusMeatText").GetComponent<Text> ();
 		FoxMeatText = GameObject.Find ("ArcticFoxMeatText").GetComponent<Text> ();
 		PolarBearMeatText = GameObject.Find ("PolarBearMeatText").GetComponent<Text> ();
-		//pelin alussa seuraavat painikkeet eivät ole näkyvissä
+		//pelin alussa seuraavat gameobjectit eivät ole näkyvissä
 		closeMenu.gameObject.SetActive (false);
 		eatSeagul.gameObject.SetActive (false);
 		eatFox.gameObject.SetActive (false);
@@ -77,6 +86,10 @@ public class UI : MonoBehaviour
 		quitNo.gameObject.SetActive (false);
 		quitYes.gameObject.SetActive (false);
 		quitText.gameObject.SetActive (false);
+		quitPrompt.gameObject.SetActive (false);
+		menuBg.gameObject.SetActive (false);
+		soundSwitch.gameObject.SetActive (false);
+		closeActualMenu.gameObject.SetActive (false);
 		eatFood.onClick.AddListener (() => openVisibility (eatFood)); //metodilla muut painikkeet näkyviin ja eatFood pois näkyvistä
 		closeMenu.onClick.AddListener (() => closeVisibility (closeMenu)); //metodilla painikkeet pois näkyvistä ja eatFood näkyviin
 		//onclick metodit eri lihojen syöntiin
@@ -89,11 +102,13 @@ public class UI : MonoBehaviour
 		quitPrompt.onClick.AddListener (() => askToQuit (quitPrompt));
 		quitNo.onClick.AddListener (() => noToQuit (quitNo));
 		quitYes.onClick.AddListener (() => yesToQuit (quitYes));
+		menuButton.onClick.AddListener (() =>  openMenu (menuButton));
+		closeActualMenu.onClick.AddListener (() =>  backToGame (closeActualMenu));
 	}
 
 	void openVisibility (Button eatFood)
 	{
-		PlayerMove.AllowMove = false;
+		PlayerMove.StopMove ();
 		Debug.Log ("painoit nappia " + eatFood);
 
 		eatFood.gameObject.SetActive (false);
@@ -123,20 +138,41 @@ public class UI : MonoBehaviour
 		inventorySpace.gameObject.SetActive (false);
 		ammoPouch.gameObject.SetActive (false);
 		wearing.gameObject.SetActive (false);
-
+		PlayerMove.AllowMove = true;
+	}
+	void openMenu (Button menuButton){
+		PlayerMove.StopMove ();
+		menuBg.gameObject.SetActive (true);
+		quitPrompt.gameObject.SetActive (true);
+		soundSwitch.gameObject.SetActive (true);
+		closeActualMenu.gameObject.SetActive (true);
+	}
+	void backToGame (Button closeActualMenu){
+		menuBg.gameObject.SetActive (false);
+		quitPrompt.gameObject.SetActive (false);
+		soundSwitch.gameObject.SetActive (false);
+		closeActualMenu.gameObject.SetActive (false);
+		PlayerMove.AllowMove = true;
 	}
 	void askToQuit (Button quitPrompt)
 	{
 		quitNo.gameObject.SetActive (true);
 		quitText.gameObject.SetActive (true);
 		quitYes.gameObject.SetActive (true);
+		soundSwitch.gameObject.SetActive (false);
+		closeActualMenu.gameObject.SetActive (false);
+		quitPrompt.gameObject.SetActive (false);
 	}
 	void noToQuit (Button quitNo)
 	{
 		quitNo.gameObject.SetActive (false);
 		quitText.gameObject.SetActive (false);
 		quitYes.gameObject.SetActive (false);
+		soundSwitch.gameObject.SetActive (true);
+		closeActualMenu.gameObject.SetActive (true);
+		quitPrompt.gameObject.SetActive (true);
 	}
+
 	void yesToQuit(Button quitYes)
 	{
 		Debug.Log ("quitting");

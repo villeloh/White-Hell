@@ -150,6 +150,7 @@ namespace QuestNamespace
             questBooleans[givenNumber] = newValue;
         }
 
+
         // Toggles the 'active' status of the 'QuestHolder' Game Object (and, by proxy, its Image component, which would otherwise block
         // certain clicks that are needed when dealing with pop-ups.).
         public void ToggleQuestHolderActive()

@@ -114,6 +114,14 @@ public class PlayerMove : MonoBehaviour
 	}
 
 
+	public void StopMove () 
+	{
+		allowMove = false;
+		hit = Physics2D.Raycast (gameObject.transform.position, Vector2.zero, 0);
+		clickFlag = false;
+	}
+
+
 	// Update is called once per frame.
 	void Update ()
 	{
@@ -160,9 +168,10 @@ public class PlayerMove : MonoBehaviour
 		if (clickFlag && !Mathf.Approximately (gameObject.transform.position.magnitude, endPoint.magnitude)) { //&& !(V3Equal(transform.position, endPoint))) {
 			
 			// Move the Player object to the desired position
+			if (allowMove == true) {
 			gameObject.transform.position = Vector3.Lerp (gameObject.transform.position, endPoint, (1 / (moveDuration * (Vector3.Distance (gameObject.transform.position, endPoint)))));
 			// print (Vector3.Distance (gameObject.transform.position, endPoint));
-
+			}
 		} // Set the movement indicator flag to 'false' if the endPoint and current Player object position are (almost) equal.
 		else if (clickFlag && Mathf.Approximately (gameObject.transform.position.magnitude, endPoint.magnitude)) {
 			clickFlag = false;
