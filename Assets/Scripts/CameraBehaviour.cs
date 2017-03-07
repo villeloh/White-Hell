@@ -39,6 +39,26 @@ public class CameraBehaviour : MonoBehaviour
 
 			Camera.main.orthographicSize = Mathf.MoveTowards (Camera.main.orthographicSize, targetOrtho, smoothSpeed * Time.deltaTime);
 		}
+		Camera.main.orthographicSize = Mathf.MoveTowards (Camera.main.orthographicSize, targetOrtho, smoothSpeed * Time.deltaTime);
+		// pich to zoom scripti
+		if (Input.touchCount == 2){ //tarkistaa jos kaksi koskestusta samaanaikaan ruudulla
+			//Tallentaa kosketukset
+			Touch touchZero = Input.GetTouch(0);
+			Touch touchOne = Input.GetTouch (1);
+
+			Vector2 touchZeroPrevPos = touchZero.position - touchZero.deltaPosition;
+			Vector2 touchOnePrevPos = touchOne.position - touchOne.deltaPosition;
+
+			float prevTouchDeltaMag = (touchZeroPrevPos - touchOnePrevPos).magnitude;
+			float touchDeltaMag = (touchZero.position - touchOne.position).magnitude;
+
+			float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
+
+			Camera.main.orthographicSize += deltaMagnitudeDiff * zoomSpeed;
+
+			Camera.main.orthographicSize = Mathf.Max (Camera.main.orthographicSize, 0.1f);
+
+		}
 	}
 
 	public void StopCameraBehaviour ()

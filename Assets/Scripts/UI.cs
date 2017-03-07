@@ -8,6 +8,7 @@ public class UI : MonoBehaviour
 {
 
 	//kyseessä on tekstit ja painikkeet joissa tulee lukemaaan eri arvot ruudun ylälaidassa.
+	private bool sounds = true;
 	Text currentHunger;
 	Text currentCold;
 	Text currentResistance;
@@ -104,6 +105,7 @@ public class UI : MonoBehaviour
 		quitYes.onClick.AddListener (() => yesToQuit (quitYes));
 		menuButton.onClick.AddListener (() =>  openMenu (menuButton));
 		closeActualMenu.onClick.AddListener (() =>  backToGame (closeActualMenu));
+		soundSwitch.onClick.AddListener (() =>  switchSounds (soundSwitch));
 	}
 
 	void openVisibility (Button eatFood)
@@ -127,7 +129,7 @@ public class UI : MonoBehaviour
 
 	void closeVisibility (Button closemenu)
 	{
-		
+
 		eatFood.gameObject.SetActive (true);
 		closeMenu.gameObject.SetActive (false);
 		eatSeagul.gameObject.SetActive (false);
@@ -173,12 +175,25 @@ public class UI : MonoBehaviour
 		quitPrompt.gameObject.SetActive (true);
 	}
 
+	//aplikaation sammuttaminen
 	void yesToQuit(Button quitYes)
 	{
 		Debug.Log ("quitting");
 		Application.Quit();
 	}
 
+	//äänten vaihtaminen
+	void switchSounds (Button soundSwitch){
+		if(sounds == true){
+			sounds = false;
+			Debug.Log ("äänet =" + sounds);
+			AudioListener.volume = 0.0f;
+		} else {
+			sounds = true;
+			Debug.Log ("äänet =" + sounds);
+			AudioListener.volume = 1.0f;
+		}
+	}
 
 	// Update is called once per frame
 	void Update ()
