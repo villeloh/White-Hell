@@ -6,7 +6,7 @@ public class WalrusMove : MonoBehaviour {
 
 
 	public GridManager GridManager;
-	private bool moveWalrus =false;
+	private bool moveWalrus = false;
 	private float speed = 1.0f;
 
 	/*

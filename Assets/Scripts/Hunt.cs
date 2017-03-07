@@ -7,31 +7,33 @@ using UnityEngine.SceneManagement;
 public class Hunt : MonoBehaviour
 {
 
-
-	public Walrus Walrus;
+    public AnimalHandler AnimalHandler;
 	public GridManager GridManager;
-	public PlayerMove PlayerMove;
+	// public PlayerMove PlayerMove;
 	public PlayerSound PlayerSound;
 	public CameraBehaviour CameraBehaviour;
 	public int randomNumber;
 	private int repeatCombatTrigger = 1;
-	/// <summary>
-	/// Start this instance.
-	/// </summary>
-	/// 
+    /// <summary>
+    /// Start this instance.
+    /// </summary>
+    /// 
 
-	/*
+    private PlayerMove playerMove;
+
 	void Start()
 	{
-		
 		// Starts function CombatTrigger() that repeats once every second.
 		InvokeRepeating("CombatTrigger", 1.0f, 1.0f);
+
+        GameObject player = GameObject.Find("Player");
+        playerMove = player.GetComponent<PlayerMove> ();
 	}
 
-	/*public void CombatTrigger()
+	public void CombatTrigger()
 	{
 		//When the player is moving there is a chance that a hunting encounter plays out.
-		if (PlayerMove.ClickFlag == true && repeatCombatTrigger == 1)
+		if (playerMove.ClickFlag == true && repeatCombatTrigger == 1)
 		{
 			int randomNumber = UnityEngine.Random.Range(0, 3);
 			if (randomNumber == 2)
@@ -39,12 +41,12 @@ public class Hunt : MonoBehaviour
 
 				CameraBehaviour.MoveToMiniGame ();
 				//Stops player from moving
-				PlayerMove.StopMove ();
+				playerMove.StopMove ();
 				print ("Hunt Triggers");        
 				//Stops walking sounds                  	
 				GridManager.CreateBoard ();	
 				print ("board created");
-				Walrus.MakeWalrus ();     
+				AnimalHandler.MakeWalrus ();     
 
 			}	                                	                                      	
 		}                                       	
@@ -55,9 +57,8 @@ public class Hunt : MonoBehaviour
 		//Should Return the camera to the main s			
 		print ("Hunt Ends");                                  			
 		CameraBehaviour.MoveToMainGame ();                                  	
-		PlayerMove.AllowMove = true;
+		playerMove.AllowMove = true;
 		print ("Hunt Ends");                    
 	}                                          
-*/
 }
 
