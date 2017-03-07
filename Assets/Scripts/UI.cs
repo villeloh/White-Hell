@@ -39,6 +39,7 @@ public class UI : MonoBehaviour
 	public PlayerStats PlayerStats;
 	public GameTime GameTime;
 	public PlayerMove PlayerMove;
+    public UI_Sound UI_Sound;
 	Image menuBg;
 	void Start ()
 	{
@@ -93,14 +94,19 @@ public class UI : MonoBehaviour
 		closeActualMenu.gameObject.SetActive (false);
 		eatFood.onClick.AddListener (() => openVisibility (eatFood)); //metodilla muut painikkeet näkyviin ja eatFood pois näkyvistä
 		closeMenu.onClick.AddListener (() => closeVisibility (closeMenu)); //metodilla painikkeet pois näkyvistä ja eatFood näkyviin
-		//onclick metodit eri lihojen syöntiin
+		//onclick metodit eri lihojen syöntiin (+äänet syödessä lihaa)
 		eatSeagul.onClick.AddListener (() => PlayerStats.EatFoodItem (PlayerStats.GetFoodItem ("Seagull Meat")));
+        eatSeagul.onClick.AddListener (() => UI_Sound.PlayEatSound());
 		eatSeal.onClick.AddListener (() => PlayerStats.EatFoodItem (PlayerStats.GetFoodItem ("Seal Meat")));
-		eatWalrus.onClick.AddListener (() => PlayerStats.EatFoodItem (PlayerStats.GetFoodItem ("Walrus Meat")));
-		eatFox.onClick.AddListener (() => PlayerStats.EatFoodItem (PlayerStats.GetFoodItem ("ArcticFox Meat")));
-		eatPolarBear.onClick.AddListener (() => PlayerStats.EatFoodItem (PlayerStats.GetFoodItem ("Polarbear Meat")));
-		//onClickit pelin lopetus nappuloille
-		quitPrompt.onClick.AddListener (() => askToQuit (quitPrompt));
+        eatSeal.onClick.AddListener(() => UI_Sound.PlayEatSound());
+        eatWalrus.onClick.AddListener (() => PlayerStats.EatFoodItem (PlayerStats.GetFoodItem ("Walrus Meat")));
+        eatWalrus.onClick.AddListener(() => UI_Sound.PlayEatSound());
+        eatFox.onClick.AddListener (() => PlayerStats.EatFoodItem (PlayerStats.GetFoodItem ("ArcticFox Meat")));
+        eatFox.onClick.AddListener(() => UI_Sound.PlayEatSound());
+        eatPolarBear.onClick.AddListener (() => PlayerStats.EatFoodItem (PlayerStats.GetFoodItem ("Polarbear Meat")));
+        eatPolarBear.onClick.AddListener(() => UI_Sound.PlayEatSound());
+        //onClickit pelin lopetus nappuloille
+        quitPrompt.onClick.AddListener (() => askToQuit (quitPrompt));
 		quitNo.onClick.AddListener (() => noToQuit (quitNo));
 		quitYes.onClick.AddListener (() => yesToQuit (quitYes));
 		menuButton.onClick.AddListener (() =>  openMenu (menuButton));
@@ -108,10 +114,14 @@ public class UI : MonoBehaviour
 		soundSwitch.onClick.AddListener (() =>  switchSounds (soundSwitch));
 	}
 
-	void openVisibility (Button eatFood)
+    void openVisibility (Button eatFood)
 	{
-		PlayerMove.StopMove ();
+
+        UI_Sound.PlayClickSound();
+
+        PlayerMove.StopMove ();
 		Debug.Log ("painoit nappia " + eatFood);
+        
 
 		eatFood.gameObject.SetActive (false);
 		closeMenu.gameObject.SetActive (true);
@@ -129,8 +139,9 @@ public class UI : MonoBehaviour
 
 	void closeVisibility (Button closemenu)
 	{
+        UI_Sound.PlayClickSound();
 
-		eatFood.gameObject.SetActive (true);
+        eatFood.gameObject.SetActive (true);
 		closeMenu.gameObject.SetActive (false);
 		eatSeagul.gameObject.SetActive (false);
 		eatFox.gameObject.SetActive (false);
@@ -143,14 +154,20 @@ public class UI : MonoBehaviour
 		PlayerMove.AllowMove = true;
 	}
 	void openMenu (Button menuButton){
-		PlayerMove.StopMove ();
+
+        UI_Sound.PlayClickSound();
+
+        PlayerMove.StopMove ();
 		menuBg.gameObject.SetActive (true);
 		quitPrompt.gameObject.SetActive (true);
 		soundSwitch.gameObject.SetActive (true);
 		closeActualMenu.gameObject.SetActive (true);
 	}
 	void backToGame (Button closeActualMenu){
-		menuBg.gameObject.SetActive (false);
+
+        UI_Sound.PlayClickSound();
+
+        menuBg.gameObject.SetActive (false);
 		quitPrompt.gameObject.SetActive (false);
 		soundSwitch.gameObject.SetActive (false);
 		closeActualMenu.gameObject.SetActive (false);
@@ -158,7 +175,9 @@ public class UI : MonoBehaviour
 	}
 	void askToQuit (Button quitPrompt)
 	{
-		quitNo.gameObject.SetActive (true);
+        UI_Sound.PlayClickSound();
+
+        quitNo.gameObject.SetActive (true);
 		quitText.gameObject.SetActive (true);
 		quitYes.gameObject.SetActive (true);
 		soundSwitch.gameObject.SetActive (false);
@@ -167,7 +186,9 @@ public class UI : MonoBehaviour
 	}
 	void noToQuit (Button quitNo)
 	{
-		quitNo.gameObject.SetActive (false);
+        UI_Sound.PlayClickSound();
+
+        quitNo.gameObject.SetActive (false);
 		quitText.gameObject.SetActive (false);
 		quitYes.gameObject.SetActive (false);
 		soundSwitch.gameObject.SetActive (true);
@@ -184,7 +205,10 @@ public class UI : MonoBehaviour
 
 	//äänten vaihtaminen
 	void switchSounds (Button soundSwitch){
-		if(sounds == true){
+
+        UI_Sound.PlayClickSound();
+
+        if (sounds == true){
 			sounds = false;
 			Debug.Log ("äänet =" + sounds);
 			AudioListener.volume = 0.0f;
@@ -248,4 +272,5 @@ public class UI : MonoBehaviour
 		}
 
 	}
+
 }

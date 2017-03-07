@@ -140,7 +140,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AnimalHandler: {fileID: 8935287}
-  WalrusBehaviour: {fileID: 0}
   GridManager: {fileID: 8935284}
   PlayerSound: {fileID: 1788575126}
   CameraBehaviour: {fileID: 547243370}
@@ -387,6 +386,7 @@ MonoBehaviour:
   PlayerStats: {fileID: 1788575124}
   GameTime: {fileID: 258580927}
   PlayerMove: {fileID: 1788575123}
+  UI_Sound: {fileID: 16719980}
 --- !u!114 &16719980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -395,15 +395,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 16719973}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c7bfcb564905c34e85d2828b4d7be3e, type: 3}
+  m_Script: {fileID: 11500000, guid: d689e18b825bc8649b6543ec4e8b769a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerMove: {fileID: 1788575123}
-  windSounds:
-  - {fileID: 8300000, guid: 89a1e9552f01f044b905a08f10b102da, type: 3}
-  - {fileID: 8300000, guid: 98927bee80e3e8043a684694cb7a6abc, type: 3}
-  - {fileID: 8300000, guid: db2e2028de401fd4bba6ba3d5c153cdd, type: 3}
-  - {fileID: 8300000, guid: df5d1545e7295f74aaf657e1ae26a5d8, type: 3}
+  clickSound: {fileID: 8300000, guid: b021fd5866e136941a2afeda4bfd5785, type: 3}
+  eatSounds:
+  - {fileID: 8300000, guid: e7fa45828b4fbb2408b354e99129ab5f, type: 3}
+  - {fileID: 8300000, guid: 273520c497b0977489cc52c9fe4d96e1, type: 3}
 --- !u!82 &16719981
 AudioSource:
   m_ObjectHideFlags: 0
@@ -758,6 +756,7 @@ GameObject:
   - component: {fileID: 258580925}
   - component: {fileID: 258580927}
   - component: {fileID: 258580928}
+  - component: {fileID: 258580926}
   m_Layer: 0
   m_Name: GameHolder
   m_TagString: Untagged
@@ -778,6 +777,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &258580926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 258580924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ef8cd68076a96b48801e94e30376baa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerMove: {fileID: 1788575123}
+  windSounds:
+  - {fileID: 8300000, guid: 89a1e9552f01f044b905a08f10b102da, type: 3}
+  - {fileID: 8300000, guid: 98927bee80e3e8043a684694cb7a6abc, type: 3}
+  - {fileID: 8300000, guid: db2e2028de401fd4bba6ba3d5c153cdd, type: 3}
+  - {fileID: 8300000, guid: df5d1545e7295f74aaf657e1ae26a5d8, type: 3}
 --- !u!114 &258580927
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -807,7 +823,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 77
+  Priority: 192
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500

@@ -28,7 +28,7 @@ public class QuestSound : MonoBehaviour
     void Start()
     {
 
-        // Find the audio source and assign the various sounds to variables.
+        // Find the audio source.
         source = gameObject.GetComponent<AudioSource>();
         
        // Find the PlayerMove script and assign it to this script as a reference... It seems you cannot do this in the inspector, even with prefabs,
