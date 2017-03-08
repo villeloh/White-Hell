@@ -23,6 +23,7 @@ public class ShootLogic : MonoBehaviour
 	// Needed to track the spent ammunition, for purposes of ending the encounter.
 	private int spentAmmo = 0;
 
+    
 	public int SpentAmmo {
 		get { return spentAmmo; }
 		set { spentAmmo = value; }
@@ -94,6 +95,7 @@ public class ShootLogic : MonoBehaviour
 				Hunt.EndFlag = true;
 				PlayerStats.PolarBearDeath = true;
 				print ("kuolit karhuun! AAAARGH!");
+                print (PlayerStats.PolarBearDeath);
 			}
 		}
 

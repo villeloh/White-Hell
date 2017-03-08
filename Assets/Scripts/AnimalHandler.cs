@@ -39,8 +39,6 @@ public class AnimalHandler : MonoBehaviour
 		print ("mursu luotu!");
 		walrusRef = GameObject.Find ("walrus");
 		walrusRef.AddComponent<WalrusBehaviour> ();
-
-		Hunt.ShootFlag = true;
 	}
 
 	public void MakeSeagull ()
@@ -51,7 +49,6 @@ public class AnimalHandler : MonoBehaviour
 		seagullRef = GameObject.Find ("seagull");
 		seagullRef.AddComponent<SeagullBehaviour> ();
 
-		Hunt.ShootFlag = true;
 	}
 
 	public void MakeSeal ()
@@ -62,7 +59,6 @@ public class AnimalHandler : MonoBehaviour
 		sealRef = GameObject.Find ("seal");
 		sealRef.AddComponent<SealBehaviour> ();
 
-		Hunt.ShootFlag = true;
 	}
 
 	public void MakeArcticFox ()
@@ -73,7 +69,6 @@ public class AnimalHandler : MonoBehaviour
 		arcticFoxRef = GameObject.Find ("arcticFox");
 		arcticFoxRef.AddComponent<ArcticFoxBehaviour> ();
 
-		Hunt.ShootFlag = true;
 	}
 
 	public void MakePolarBear ()
@@ -84,12 +79,13 @@ public class AnimalHandler : MonoBehaviour
 		polarBearRef = GameObject.Find ("polarBear");
 		polarBearRef.AddComponent<PolarBearBehaviour> ();
 
-		Hunt.ShootFlag = true;
 	}
 
+    // To avoid making so many Destroy()s, each animal should belong to a base class called 'Animal'... But the animal scripts are already MonoBehaviours, 
+    // and afaik, multiple inheritance is impossible in C#. Thus, we have to try to destroy every animal whenever one of them is destroyed.
 	public void KillAnimal ()
 	{
-		print ("got Meat");
+		print ("animal killed!");
 		Destroy (walrusRef);
 		Destroy (seagullRef);
 		Destroy (sealRef);
@@ -97,16 +93,9 @@ public class AnimalHandler : MonoBehaviour
 		Destroy (polarBearRef);
 	}
 
-
 	public Vector3 SpawnPos {
 		get { return spawnPos; }
 		set { spawnPos = value; }
 	}
 
-
-	// Update is called once per frame
-	void Update ()
-	{
-		
-	}
 }

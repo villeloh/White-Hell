@@ -13,12 +13,14 @@ public class OutroLogic : MonoBehaviour {
 
     // Variables for internal reference.
     private PlayerStats playerStats;
+    private GameTime gameTime;
     private Image slide;
     private Text outroText;
     public Sprite[] sprites;
     private bool quitFlag = false;
 
-    private string saved_text; 
+    private string saved_text;
+    private string death_day_text;
 
     // Use this for initialization.
     void Start ()
@@ -28,6 +30,9 @@ public class OutroLogic : MonoBehaviour {
         GameObject player = GameObject.Find("Player");
         playerStats = player.GetComponent<PlayerStats> ();
 
+        GameObject gameHolder = GameObject.Find("GameHolder");
+        gameTime = gameHolder.GetComponent<GameTime> ();
+
         // Locate the image and text subobjects of the holder object and assign them to variables.
         slide = GameObject.Find("OutroHolder").GetComponent<Image>();
         outroText = GameObject.Find("OutroText").GetComponent<Text>();
@@ -35,7 +40,7 @@ public class OutroLogic : MonoBehaviour {
         // Needs to be done here, because dynamic text is used from PlayerStats.cs.
         saved_text = @"[ RADIO CONTACT ! ]
 
-[ STATIC ] '... this is ZQ-one-eight-niner, go ahead, over.'
+( *STATIC* ) '... this is ZQ-one-eight-niner, go ahead, over.'
 
 'Thank GOD! I'm stranded on Alice Island, have been for AGES now! Please, HURRY! My coordinates are the following ...'
 
@@ -47,17 +52,25 @@ public class OutroLogic : MonoBehaviour {
 
 'Bless you! THANK you! Oh, and over.'
 
-HOME, after so long..! I can hardly BELIEVE it ...";
+HOME, after so long..! I can hardly BELIEVE it ... 
+
+[ You were rescued on DAY " + gameTime.GetDays () + @"! Congratulations! ]";
+
+        death_day_text = "\n\n[ You died on DAY " + gameTime.GetDays() + @"! Better luck next time! ]";
 
         // Vary the text and image based on different conditions.
         if (playerStats.Cold >= playerStats.DeathCold) {
 
             slide.sprite = sprites[0];
-            outroText.text = coldDeath_text;
+            outroText.text = coldDeath_text + death_day_text;
         } else if (playerStats.Hunger >= playerStats.DeathHunger) {
 
             slide.sprite = sprites[0];
-            outroText.text = hungerDeath_text;
+            outroText.text = hungerDeath_text + death_day_text;
+        } else if (playerStats.PolarBearDeath == true) {
+
+            slide.sprite = sprites[0];
+            outroText.text = polarBearDeath_text + death_day_text;
         } else {
 
             slide.sprite = sprites[1];
@@ -101,6 +114,8 @@ it's so very WARM now... Almost as warm as HOME ...";
 
 I-I... I'm so HUNGRY that I can't go on..! 
 This is the end. Goodbye everyone..!";
+
+    private string polarBearDeath_text = @"AAAARGH! OH MY GOD! NOOOOOOOOO !!!";
 
     private string credits_text = @"credits";
 

@@ -11,16 +11,16 @@ public class Weapon : Item
  * Author: Ville Lohkovuori
  */
 
-    private float damage;
+    private int damage;
 
 	// Create new Item of type 'Weapon'.
-	public Weapon (float givenDamage)
+	public Weapon (int givenDamage)
 	{
 		this.damage = givenDamage;
 	}
 
 	// Get and set 'damage' from outside the class.
-	public float Damage {
+	public int Damage {
 		get { return damage; }
 		set { damage = value; }
 	}

@@ -147,11 +147,18 @@ public class Triggerer : MonoBehaviour
         // When the player has enough Radio Parts, the game ends in victory instead.
         // The boolean 'outroFlag' is needed because since the Player object continues to exist, so will the scripts that are attached to it... 
         // Meaning that the Outro scene will be loaded every frame(!) unless that's prevented by using a flag such as this.
-        if ((PlayerStats.Hunger >= PlayerStats.DeathHunger || PlayerStats.Cold >= PlayerStats.DeathCold || PlayerStats.RadioPartCount == 5) && outroFlag == false)
+        if ((PlayerStats.Hunger >= PlayerStats.DeathHunger || PlayerStats.Cold >= PlayerStats.DeathCold || 
+            PlayerStats.RadioPartCount == 5 || PlayerStats.PolarBearDeath == true) && outroFlag == false)
         {
             outroFlag = true;
             PlayerSound.MuteWalkSound ();
-            questSound.MuteQuestSound ();
+
+            // Added a null check, for the case of death by polar bear (questSound doesn't exist in that case).
+            if (questSound != null)
+            {
+                questSound.MuteQuestSound();
+            }
+
             SceneManager.LoadScene("Outro");
         }
 

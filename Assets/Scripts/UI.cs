@@ -249,7 +249,7 @@ public class UI : MonoBehaviour
 		currentHunger.text = "Hunger: " + Mathf.Round (PlayerStats.Hunger * 1f) / 1f + "/100"; //näyttää nykyisen nälkäarvon 
 		currentCold.text = "Cold: " + Mathf.Round (PlayerStats.Cold * 1f) / 1f + "/100"; //näyttää nykyisen kylmyysarvon
 		currentResistance.text = "Cold Res.: " + PlayerStats.CurrentCoat.ColdResistance + ""; //näyttää nykysen kylmyydenkestävyyden
-		kello.text = "Day " + Mathf.Round (GameTime.GlobalTime * 1f) / 1f;
+		kello.text = "Day " + GameTime.GetDays ();
 		// If lausekkeet painikkeiden tekstien muuttamiseen
 		//1. lokinlihapainike
 		if (PlayerStats.NumberOfSeagullMeats > 0) {

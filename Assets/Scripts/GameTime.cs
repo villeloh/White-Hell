@@ -15,12 +15,24 @@ public class GameTime : MonoBehaviour
 
 	public PlayerMove PlayerMove;
 
-	// Returns the total elapsed time (in pseudo-units, not real seconds) since the start of the game.
+    void Start ()
+    {
+        DontDestroyOnLoad (gameObject);
+    }
+
+    // Returns the total elapsed time (in pseudo-units, not real seconds) since the start of the game.
 	public float GlobalTime {
 		get { return globalTime; }
 		set { globalTime = value; } // not used atm
 	}
-	
+
+    // For use in UI.cs and OutroLogic.cs. Returns the time in pseudo-numbers that resemble days spent in the game world.
+    public float GetDays()
+    {
+        float days = Mathf.Round(globalTime * 1f) / 1f;
+        return days;
+    }
+
 
 	void Update ()
 	{

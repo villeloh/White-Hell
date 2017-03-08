@@ -15,6 +15,7 @@ public class OutroSound : MonoBehaviour {
     public AudioClip[] savedSounds;
     public AudioClip coldDeathSound;
     public AudioClip hungerDeathSound;
+    public AudioClip polarBearDeathSound;
     public AudioClip creditsMusic;
 
     private AudioSource source;
@@ -56,25 +57,25 @@ public class OutroSound : MonoBehaviour {
                 source.PlayOneShot(coldDeathSound, 1f);
                 stopFlag = true;
 
-            }
-            else if (playerStats2.RadioPartCount == 5 && !source.isPlaying)
+            } else if (playerStats2.PolarBearDeath == true)
             {
+                source.PlayOneShot(polarBearDeathSound, 1f);
+                stopFlag = true;
 
-                if (!playedFirst)
-                {
+            } else if (playerStats2.RadioPartCount == 5 && !source.isPlaying && !playedFirst)
+            {
+                
                     source.PlayOneShot(savedSounds[0], 1f);
                     playedFirst = true;
                 }
-                else
-                {
+                else if (playerStats2.RadioPartCount == 5 && !source.isPlaying) {
                     source.PlayOneShot(savedSounds[1], 1f);
                     stopFlag = true;                
                 }
             }
-        }
-
+        
         // After the main logic has run its course, move on to playing the credits music.
-        if (stopFlag && !source.isPlaying)
+        if (stopFlag == true && !source.isPlaying)
         {
             source.PlayOneShot (creditsMusic, 1f);
         }

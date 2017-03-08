@@ -23,7 +23,7 @@ public class ShootSound : MonoBehaviour
 		source = gameObject.GetComponent<AudioSource> ();
 	}
 
-	// Called when clicking on
+	// Called when clicking / tapping in the hunt 'scene' (really: while Hunt.ShootFlag == true).
 	public void PistolShot ()
 	{
 		source.pitch = Random.Range (shootPitchLow, shootPitchHigh);
@@ -36,8 +36,6 @@ public class ShootSound : MonoBehaviour
 		source.PlayOneShot (rifleSound, Random.Range (volumeMin, volumeMax));
 
 	}
-
-
 
 	void Update ()
 	{

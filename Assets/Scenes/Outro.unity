@@ -305,7 +305,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 6747e095f56beff44a00c8c6875aef9a, type: 3}
   coldDeathSound: {fileID: 8300000, guid: 817dcd46207b75041b87d28baa60d887, type: 3}
   hungerDeathSound: {fileID: 8300000, guid: 6555815778401a044bf629cbe50e7156, type: 3}
-  creditsMusic: {fileID: 0}
+  polarBearDeathSound: {fileID: 8300000, guid: 661e7e640bde2304d8462e78e44d2f8e, type: 3}
+  creditsMusic: {fileID: 8300000, guid: d4047b30e300d1b4297188d12e3f2c0d, type: 3}
 --- !u!82 &520953650
 AudioSource:
   m_ObjectHideFlags: 0
@@ -323,7 +324,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 0
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -520,7 +521,7 @@ MonoBehaviour:
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: New Text
 --- !u!222 &2023586023
