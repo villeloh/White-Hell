@@ -2,29 +2,39 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WalrusMove : MonoBehaviour {
-
-
-	public GridManager GridManager;
+public class WalrusMove : MonoBehaviour
+{
+	private GridManager gridManager;
+	private AnimalHandler animalHandler;
 	private bool moveWalrus = false;
 	private float speed = 1.0f;
 
-	/*
-	void Start()
+	private float walrusMoveMod = 50.0f;
+
+	private Vector3 randomPosition;
+
+
+	void Start ()
 	{
+		// Get reference thingies.
+		GameObject huntManager = GameObject.Find ("HuntManager");
+		gridManager = huntManager.GetComponent<GridManager> ();
+		animalHandler = huntManager.GetComponent<AnimalHandler> ();
+		randomPosition = gridManager.RandomPosition ();
 	}
+
 	// Update is called once per frame
-	void update()
+	void Update ()
 	{					
+		// throws a random destination when the hunt begins.
+		if (gameObject.transform.position == randomPosition) {
+			randomPosition = gridManager.RandomPosition ();
+		}
 
-		//Should Move the object on grid
-		Vector3 randomPosition = GridManager.RandomPosition ();
-		Vector3 randomPosition2= GridManager.RandomPosition ();
-
-		gameObject.transform.position = Vector3.Lerp (randomPosition, randomPosition2, Mathf.PingPong(Time.time*speed, 1.0f));
+		// Moves the walrus between two random positions.
+		gameObject.transform.position = Vector3.Lerp (gameObject.transform.position, randomPosition, 
+			(1 / (walrusMoveMod * (Vector3.Distance (gameObject.transform.position, randomPosition)))));
 
 	}
-
-*/
-
+		
 }

@@ -10,6 +10,7 @@ public class WalrusBehaviour : MonoBehaviour
 {
 
 	private float walrusHealth = 6.0f;
+	private float spentHealth = 0;
 	private AnimalHandler animalHandler;
 
 	void Start ()
@@ -18,10 +19,21 @@ public class WalrusBehaviour : MonoBehaviour
 		animalHandler = huntManager.GetComponent<AnimalHandler> ();
 	}
 
+	public float WalrusHealth {
+		get { return walrusHealth; }
+		set { walrusHealth = value; }
+	}
+
+	public float SpentHealth {
+		get { return spentHealth; }
+		set { spentHealth = value; }
+	}
+
 	void OnMouseOver ()
 	{
 		if ((Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began) || (Input.GetMouseButtonDown (0))) {
 			this.walrusHealth--;
+			this.spentHealth++;
 			if (this.walrusHealth == 0)
 				animalHandler.KillWalrus ();
 		}

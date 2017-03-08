@@ -104,6 +104,7 @@ GameObject:
   - component: {fileID: 8935287}
   - component: {fileID: 8935289}
   - component: {fileID: 8935288}
+  - component: {fileID: 8935290}
   m_Layer: 0
   m_Name: HuntManager
   m_TagString: Untagged
@@ -170,6 +171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2b20388f7b9c514c820c621d1155fde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GridManager: {fileID: 8935284}
   Hunt: {fileID: 8935285}
   ShootSound: {fileID: 8935289}
   WalrusIcon: {fileID: 4180006626787540, guid: ed9dc7a25b5fe5d47b0e964f5cb69fac, type: 2}
@@ -265,8 +267,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerStats: {fileID: 1788575124}
+  Hunt: {fileID: 8935285}
   pistolSound: {fileID: 8300000, guid: bdbe42ba4e855de4dae81a8143dee28b, type: 3}
   rifleSound: {fileID: 8300000, guid: 05ec268182f183f408103a8925ed0d97, type: 3}
+--- !u!114 &8935290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 8935283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62f790c0f3fa0034baf2c4aed2438326, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Hunt: {fileID: 8935285}
+  PlayerStats: {fileID: 1788575124}
 --- !u!1 &14960270
 GameObject:
   m_ObjectHideFlags: 0
@@ -3642,11 +3658,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4760301164444766, guid: fc197d86b8c286042b804cb23acb0ac1, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -51.48
+      value: -54.3
       objectReference: {fileID: 0}
     - target: {fileID: 4760301164444766, guid: fc197d86b8c286042b804cb23acb0ac1, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 21.87
+      value: -39.3
       objectReference: {fileID: 0}
     - target: {fileID: 4760301164444766, guid: fc197d86b8c286042b804cb23acb0ac1, type: 2}
       propertyPath: m_LocalPosition.z

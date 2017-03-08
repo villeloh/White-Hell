@@ -6,7 +6,7 @@ public class AnimalHandler : MonoBehaviour
 {
 
 
-    
+	public GridManager GridManager;
 	public Hunt Hunt;
 	// public GridManager GridManager;
 	// public PlayerStats PlayerStats;
@@ -21,33 +21,38 @@ public class AnimalHandler : MonoBehaviour
 
 	private GameObject walrusRef;
 
+	private Vector3 spawnPos;
+
 	// Use this for initialization
 	void Start ()
 	{
 		
 	}
 
+	// -47.0f, 26.0f, 0)
+
 	public void MakeWalrus ()
 	{
-        
-		Transform obj = Instantiate (WalrusIcon, new Vector3 (-47.0f, 26.0f, 0), Quaternion.identity);
+		spawnPos = GridManager.RandomPosition ();
+		Transform obj = Instantiate (WalrusIcon, spawnPos, Quaternion.identity);
 		obj.name = "walrus";
 		print ("mursu luotu!");
-
 		walrusRef = GameObject.Find ("walrus");
 		walrusRef.AddComponent<WalrusMove> ();
 		walrusRef.AddComponent<WalrusBehaviour> ();
 
-		ShootSound.ShootFlag = true;
+		Hunt.ShootFlag = true;
 	}
 
 	public void KillWalrus ()
 	{
-		Hunt.EndHunt ();
 		print ("got Meat");
 		Destroy (walrusRef);
+	}
 
-		ShootSound.ShootFlag = false;
+	public Vector3 SpawnPos {
+		get { return spawnPos; }
+		set { spawnPos = value; }
 	}
 
 
