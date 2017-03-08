@@ -9,44 +9,44 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1814149733816018}
+  m_RootGameObject: {fileID: 1494779101061110}
   m_IsPrefabParent: 1
---- !u!1 &1814149733816018
+--- !u!1 &1494779101061110
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4180006626787540}
-  - component: {fileID: 212981281328936728}
-  - component: {fileID: 60484740888005698}
+  - component: {fileID: 4517757071481344}
+  - component: {fileID: 212458177323346434}
+  - component: {fileID: 60827501953413518}
   m_Layer: 0
-  m_Name: WalrusIcon
+  m_Name: ArcticFoxIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4180006626787540
+--- !u!4 &4517757071481344
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1814149733816018}
+  m_GameObject: {fileID: 1494779101061110}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.8, y: -2.4, z: 0}
+  m_LocalPosition: {x: -98.79405, y: -38.33164, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!60 &60484740888005698
+--- !u!60 &60827501953413518
 PolygonCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1814149733816018}
+  m_GameObject: {fileID: 1494779101061110}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -65,12 +65,12 @@ PolygonCollider2D:
       - {x: 0.33499998, y: -0.275}
       - {x: 0.345, y: -0.255}
       - {x: 0.345, y: 0.044999998}
---- !u!212 &212981281328936728
+--- !u!212 &212458177323346434
 SpriteRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1814149733816018}
+  m_GameObject: {fileID: 1494779101061110}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -96,7 +96,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 8
-  m_Sprite: {fileID: 21300000, guid: 9d518397ede960b41a47b7daa9936ca2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b2347539489d5444abb6df048c43bd36, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

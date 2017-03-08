@@ -10,12 +10,14 @@ public class Hunt : MonoBehaviour
 
 	private bool endFlag = false;
 
+	public ShootLogic ShootLogic;
 	public AnimalHandler AnimalHandler;
 	public GridManager GridManager;
 	// public PlayerMove PlayerMove;
 	public PlayerSound PlayerSound;
 	public CameraBehaviour CameraBehaviour;
 	public int randomNumber;
+	public int randomAnimal;
 	private int repeatCombatTrigger = 1;
 	/// <summary>
 	/// Start this instance.
@@ -23,6 +25,7 @@ public class Hunt : MonoBehaviour
 	/// 
 
 	private PlayerMove playerMove;
+	private WalrusBehaviour walrusBehaviour;
 
 	private bool shootFlag = false;
 
@@ -39,9 +42,9 @@ public class Hunt : MonoBehaviour
 	{
 		//When the player is moving there is a chance that a hunting encounter plays out.
 		if (playerMove.ClickFlag == true && repeatCombatTrigger == 1) {
-			int randomNumber = UnityEngine.Random.Range (0, 3);
+			int randomNumber = UnityEngine.Random.Range (0, 100);
 			print (randomNumber); // debug
-			if (randomNumber == 1) {
+			if (randomNumber < 20) {
 
 				CameraBehaviour.MoveToMiniGame ();
 
@@ -53,9 +56,20 @@ public class Hunt : MonoBehaviour
 				//Stops walking sounds                  	
 				// GridManager.CreateBoard ();	
 				print ("board created");
-				AnimalHandler.MakeWalrus (); 
-
 				endFlag = false;
+				randomAnimal = Random.Range (0, 100);
+				if (randomAnimal < 30) {
+					AnimalHandler.MakeSeagull (); 
+				} else if (randomAnimal >= 30 && randomAnimal < 45) {
+					AnimalHandler.MakeWalrus ();
+				} else if (randomAnimal >= 45 && randomAnimal < 70) {
+					AnimalHandler.MakeSeal ();
+				} else if (randomAnimal >= 70 && randomAnimal < 95) {
+					AnimalHandler.MakeArcticFox ();
+				} else if (randomAnimal < 95) {
+					AnimalHandler.MakePolarBear ();
+				}
+
 			}	                                	                                      	
 		}                                       	
 	}
@@ -63,11 +77,11 @@ public class Hunt : MonoBehaviour
 	public void EndHunt ()
 	{                                           		
 		//Should Return the camera to the main s
-		AnimalHandler.KillWalrus ();
 		shootFlag = false;
 		CameraBehaviour.MoveToMainGame ();                                  	
 		playerMove.AllowMove = true;
 		print ("Hunt Ends");
+		ShootLogic.SpentAmmo = 0;
 	}
 
 	// Called in AnimalHandler upon spawning animals, to enable the shoot sounds.
@@ -80,6 +94,7 @@ public class Hunt : MonoBehaviour
 		get { return endFlag; }
 		set { endFlag = value; }
 	}
+
 
 }
 

@@ -39,8 +39,9 @@ public class UI : MonoBehaviour
 	public PlayerStats PlayerStats;
 	public GameTime GameTime;
 	public PlayerMove PlayerMove;
-    public UI_Sound UI_Sound;
+	public UI_Sound UI_Sound;
 	Image menuBg;
+
 	void Start ()
 	{
 		//haetaan eri gameobjectit
@@ -54,7 +55,7 @@ public class UI : MonoBehaviour
 		wearing = GameObject.Find ("Wearing").GetComponent<Text> ();
 		ammoPouch = GameObject.Find ("AmmoPouch").GetComponent<Text> ();
 		inventorySpace = GameObject.Find ("InventorySpace").GetComponent<Text> ();
-		menuBg  = GameObject.Find ("MenuBg").GetComponent<Image> ();
+		menuBg = GameObject.Find ("MenuBg").GetComponent<Image> ();
 		//painikkeet
 		eatFood = GameObject.Find ("EatingButton").GetComponent<Button> ();
 		eatSeagul = GameObject.Find ("EatSeagulMeat").GetComponent<Button> ();
@@ -63,9 +64,9 @@ public class UI : MonoBehaviour
 		eatFox = GameObject.Find ("EatArcticFoxMeat").GetComponent<Button> ();
 		eatPolarBear = GameObject.Find ("EatPolarBearMeat").GetComponent<Button> ();
 		closeMenu = GameObject.Find ("CloseMenu").GetComponent<Button> ();
-		quitPrompt  = GameObject.Find ("QuitPrompt").GetComponent<Button> ();
+		quitPrompt = GameObject.Find ("QuitPrompt").GetComponent<Button> ();
 		quitYes = GameObject.Find ("QuitYes").GetComponent<Button> ();
-		quitNo  = GameObject.Find ("QuitNo").GetComponent<Button> ();
+		quitNo = GameObject.Find ("QuitNo").GetComponent<Button> ();
 		menuButton = GameObject.Find ("MenuButton").GetComponent<Button> ();
 		closeActualMenu = GameObject.Find ("CloseActualMenu").GetComponent<Button> ();
 		soundSwitch = GameObject.Find ("SoundSwitch").GetComponent<Button> ();
@@ -96,30 +97,30 @@ public class UI : MonoBehaviour
 		closeMenu.onClick.AddListener (() => closeVisibility (closeMenu)); //metodilla painikkeet pois näkyvistä ja eatFood näkyviin
 		//onclick metodit eri lihojen syöntiin (+äänet syödessä lihaa)
 		eatSeagul.onClick.AddListener (() => PlayerStats.EatFoodItem (PlayerStats.GetFoodItem ("Seagull Meat")));
-        eatSeagul.onClick.AddListener (() => UI_Sound.PlayEatSound());
+		eatSeagul.onClick.AddListener (() => UI_Sound.PlayEatSound ());
 		eatSeal.onClick.AddListener (() => PlayerStats.EatFoodItem (PlayerStats.GetFoodItem ("Seal Meat")));
-        eatSeal.onClick.AddListener(() => UI_Sound.PlayEatSound());
-        eatWalrus.onClick.AddListener (() => PlayerStats.EatFoodItem (PlayerStats.GetFoodItem ("Walrus Meat")));
-        eatWalrus.onClick.AddListener(() => UI_Sound.PlayEatSound());
-        eatFox.onClick.AddListener (() => PlayerStats.EatFoodItem (PlayerStats.GetFoodItem ("ArcticFox Meat")));
-        eatFox.onClick.AddListener(() => UI_Sound.PlayEatSound());
-        eatPolarBear.onClick.AddListener (() => PlayerStats.EatFoodItem (PlayerStats.GetFoodItem ("Polarbear Meat")));
-        eatPolarBear.onClick.AddListener(() => UI_Sound.PlayEatSound());
-        //onClickit pelin lopetus nappuloille
-        quitPrompt.onClick.AddListener (() => askToQuit (quitPrompt));
+		eatSeal.onClick.AddListener (() => UI_Sound.PlayEatSound ());
+		eatWalrus.onClick.AddListener (() => PlayerStats.EatFoodItem (PlayerStats.GetFoodItem ("Walrus Meat")));
+		eatWalrus.onClick.AddListener (() => UI_Sound.PlayEatSound ());
+		eatFox.onClick.AddListener (() => PlayerStats.EatFoodItem (PlayerStats.GetFoodItem ("Arctic Fox Meat")));
+		eatFox.onClick.AddListener (() => UI_Sound.PlayEatSound ());
+		eatPolarBear.onClick.AddListener (() => PlayerStats.EatFoodItem (PlayerStats.GetFoodItem ("Polar Bear Meat")));
+		eatPolarBear.onClick.AddListener (() => UI_Sound.PlayEatSound ());
+		//onClickit pelin lopetus nappuloille
+		quitPrompt.onClick.AddListener (() => askToQuit (quitPrompt));
 		quitNo.onClick.AddListener (() => noToQuit (quitNo));
 		quitYes.onClick.AddListener (() => yesToQuit (quitYes));
-		menuButton.onClick.AddListener (() =>  openMenu (menuButton));
-		closeActualMenu.onClick.AddListener (() =>  backToGame (closeActualMenu));
-		soundSwitch.onClick.AddListener (() =>  switchSounds (soundSwitch));
+		menuButton.onClick.AddListener (() => openMenu (menuButton));
+		closeActualMenu.onClick.AddListener (() => backToGame (closeActualMenu));
+		soundSwitch.onClick.AddListener (() => switchSounds (soundSwitch));
 	}
 
-    void openVisibility (Button eatFood)
+	void openVisibility (Button eatFood)
 	{
 
-        UI_Sound.PlayClickSound();
+		UI_Sound.PlayClickSound ();
 
-        PlayerMove.StopMove ();
+		PlayerMove.StopMove ();
 		Debug.Log ("painoit nappia " + eatFood);
         
 
@@ -140,9 +141,9 @@ public class UI : MonoBehaviour
 
 	void closeVisibility (Button closemenu)
 	{
-        UI_Sound.PlayClickSound();
+		UI_Sound.PlayClickSound ();
 
-        eatFood.gameObject.SetActive (true);
+		eatFood.gameObject.SetActive (true);
 		closeMenu.gameObject.SetActive (false);
 		eatSeagul.gameObject.SetActive (false);
 		eatFox.gameObject.SetActive (false);
@@ -155,43 +156,49 @@ public class UI : MonoBehaviour
 		menuButton.gameObject.SetActive (true);
 		PlayerMove.AllowMove = true;
 	}
-	void openMenu (Button menuButton){
 
-        UI_Sound.PlayClickSound();
+	void openMenu (Button menuButton)
+	{
 
-        PlayerMove.StopMove ();
+		UI_Sound.PlayClickSound ();
+
+		PlayerMove.StopMove ();
 		menuBg.gameObject.SetActive (true);
 		quitPrompt.gameObject.SetActive (true);
 		soundSwitch.gameObject.SetActive (true);
 		closeActualMenu.gameObject.SetActive (true);
 		eatFood.gameObject.SetActive (false);
 	}
-	void backToGame (Button closeActualMenu){
 
-        UI_Sound.PlayClickSound();
+	void backToGame (Button closeActualMenu)
+	{
+
+		UI_Sound.PlayClickSound ();
 		eatFood.gameObject.SetActive (true);
-        menuBg.gameObject.SetActive (false);
+		menuBg.gameObject.SetActive (false);
 		quitPrompt.gameObject.SetActive (false);
 		soundSwitch.gameObject.SetActive (false);
 		closeActualMenu.gameObject.SetActive (false);
 		PlayerMove.AllowMove = true;
 	}
+
 	void askToQuit (Button quitPrompt)
 	{
-        UI_Sound.PlayClickSound();
+		UI_Sound.PlayClickSound ();
 
-        quitNo.gameObject.SetActive (true);
+		quitNo.gameObject.SetActive (true);
 		quitText.gameObject.SetActive (true);
 		quitYes.gameObject.SetActive (true);
 		soundSwitch.gameObject.SetActive (false);
 		closeActualMenu.gameObject.SetActive (false);
 		quitPrompt.gameObject.SetActive (false);
 	}
+
 	void noToQuit (Button quitNo)
 	{
-        UI_Sound.PlayClickSound();
+		UI_Sound.PlayClickSound ();
 
-        quitNo.gameObject.SetActive (false);
+		quitNo.gameObject.SetActive (false);
 		quitText.gameObject.SetActive (false);
 		quitYes.gameObject.SetActive (false);
 		soundSwitch.gameObject.SetActive (true);
@@ -200,18 +207,19 @@ public class UI : MonoBehaviour
 	}
 
 	//aplikaation sammuttaminen
-	void yesToQuit(Button quitYes)
+	void yesToQuit (Button quitYes)
 	{
 		Debug.Log ("quitting");
-		Application.Quit();
+		Application.Quit ();
 	}
 
 	//äänten vaihtaminen
-	void switchSounds (Button soundSwitch){
+	void switchSounds (Button soundSwitch)
+	{
 
-        UI_Sound.PlayClickSound();
+		UI_Sound.PlayClickSound ();
 
-        if (sounds == true){
+		if (sounds == true) {
 			sounds = false;
 			Debug.Log ("äänet =" + sounds);
 			AudioListener.volume = 0.0f;
@@ -226,17 +234,17 @@ public class UI : MonoBehaviour
 	void Update ()
 	{
 		if (PlayerStats.CarriedFood >= 0) {
-			inventorySpace.text = "Inventory: " + PlayerStats.CarriedFood + "/" + PlayerStats.MaxCarriedFood;
+			inventorySpace.text = "Inventory: " + PlayerStats.CarriedFood;
 		} else if (PlayerStats.CarriedFood >= PlayerStats.MaxCarriedFood) {
 			inventorySpace.text = "Inventory is full!";
 		}
 
 		if (PlayerStats.CarriedAmmo >= 0) {
-			ammoPouch.text = "Ammo pouch: " + PlayerStats.CarriedAmmo.ToString () + "/" + PlayerStats.MaxCarriedAmmo.ToString();
+			ammoPouch.text = "Ammo pouch: " + PlayerStats.CarriedAmmo.ToString () + "/" + PlayerStats.MaxCarriedAmmo.ToString ();
 		} else if (PlayerStats.CarriedAmmo >= PlayerStats.MaxCarriedAmmo) {
 			inventorySpace.text = "Ammo pouch is full";
 		}
-		wearing.text = "Currently wearing: " + PlayerStats.GetItemName(PlayerStats.CurrentCoat);
+		wearing.text = "Currently wearing: " + PlayerStats.GetItemName (PlayerStats.CurrentCoat);
 		radioParts.text = "Radio Parts: " + PlayerStats.RadioPartCount + "/5";
 		currentHunger.text = "Hunger: " + Mathf.Round (PlayerStats.Hunger * 1f) / 1f + "/100"; //näyttää nykyisen nälkäarvon 
 		currentCold.text = "Cold: " + Mathf.Round (PlayerStats.Cold * 1f) / 1f + "/100"; //näyttää nykyisen kylmyysarvon

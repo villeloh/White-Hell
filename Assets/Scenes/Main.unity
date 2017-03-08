@@ -142,11 +142,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01a18c3e20630754781ba31701042463, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShootLogic: {fileID: 8935290}
   AnimalHandler: {fileID: 8935287}
   GridManager: {fileID: 8935284}
   PlayerSound: {fileID: 1788575126}
   CameraBehaviour: {fileID: 547243370}
   randomNumber: 0
+  randomAnimal: 0
 --- !u!4 &8935286
 Transform:
   m_ObjectHideFlags: 0
@@ -175,6 +177,13 @@ MonoBehaviour:
   Hunt: {fileID: 8935285}
   ShootSound: {fileID: 8935289}
   WalrusIcon: {fileID: 4180006626787540, guid: ed9dc7a25b5fe5d47b0e964f5cb69fac, type: 2}
+  SeagullIcon: {fileID: 4997228039363936, guid: 6a16d9cac70e7184087f293c964ee11e,
+    type: 2}
+  SealIcon: {fileID: 4456645145228756, guid: 8edc5fac3405d8a4a8ecd3b1d2a0d6b9, type: 2}
+  ArcticFoxIcon: {fileID: 4517757071481344, guid: 6caa5f60cb99f074aa79da56d1a5de2c,
+    type: 2}
+  PolarBearIcon: {fileID: 4874353835832412, guid: 014ae8c697e2f3f4e8dfb5a723bc70a4,
+    type: 2}
 --- !u!82 &8935288
 AudioSource:
   m_ObjectHideFlags: 0
@@ -283,6 +292,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Hunt: {fileID: 8935285}
   PlayerStats: {fileID: 1788575124}
+  AnimalHandler: {fileID: 8935287}
 --- !u!1 &14960270
 GameObject:
   m_ObjectHideFlags: 0

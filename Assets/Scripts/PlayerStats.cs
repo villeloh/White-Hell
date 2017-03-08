@@ -22,6 +22,7 @@ public class PlayerStats : MonoBehaviour
 	private float cold = 0.0f;
 	private float deathCold = 100.0f;
 	private float deathHunger = 100.0f;
+	private bool polarBearDeath = false;
 	private int carriedFood = 0;
 	private int maxCarriedFood = 100;
 	private int carriedAmmo;
@@ -95,8 +96,10 @@ public class PlayerStats : MonoBehaviour
 
 		if (item is FoodItem) {
 
+			carriedFood += ((FoodItem)item).EatValue;
+
 			inventory.Add (item, itemName);
-			FoodItemCheck ((FoodItem)item);
+			// FoodItemCheck ((FoodItem)item);
 
 			// The 'numberOf' values are needed in UI.cs, for displaying the amount of different food items that the player is carrying.
 			switch (((FoodItem)item).EatValue) {
@@ -233,10 +236,10 @@ public class PlayerStats : MonoBehaviour
 	private void FoodItemCheck (FoodItem foodItem)
 	{
 		if ((carriedFood + foodItem.EatValue) > maxCarriedFood) {
-			if ((maxCarriedFood - carriedFood) != 0) {
-				foodItem.EatValue = maxCarriedFood - carriedFood;
-			} else {
+			if (maxCarriedFood == carriedFood) {
 				RemoveFromInv (foodItem);
+			} else {
+				foodItem.EatValue = maxCarriedFood - carriedFood;
 				return;
 			}
 		}
@@ -368,6 +371,11 @@ public class PlayerStats : MonoBehaviour
 	public Weapon CurrentWeapon {
 		get { return currentWeapon; }
 		set { currentWeapon = value; }
+	}
+
+	public bool PolarBearDeath {
+		get { return polarBearDeath; }
+		set { polarBearDeath = value; }
 	}
 
 

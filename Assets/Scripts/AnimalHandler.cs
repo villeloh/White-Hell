@@ -15,21 +15,21 @@ public class AnimalHandler : MonoBehaviour
 	public ShootSound ShootSound;
 
 	public Transform WalrusIcon;
+	public Transform SeagullIcon;
+	public Transform SealIcon;
+	public Transform ArcticFoxIcon;
+	public Transform PolarBearIcon;
+
 
 	private AnimalHandler animalHandler;
-	private WalrusMove walrusMove;
 
 	private GameObject walrusRef;
+	private GameObject seagullRef;
+	private GameObject sealRef;
+	private GameObject arcticFoxRef;
+	private GameObject polarBearRef;
 
 	private Vector3 spawnPos;
-
-	// Use this for initialization
-	void Start ()
-	{
-		
-	}
-
-	// -47.0f, 26.0f, 0)
 
 	public void MakeWalrus ()
 	{
@@ -38,17 +38,65 @@ public class AnimalHandler : MonoBehaviour
 		obj.name = "walrus";
 		print ("mursu luotu!");
 		walrusRef = GameObject.Find ("walrus");
-		walrusRef.AddComponent<WalrusMove> ();
 		walrusRef.AddComponent<WalrusBehaviour> ();
 
 		Hunt.ShootFlag = true;
 	}
 
-	public void KillWalrus ()
+	public void MakeSeagull ()
+	{
+		spawnPos = GridManager.RandomPosition ();
+		Transform obj = Instantiate (SeagullIcon, spawnPos, Quaternion.identity);
+		obj.name = "seagull";
+		seagullRef = GameObject.Find ("seagull");
+		seagullRef.AddComponent<SeagullBehaviour> ();
+
+		Hunt.ShootFlag = true;
+	}
+
+	public void MakeSeal ()
+	{
+		spawnPos = GridManager.RandomPosition ();
+		Transform obj = Instantiate (SealIcon, spawnPos, Quaternion.identity);
+		obj.name = "seal";
+		sealRef = GameObject.Find ("seal");
+		sealRef.AddComponent<SealBehaviour> ();
+
+		Hunt.ShootFlag = true;
+	}
+
+	public void MakeArcticFox ()
+	{
+		spawnPos = GridManager.RandomPosition ();
+		Transform obj = Instantiate (ArcticFoxIcon, spawnPos, Quaternion.identity);
+		obj.name = "arcticFox";
+		arcticFoxRef = GameObject.Find ("arcticFox");
+		arcticFoxRef.AddComponent<ArcticFoxBehaviour> ();
+
+		Hunt.ShootFlag = true;
+	}
+
+	public void MakePolarBear ()
+	{
+		spawnPos = GridManager.RandomPosition ();
+		Transform obj = Instantiate (PolarBearIcon, spawnPos, Quaternion.identity);
+		obj.name = "polarBear";
+		polarBearRef = GameObject.Find ("polarBear");
+		polarBearRef.AddComponent<PolarBearBehaviour> ();
+
+		Hunt.ShootFlag = true;
+	}
+
+	public void KillAnimal ()
 	{
 		print ("got Meat");
 		Destroy (walrusRef);
+		Destroy (seagullRef);
+		Destroy (sealRef);
+		Destroy (arcticFoxRef);
+		Destroy (polarBearRef);
 	}
+
 
 	public Vector3 SpawnPos {
 		get { return spawnPos; }

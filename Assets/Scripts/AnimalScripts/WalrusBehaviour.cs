@@ -1,0 +1,70 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using Random = UnityEngine.Random;
+
+//Tells Random to use the Unity Engine random number generator.
+
+
+public class WalrusBehaviour : MonoBehaviour
+{
+
+	private float animalHealth = 7.0f;
+	private float spentHealth = 0;
+	private AnimalHandler animalHandler;
+	private Hunt hunt;
+	private PlayerStats playerStats;
+
+	private GridManager gridManager;
+
+	private float animalMoveMod = 50.0f;
+
+	private Vector3 randomPosition;
+
+	void Start ()
+	{
+		GameObject huntManager = GameObject.Find ("HuntManager");
+		animalHandler = huntManager.GetComponent<AnimalHandler> ();
+		hunt = huntManager.GetComponent<Hunt> ();
+
+		GameObject player = GameObject.Find ("Player");
+		playerStats = player.GetComponent<PlayerStats> ();
+
+		gridManager = huntManager.GetComponent<GridManager> ();
+		randomPosition = gridManager.RandomPosition ();
+
+	}
+
+	public float SpentHealth {
+		get { return spentHealth; }
+		set { spentHealth = value; }
+	}
+
+	void OnMouseOver ()
+	{
+		if ((Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began) || (Input.GetMouseButtonDown (0))) {
+			this.animalHealth--;
+			this.spentHealth++;
+			if (this.animalHealth == 0) {
+
+				animalHandler.KillAnimal ();
+				hunt.EndHunt ();
+				playerStats.AddToInv (new FoodItem (40), "Walrus Meat");
+
+			}
+		}
+	}
+
+	// Update is called once per frame
+	void Update ()
+	{					
+		// throws a random destination when the hunt begins.
+		if (gameObject.transform.position == randomPosition) {
+			randomPosition = gridManager.RandomPosition ();
+		}
+
+		// Moves the walrus between two random positions.
+		gameObject.transform.position = Vector3.Lerp (gameObject.transform.position, randomPosition, 
+			(1 / (animalMoveMod * (Vector3.Distance (gameObject.transform.position, randomPosition)))));
+	}
+}
