@@ -54,9 +54,9 @@ public class CameraBehaviour : MonoBehaviour
 
 			float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
 
-			Camera.main.orthographicSize += deltaMagnitudeDiff * zoomSpeed;
+			targetOrtho += deltaMagnitudeDiff * zoomSpeed;
 
-			Camera.main.orthographicSize = Mathf.Max (Camera.main.orthographicSize, 0.1f);
+			targetOrtho = Mathf.Max (targetOrtho, minOrtho, maxOrtho);
 
 		}
 	}

@@ -133,6 +133,7 @@ public class UI : MonoBehaviour
 		inventorySpace.gameObject.SetActive (true);
 		ammoPouch.gameObject.SetActive (true);
 		wearing.gameObject.SetActive (true);
+		menuButton.gameObject.SetActive (false);
 		//PlayerMove.AllowMove = true;
 		Debug.Log (PlayerMove.AllowMove);
 	}
@@ -151,6 +152,7 @@ public class UI : MonoBehaviour
 		inventorySpace.gameObject.SetActive (false);
 		ammoPouch.gameObject.SetActive (false);
 		wearing.gameObject.SetActive (false);
+		menuButton.gameObject.SetActive (true);
 		PlayerMove.AllowMove = true;
 	}
 	void openMenu (Button menuButton){
@@ -162,11 +164,12 @@ public class UI : MonoBehaviour
 		quitPrompt.gameObject.SetActive (true);
 		soundSwitch.gameObject.SetActive (true);
 		closeActualMenu.gameObject.SetActive (true);
+		eatFood.gameObject.SetActive (false);
 	}
 	void backToGame (Button closeActualMenu){
 
         UI_Sound.PlayClickSound();
-
+		eatFood.gameObject.SetActive (true);
         menuBg.gameObject.SetActive (false);
 		quitPrompt.gameObject.SetActive (false);
 		soundSwitch.gameObject.SetActive (false);
