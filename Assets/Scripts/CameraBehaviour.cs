@@ -97,7 +97,7 @@ public class CameraBehaviour : MonoBehaviour
 	/// </summary>
 	public void MoveToMiniGame ()
 	{
-		Camera.main.transform.position = new Vector3 (-43.5f, 30.0f, -10f);
+		Camera.main.transform.position = new Vector3 (-43.5f, 29.5f, -10f);
 		StopCameraBehaviour ();
 	}
 

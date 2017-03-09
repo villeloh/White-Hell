@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['gametime',['GameTime',['../class_game_time.html',1,'GameTime'],['../class_player_stats.html#ab97a3f93ddb7a44e5796f1e1fef162a7',1,'PlayerStats.GameTime()'],['../class_u_i.html#a6e0ae9c2433081b091c1e05771e4ce20',1,'UI.GameTime()']]],
+  ['gametime',['GameTime',['../class_game_time.html',1,'GameTime'],['../class_hunt.html#af8180b504a72ddc2cbbdea88bb93d567',1,'Hunt.GameTime()'],['../class_player_stats.html#ab97a3f93ddb7a44e5796f1e1fef162a7',1,'PlayerStats.GameTime()'],['../class_u_i.html#a6e0ae9c2433081b091c1e05771e4ce20',1,'UI.GameTime()']]],
   ['gametime_2ecs',['GameTime.cs',['../_game_time_8cs.html',1,'']]],
   ['generate',['Generate',['../class_doxygen_window.html#ad1f6043062e30f52cb634b72294a5676a32b919d18cfaca89383f6000dcc9c031',1,'DoxygenWindow']]],
   ['getdays',['GetDays',['../class_game_time.html#acb52611a39f5c1539fcb59d3f6d330c6',1,'GameTime']]],
