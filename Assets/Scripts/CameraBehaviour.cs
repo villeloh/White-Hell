@@ -20,18 +20,18 @@ public class CameraBehaviour : MonoBehaviour
 	private bool CameraMovement = false;
 
 
-    /// <summary>
-    /// Assign values that will be needed later on.
-    /// </summary>
+	/// <summary>
+	/// Assign values that will be needed later on.
+	/// </summary>
 	void Start ()
 	{
 		targetOrtho = Camera.main.orthographicSize;
 		CameraMovement = true;
 	}
 
-    /// <summary>
-    /// Different zoom controls for desktop and mobile devices.
-    /// </summary>
+	/// <summary>
+	/// Different zoom controls for desktop and mobile devices.
+	/// </summary>
 	void Update ()
 	{
 		if (CameraMovement) {
@@ -41,19 +41,20 @@ public class CameraBehaviour : MonoBehaviour
 			gameObject.transform.position = Player.transform.position;
 			gameObject.transform.position += new Vector3 (0.0f, 0.0f, -10.0f);
 
-			#if UNITY_EDITOR_WIN
-			float scroll = Input.GetAxis ("Mouse ScrollWheel");
-			if (scroll != 0.0f) {
-				targetOrtho -= scroll * zoomSpeed;
-				targetOrtho = Mathf.Clamp (targetOrtho, minOrtho, maxOrtho);
-			}
+			if (!Application.isMobilePlatform) {
+				float scroll = Input.GetAxis ("Mouse ScrollWheel");
+				if (scroll != 0.0f) {
+					targetOrtho -= scroll * zoomSpeed;
+					targetOrtho = Mathf.Clamp (targetOrtho, minOrtho, maxOrtho);
+				}
 
-			Camera.main.orthographicSize = Mathf.MoveTowards (Camera.main.orthographicSize, targetOrtho, smoothSpeed * Time.deltaTime);
-			#endif
+				Camera.main.orthographicSize = Mathf.MoveTowards (Camera.main.orthographicSize, targetOrtho, smoothSpeed * Time.deltaTime);
+			}
 		}
-		#if UNITY_EDITOR_WIN
-		Camera.main.orthographicSize = Mathf.MoveTowards (Camera.main.orthographicSize, targetOrtho, smoothSpeed * Time.deltaTime);
-		#endif
+
+		if (!Application.isMobilePlatform) {
+			Camera.main.orthographicSize = Mathf.MoveTowards (Camera.main.orthographicSize, targetOrtho, smoothSpeed * Time.deltaTime);
+		}
 		
 		// pich to zoom scripti
 		if (Input.touchCount == 2) { //tarkistaa jos kaksi koskestusta samaanaikaan ruudulla
@@ -75,34 +76,34 @@ public class CameraBehaviour : MonoBehaviour
 		}
 	}
 
-    /// <summary>
-    /// Disables zoom.
-    /// </summary>
+	/// <summary>
+	/// Disables zoom.
+	/// </summary>
 	public void StopCameraBehaviour ()
 	{
 		CameraMovement = false;
 	}
 
-    /// <summary>
-    /// Enables zoom.
-    /// </summary>
+	/// <summary>
+	/// Enables zoom.
+	/// </summary>
 	public void StartCameraBehaviour ()
 	{
 		CameraMovement = true;
 	}
 
-    /// <summary>
-    /// Moves the camera to a new position over the minigame board and disables zoom.
-    /// </summary>
+	/// <summary>
+	/// Moves the camera to a new position over the minigame board and disables zoom.
+	/// </summary>
 	public void MoveToMiniGame ()
 	{
 		Camera.main.transform.position = new Vector3 (-46f, 26f, -10f);
 		StopCameraBehaviour ();
 	}
 
-    /// <summary>
-    /// Moves the camera back to the main map view and re-enables zoom.
-    /// </summary>
+	/// <summary>
+	/// Moves the camera back to the main map view and re-enables zoom.
+	/// </summary>
 	public void MoveToMainGame ()
 	{
 		StartCameraBehaviour ();
