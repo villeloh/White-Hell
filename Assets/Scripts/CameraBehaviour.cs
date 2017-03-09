@@ -59,11 +59,7 @@ public class CameraBehaviour : MonoBehaviour
 
 			float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
 
-
-
-			Camera.main.orthographicSize += deltaMagnitudeDiff * androidZoomSpeed;
-
-			Camera.main.orthographicSize = Mathf.Max (Camera.main.orthographicSize, 0.1f);
+			Camera.main.orthographicSize = Mathf.Clamp (Camera.main.orthographicSize - (deltaMagnitudeDiff * androidZoomSpeed), minOrtho, maxOrtho);
 
 
 		}
