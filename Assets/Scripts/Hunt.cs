@@ -28,7 +28,7 @@ public class Hunt : MonoBehaviour
 	private WalrusBehaviour walrusBehaviour;
 
 	private bool shootFlag = false;
-    private float timeOfLastHunt = 0.0f;
+	private float timeOfLastHunt = 0.0f;
 
 	void Start ()
 	{
@@ -42,16 +42,16 @@ public class Hunt : MonoBehaviour
 	public void CombatTrigger ()
 	{
 		//When the player is moving there is a chance that a hunting encounter plays out.
-        // The time conditions make it so that encounters may only spawn every 10 seconds, and one will be forced to spawn 
-        // if there have been none in 100 seconds.
+		// The time conditions make it so that encounters may only spawn every 10 seconds, and one will be forced to spawn 
+		// if there have been none in 100 seconds.
 		if (playerMove.ClickFlag == true && repeatCombatTrigger == true) {
 			int randomNumber = UnityEngine.Random.Range (0, 100);
 			print (randomNumber); // debug
 			if ((randomNumber < 20 && (Time.time - timeOfLastHunt) > 10.0f) || (Time.time - timeOfLastHunt) > 100.0f) {
 
-                timeOfLastHunt = Time.time;
+				timeOfLastHunt = Time.time;
 
-                repeatCombatTrigger = false;
+				repeatCombatTrigger = false;
 
 				CameraBehaviour.MoveToMiniGame ();
 
@@ -64,7 +64,7 @@ public class Hunt : MonoBehaviour
 
 				endFlag = false;
 				randomAnimal = Random.Range (0, 100);
-                          
+				 
 				if (randomAnimal < 30) {
 					AnimalHandler.MakeSeagull (); 
 				} else if (randomAnimal >= 30 && randomAnimal < 45) {
@@ -77,15 +77,15 @@ public class Hunt : MonoBehaviour
 					AnimalHandler.MakePolarBear ();
 				}
 
-                // test case
-               /* if (randomAnimal <= 100)
-                {
-                    AnimalHandler.MakePolarBear();
-                } */
+				// test case
+				/*
+				if (randomAnimal <= 100) {
+					AnimalHandler.MakePolarBear ();
+				} */
                     
 
-            }
-        }                                       	
+			}
+		}                                       	
 	}
 
 	public void EndHunt ()
@@ -95,22 +95,22 @@ public class Hunt : MonoBehaviour
 		playerMove.AllowMove = true;
 		print ("Hunt Ends");
 		ShootLogic.SpentAmmo = 0;
-        Invoke("LastShot", 0.1f);
-        repeatCombatTrigger = true;
+		Invoke ("LastShot", 0.1f);
+		repeatCombatTrigger = true;
 	}
 
-    // In order for the last shot sound to play, this method is needed (bare statements cannot be invoked with the Invoke() method).
-    public void LastShot()
-    {
-        ShootFlag = false;
-    }
-    
+	// In order for the last shot sound to play, this method is needed (bare statements cannot be invoked with the Invoke() method).
+	public void LastShot ()
+	{
+		ShootFlag = false;
+	}
+
 	public bool ShootFlag {
 		get { return shootFlag; }
 		set { shootFlag = value; }
 	}
 
-    public bool EndFlag {
+	public bool EndFlag {
 		get { return endFlag; }
 		set { endFlag = value; }
 	}

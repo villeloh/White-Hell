@@ -524,6 +524,7 @@ MonoBehaviour:
   eatSounds:
   - {fileID: 8300000, guid: e7fa45828b4fbb2408b354e99129ab5f, type: 3}
   - {fileID: 8300000, guid: 273520c497b0977489cc52c9fe4d96e1, type: 3}
+  PlayerStats: {fileID: 1788575124}
 --- !u!82 &16719981
 AudioSource:
   m_ObjectHideFlags: 0
@@ -541,7 +542,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 191
+  Priority: 47
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -945,7 +946,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 192
+  Priority: 201
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500

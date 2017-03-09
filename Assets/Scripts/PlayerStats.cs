@@ -46,7 +46,7 @@ public class PlayerStats : MonoBehaviour
 	private const int walrusEatValue = 40;
 	private const int polarBearEatValue = 60;
 
-    private bool removeFlag = false;
+	private bool removeFlag = false;
 
 	private Weapon pistol;
 	private Weapon rifle;
@@ -75,7 +75,7 @@ public class PlayerStats : MonoBehaviour
 		carriedAmmo = 20;
 
 		// Testing food item creation.
-		AddToInv (new FoodItem(10), "Seagull Meat");
+		AddToInv (new FoodItem (10), "Seagull Meat");
 
 		pistol = new Weapon (1);
 		rifle = new Weapon (3);
@@ -94,51 +94,51 @@ public class PlayerStats : MonoBehaviour
 	public void AddToInv (Item item, string itemName)
 	{
 
-        if (item is FoodItem) {
+		if (item is FoodItem) {
 
-            inventory.Add((FoodItem)item, itemName);
-            FoodItemCheck((FoodItem)item);
+			inventory.Add ((FoodItem)item, itemName);
+			FoodItemCheck ((FoodItem)item);
 
-            // The 'numberOf' values are needed in UI.cs, for displaying the amount of different food items that the player is carrying.
-            if (removeFlag == false) {
-                switch (GetItemName((FoodItem)item)) {
+			// The 'numberOf' values are needed in UI.cs, for displaying the amount of different food items that the player is carrying.
+			if (removeFlag == false) {
+				switch (GetItemName ((FoodItem)item)) {
 
-                    case "Seagull Meat":
+				case "Seagull Meat":
 
-                        numberOfSeagullMeats++;
-                        print("number of seagull meat items + 1!"); // debug
+					numberOfSeagullMeats++;
+					print ("number of seagull meat items + 1!"); // debug
 
-                        break;
+					break;
 
-                    case "Arctic Fox Meat":
+				case "Arctic Fox Meat":
 
-                        numberOfPolarFoxMeats++;
+					numberOfPolarFoxMeats++;
 
-                        break;
+					break;
 
-                    case "Seal Meat":
+				case "Seal Meat":
 
-                        numberOfSealMeats++;
+					numberOfSealMeats++;
 
-                        break;
+					break;
 
-                    case "Walrus Meat":
+				case "Walrus Meat":
 
-                        numberOfWalrusMeats++;
+					numberOfWalrusMeats++;
 
-                        break;
+					break;
 
-                    case "Polar Bear Meat":
+				case "Polar Bear Meat":
 
-                        numberOfPolarBearMeats++;
+					numberOfPolarBearMeats++;
 
-                        break;
-                }
-            }
-        } else if (item is Coat) {
-            inventory.Add(item, itemName + " (" + ((Coat)item).ColdResistance + ")");
-            CoatCheck((Coat)item);
-        }
+					break;
+				}
+			}
+		} else if (item is Coat) {
+			inventory.Add (item, itemName + " (" + ((Coat)item).ColdResistance + ")");
+			CoatCheck ((Coat)item);
+		}
 
 		//IMPORTANT NOTE: As it is, you cannot add items to inv other than Coats and FoodItems! Separate conditions for Weapons will 
 		// be added if needed. As for RadioParts, they will be handled as a simple int, since they have no other usable attributes 
@@ -156,7 +156,7 @@ public class PlayerStats : MonoBehaviour
 	public void EatFoodItem (FoodItem meat)
 	{
 		// The null check is needed for when the method is called from UI.cs (since the click is always possible, regardless if you have any food items or not).
-        // The hunger check makes eating impossible if hunger is already zero, preventing the player from wasting any meat items.
+		// The hunger check makes eating impossible if hunger is already zero, preventing the player from wasting any meat items.
 		if (meat != null && hunger > 0) {
 			print ("hunger ennen syöntiä:" + hunger); // debug
 
@@ -170,7 +170,7 @@ public class PlayerStats : MonoBehaviour
 			// even without any checks, carriedFood should never go below zero, because it has previously been increased by the same amount (when adding the item to inventory)
 			carriedFood -= meat.EatValue;
 
-			switch (GetItemName(meat)) {
+			switch (GetItemName (meat)) {
 
 			case "Seagull Meat":
 
@@ -227,8 +227,8 @@ public class PlayerStats : MonoBehaviour
 		if ((carriedFood + foodItem.EatValue) > maxCarriedFood) {
 			if (carriedFood == maxCarriedFood) {
 				RemoveFromInv (foodItem);
-                removeFlag = true;
-                return;
+				removeFlag = true;
+				return;
 			} else {
 				foodItem.EatValue = maxCarriedFood - carriedFood;
 			}

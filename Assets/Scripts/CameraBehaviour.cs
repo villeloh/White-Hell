@@ -6,7 +6,8 @@ public class CameraBehaviour : MonoBehaviour
 	// Tarvitaan, jotta voidaan viitata Playeriin. Huom. myös kiinnitettävä Player-objekti CameraBehaviouriin Unityssa.
 	public GameObject Player;
 
-	private float zoomSpeed = 1;
+	private float zoomSpeed = 1.0f;
+	private float androidZoomSpeed = 0.04f;
 	private float targetOrtho;
 	private float smoothSpeed = 2.0f;
 	private float minOrtho = 1.0f;
@@ -23,14 +24,14 @@ public class CameraBehaviour : MonoBehaviour
 
 	void Update ()
 	{
-		if (CameraMovement)
-		{
+		if (CameraMovement) {
 			// Ensin haetaan kameran koordinaatit Playerilta. Sitten lisätään uuden 'vektorin' avulla -10 Z-arvoon, jotta kamera ei ole maassa kiinni. 
 			// Voi näyttää monimutkaiselta, mutta C#:ssa tämä on pakollista, koska 'Vector3' on siinä tyypiltään struct, jonka yksittäisen 'osa-arvon' 
 			// muuttaminen ei ole suoraan mahdollista (esim. gameObject.transform.position.x = Player.transform.position.x heittää erroria).
 			gameObject.transform.position = Player.transform.position;
-			gameObject.transform.position += new Vector3(0.0f, 0.0f, -10.0f);
+			gameObject.transform.position += new Vector3 (0.0f, 0.0f, -10.0f);
 
+			#if UNITY_EDITOR_WIN
 			float scroll = Input.GetAxis ("Mouse ScrollWheel");
 			if (scroll != 0.0f) {
 				targetOrtho -= scroll * zoomSpeed;
@@ -38,12 +39,16 @@ public class CameraBehaviour : MonoBehaviour
 			}
 
 			Camera.main.orthographicSize = Mathf.MoveTowards (Camera.main.orthographicSize, targetOrtho, smoothSpeed * Time.deltaTime);
+			#endif
 		}
+		#if UNITY_EDITOR_WIN
 		Camera.main.orthographicSize = Mathf.MoveTowards (Camera.main.orthographicSize, targetOrtho, smoothSpeed * Time.deltaTime);
+		#endif
+		
 		// pich to zoom scripti
-		if (Input.touchCount == 2){ //tarkistaa jos kaksi koskestusta samaanaikaan ruudulla
+		if (Input.touchCount == 2) { //tarkistaa jos kaksi koskestusta samaanaikaan ruudulla
 			//Tallentaa kosketukset
-			Touch touchZero = Input.GetTouch(0);
+			Touch touchZero = Input.GetTouch (0);
 			Touch touchOne = Input.GetTouch (1);
 
 			Vector2 touchZeroPrevPos = touchZero.position - touchZero.deltaPosition;
@@ -54,9 +59,12 @@ public class CameraBehaviour : MonoBehaviour
 
 			float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
 
-			targetOrtho += deltaMagnitudeDiff * zoomSpeed;
 
-			targetOrtho = Mathf.Max (targetOrtho, minOrtho, maxOrtho);
+
+			Camera.main.orthographicSize += deltaMagnitudeDiff * androidZoomSpeed;
+
+			Camera.main.orthographicSize = Mathf.Max (Camera.main.orthographicSize, 0.1f);
+
 
 		}
 	}
@@ -65,6 +73,7 @@ public class CameraBehaviour : MonoBehaviour
 	{
 		CameraMovement = false;
 	}
+
 	public void StartCameraBehaviour ()
 	{
 		CameraMovement = true;

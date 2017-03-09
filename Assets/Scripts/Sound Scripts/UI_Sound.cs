@@ -14,6 +14,8 @@ public class UI_Sound : MonoBehaviour
 	public AudioClip clickSound;
 	public AudioClip[] eatSounds;
 
+	public PlayerStats PlayerStats;
+
 	private AudioSource source;
 
 
@@ -28,7 +30,9 @@ public class UI_Sound : MonoBehaviour
 	// Methods for playing the sounds (called from UI.cs on each button click).
 	public void PlayEatSound ()
 	{
-		source.PlayOneShot (eatSounds [Random.Range (0, 1)], 1f);
+		if (PlayerStats.Hunger > 0) {
+			source.PlayOneShot (eatSounds [Random.Range (0, 1)], 1f);
+		}
 	}
 
 	public void PlayClickSound ()

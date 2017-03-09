@@ -17,7 +17,7 @@ public class ArcticFoxBehaviour : MonoBehaviour
 
 	private GridManager gridManager;
 
-	private float animalMoveMod = 10.0f;
+	private float animalMoveMod = 17.0f;
 
 	private Vector3 randomPosition;
 
@@ -43,11 +43,10 @@ public class ArcticFoxBehaviour : MonoBehaviour
 	void OnMouseOver ()
 	{
 		if ((Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began) || (Input.GetMouseButtonDown (0))) {
-            for (int i = 0; i < playerStats.CurrentWeapon.Damage; i++)
-            {
-                this.animalHealth--;
-                this.spentHealth++;
-            }
+			for (int i = 0; i < playerStats.CurrentWeapon.Damage; i++) {
+				this.animalHealth--;
+				this.spentHealth++;
+			}
 		}
 	}
 
@@ -55,15 +54,14 @@ public class ArcticFoxBehaviour : MonoBehaviour
 	void Update ()
 	{
 
-        if (this.animalHealth <= 0)
-        {
-            hunt.EndHunt();
-            animalHandler.KillAnimal();
-            playerStats.AddToInv(new FoodItem(20), "Arctic Fox Meat");
-        }
+		if (this.animalHealth <= 0) {
+			hunt.EndHunt ();
+			animalHandler.KillAnimal ();
+			playerStats.AddToInv (new FoodItem (20), "Arctic Fox Meat");
+		}
 
-        // throws a new random destination whenever the animal reaches its destination.
-        if (gameObject.transform.position == randomPosition) {
+		// throws a new random destination whenever the animal reaches its destination.
+		if (gameObject.transform.position == randomPosition) {
 			randomPosition = gridManager.RandomPosition ();
 		}
 
