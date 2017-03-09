@@ -2,14 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Class for handling the logic of the shooting mini-game.
+/// Authors: Jimi Nikander + Ville Lohkovuori
+/// </summary>
+
 public class ShootLogic : MonoBehaviour
 {
 	/*
 	 * Handles the logic of the shooting mini-game.
 	 * Attached to: HuntManager
-	 * 
+	 * Authors: Jimi Nikander + Ville Lohkovuori
 	 */
 
+    // Declare reference variables...
 	public Hunt Hunt;
 	public PlayerStats PlayerStats;
 	public AnimalHandler AnimalHandler;
@@ -23,14 +29,18 @@ public class ShootLogic : MonoBehaviour
 	// Needed to track the spent ammunition, for purposes of ending the encounter.
 	private int spentAmmo = 0;
 
-    
+    // Property for accessing spentAmmo from outside the class.
 	public int SpentAmmo {
 		get { return spentAmmo; }
 		set { spentAmmo = value; }
 	}
 		
 
-	// Update is called once per frame
+	/// <summary>
+    /// If the player has any ammo, clicking/tapping to shoot reduces it by 1. If the player misses a shot two times in total, end the encounter and kill the animal.
+    /// </summary>
+    // NOTE: The reason all the animals needed a separate statement is simply hurry towards the end of the project. There must be a better way to do this.
+    // NOTE #2: It's debatable whether this class should control the *killing* of animals, instead of just *shooting*. It's too late to change it now though.
 	void Update ()
 	{
 
@@ -39,7 +49,6 @@ public class ShootLogic : MonoBehaviour
 				spentAmmo++; // for tracking pistol shots as well, this needs to be before the next 'if' statement!
 				if (PlayerStats.CarriedAmmo > 0) {
 					PlayerStats.CarriedAmmo--;
-
 				}
 			}
 		}

@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A class for handling the walking sounds of the Player.
+/// </summary>
+
 public class PlayerSound : MonoBehaviour {
 
     /*
@@ -19,27 +23,36 @@ public class PlayerSound : MonoBehaviour {
 
     private AudioSource source;
 
+    // For controlling the pitch and volume of the audio source.
     private float walkPitchLow = 0.75f;
     private float walkPitchHigh = 1.25f;
     private float volumeMin = 0.7f;
     private float volumeMax = 1.0f;
-    
+
+    /// <summary>
+    /// Find and assign the audiosource.
+    /// </summary>
     void Start ()
     {
-        // Find the audiosource.
+        
         source = gameObject.GetComponent<AudioSource> ();
     }
 
-    // Called in Triggerer.cs when the outro is triggered, to silence the walking sounds.
+    /// <summary>
+    /// Called in Triggerer.cs and Hunt.cs, to silence the walking sounds.
+    /// </summary>
     public void MuteWalkSound ()
     {
         source.Stop();
     }
 
-
+    /// <summary>
+    /// When the Player is moving, play one of two walking sound AudioClips, based on the hunger and cold stats 
+    /// (heavier sound when the player is more cold / hungry). The sound will stop when the player has either 
+    /// stopped or collided.
+    /// </summary>
     void Update () {
 
-        // When the Player is moving, play one of three walking sound AudioClips.
         if (PlayerMove.ClickFlag == true && !source.isPlaying)
         {
             source.pitch = Random.Range(walkPitchLow, walkPitchHigh);
@@ -54,6 +67,7 @@ public class PlayerSound : MonoBehaviour {
             } 
         } else if (!PlayerMove.ClickFlag || PlayerMove.CollidedTag != null) {
 
-            source.Stop (); }
+            source.Stop ();
+        }
     }
 }

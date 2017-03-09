@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Class for determining quest logic.
+/// </summary>
+
 namespace QuestNamespace
 {
 
@@ -59,12 +63,14 @@ namespace QuestNamespace
 		// Define a list of quest texts, for use later on.
 		private List<string> questTexts = new List<string> ();
 
-
+        /// <summary>
+        /// Add all the quest booleans and -texts to lists. Assign values to some reference variables. Spawn the initial quests and place names on the map.
+        /// </summary>
 		void Start ()
 		{
 
 			// Add all the quest booleans to a list (for easy manipulation later on).
-			// NOTE: The 'inner new List' thingy is copied from the internet, and I'm a bit fuzzy about its internal logic. But it works, so, meh. :p
+			// NOTE: The 'inner new List' thingy is copied from the internet, and I'm a bit fuzzy about its internal logic. But it seems to work, so...
 			questBooleans.InsertRange (questBooleans.Count, new List<bool> {
 				quest1_Completed,
 				quest2_Completed,
@@ -135,18 +141,19 @@ namespace QuestNamespace
 		}
 
 
-		/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  */
+        /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  */
 
-		/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   QUEST SPAWN METHODS   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  */
+        /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   QUEST SPAWN METHODS   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  */
 
 
-		// Creates a new quest icon + quest label with the given name in spot (x,y). The sprites are chosen from lists that can be made manually in Unity (just drag & drop the sprites).
-
-		// NOTE: It is in all likelihood a VERY bad practice to associate two Arrays with each other in the way I've done it here. Right now, the int 'iconAndLabel_ID' is the
-		// ONLY thing that's linking together the chosen quest icons and quest labels. If either Array of Sprites gets 'out of sync', it changes potentially ALL of
-		// the associated labels/icons to the wrong ones! I tried using a Dictionary to associate the two different Arrays with each other, but the syntax proved
-		// too hard for me.
-		public void SpawnQuestIcon (string iconName, float x, float y, int iconAndLabel_ID)
+        /// <summary>
+        /// Creates a new quest icon + quest label with the given name in spot (x,y). The sprites are chosen from lists that can be made manually in Unity (just drag & drop the sprites).
+        /// </summary>
+        // NOTE: It is in all likelihood a VERY bad practice to associate two Arrays with each other in the way I've done it here. Right now, the int 'iconAndLabel_ID' is the
+        // ONLY thing that's linking together the chosen quest icons and quest labels. If either Array of Sprites gets 'out of sync', it changes potentially ALL of
+        // the associated labels/icons to the wrong ones! I tried using a Dictionary to associate the two different Arrays with each other, but the syntax proved
+        // too hard for me atm.
+        public void SpawnQuestIcon (string iconName, float x, float y, int iconAndLabel_ID)
 		{
 
 			Transform icon = Instantiate (QuestIcon, new Vector3 (x, y, 0.0f), Quaternion.identity);
@@ -162,10 +169,12 @@ namespace QuestNamespace
 
 		}
 
-		// Changes the quest icon to one that indicates the quest has been completed. The collider is destroyed in order to make the quest non-interactable.
-		// Originally, this method *destroyed* the used quest icon, but it's better to have them stay on the map, to track the player's progress.
-		// If the icon is tagged as a shelter, then the method changes its icon to the 'shelter' icon, but leaves the collider intact.
-		public void ChangeQuestIcon (GameObject givenIcon)
+        /// <summary>
+        /// Changes the quest icon to one that indicates that the quest has been completed. The collider is destroyed in order to make the quest non-interactable.
+        /// If the icon is tagged as a shelter, then the method changes its icon to the 'shelter' icon, but leaves the collider intact.
+        /// </summary>
+        // Originally, this method *destroyed* the used quest icon, but it's better to have them stay on the map, to track the player's progress.
+        public void ChangeQuestIcon (GameObject givenIcon)
 		{
 			if (givenIcon.tag != "shelter") {
 				Destroy (givenIcon.GetComponent<CircleCollider2D> ());
@@ -184,11 +193,14 @@ namespace QuestNamespace
 			}
 		}
 
-		// Spawns text icons on the map... This had to be done with a Text prefab, because Unity doesn't allow
-		// for direct modification of the text component of a newly created Text object ('protection level' error).
-		// ... Or maybe it does, and I simply missed something trivial. Anyway, prefabs are a superior way of dealing
-		// with numerous GameObjects, and should be used on all occasions like this one.
-		public void SpawnTextIcon (string givenText, float x, float y)
+        /// <summary>
+        ///  Spawns text icons (for place names) on the map, in the given coordinates. 
+        /// </summary>
+        // This had to be done with a Text prefab, because Unity doesn't allow
+        // for direct modification of the text component of a newly created Text object ('protection level' error).
+        // ... Or maybe it does, and I simply missed something trivial. Anyway, prefabs are a superior way of dealing
+        // with numerous GameObjects, and should be used on all occasions like this one.
+        public void SpawnTextIcon (string givenText, float x, float y)
 		{
 			Transform icon = Instantiate (TextIcon, new Vector3 (x, y, 0.0f), Quaternion.identity);
 			icon.transform.SetParent (GameObject.Find ("MapIconCanvas").transform, false);
@@ -197,35 +209,43 @@ namespace QuestNamespace
 			textIconText.text = givenText;
 		}
 
-		/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  */
+        /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  */
 
-		/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   HELPER METHODS   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  */
+        /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   HELPER METHODS   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  */
 
 
-		// Methods for accessing the quest booleans from outside the class (in Triggerer.cs).
-		// IMPORTANT NOTE: It seems that the booleans have a different identity after being added to the list; manipulating the original values (Quest1_Completed, etc) does nothing unless their use
-		// is explicitly specified beforehand. As the list is quite necessary in a few spots, and using the original values could lead to serious conflicts, these methods should be used
-		// at *ALL* times when it comes to altering the values of the quest booleans.
-
-		public bool GetQuestBoolean (int givenNumber)
+        /// <summary>
+        /// Method for getting a quest boolean from outside the class (in Triggerer.cs).
+        /// </summary>
+        // IMPORTANT NOTE: It seems that the booleans have a different identity after being added to the list; manipulating the original values (Quest1_Completed, etc) does nothing unless their use
+        // is explicitly specified beforehand. As the list is quite necessary in a few spots, and using the original values could lead to serious conflicts, these methods should be used
+        // at *ALL* times when it comes to altering the values of the quest booleans.
+        public bool GetQuestBoolean (int givenNumber)
 		{
 			return questBooleans [givenNumber];
 		}
 
-		public void SetQuestBoolean (int givenNumber, bool newValue)
+        /// <summary>
+        /// Method for setting a quest boolean from outside the class (in Triggerer.cs).
+        /// </summary>
+        public void SetQuestBoolean (int givenNumber, bool newValue)
 		{
 			questBooleans [givenNumber] = newValue;
 		}
 
-		// Toggles the 'active' status of the 'QuestHolder' Game Object (and, by proxy, its Image component, which would otherwise block
-		// certain clicks that are needed when dealing with pop-ups.).
-		public void ToggleQuestHolderActive ()
+        /// <summary>
+        /// Toggles the 'active' status of the 'QuestHolder' Game Object (and, by proxy, its Image component, which would otherwise block
+        /// certain clicks that are needed when dealing with pop-ups.).
+        /// </summary>
+        public void ToggleQuestHolderActive ()
 		{
 			questHolderHolder.SetActive (!questHolderHolder.activeSelf);
 		}
 
-		// Called in ChangeQuestIcon(). Needed to prevent an issue with the quest sound effect not playing; the tag that triggers the effect was nulled instantly upon collision.
-		// By using the Invoke() method with a delay of 0.3 seconds, the effect has time to trigger before the tag is nulled.
+        /// <summary>
+        /// Called in ChangeQuestIcon (). Needed to prevent an issue with the quest sound effect not playing; the tag that triggers the effect was nulled instantly upon collision.
+		/// By using the Invoke () method with a delay of 0.1 seconds, the effect has time to trigger before the tag is nulled.
+        /// </summary>
 		private void TagNuller ()
 		{
 			PlayerMove.CollidedTag = null;
@@ -254,12 +274,10 @@ namespace QuestNamespace
 			Quest_12
 		}
 
-		// Method for activating quest rewards (called in Triggerer.cs).
-		/// <summary>
-		/// Chooses the quest.
-		/// </summary>
-		/// <param name="givenQuest">Given quest.</param>
-		public void ChooseQuest (QuestEnum givenQuest)
+        /// <summary>
+        /// Method for granting the player quest rewards (called in Triggerer.cs).
+        /// </summary>
+        public void ChooseQuest (QuestEnum givenQuest)
 		{
 			// Certain things should be done whenever a quest is triggered; I've put them here on top of the actual quest rewards.
 
@@ -446,6 +464,9 @@ namespace QuestNamespace
 
 		/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   UPDATE () + QUEST TEXTS   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  */
 
+        /// <summary>
+        /// Logic for closing the quest pop-up upon mouse-click / tap.
+        /// </summary>
 		void Update ()
 		{
 			// Closes the quest popup upon mouse-click / tap. (There must be a better way to do this, but this will do for now).

@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
+/// <summary>
+/// Class for storing the Player's various statuses.
+/// </summary>
+
 public class PlayerStats : MonoBehaviour
 {
 
@@ -46,6 +50,7 @@ public class PlayerStats : MonoBehaviour
 	private const int walrusEatValue = 40;
 	private const int polarBearEatValue = 60;
 
+    // Helper flag for correcting inventory behaviour.
 	private bool removeFlag = false;
 
 	private Weapon pistol;
@@ -54,7 +59,12 @@ public class PlayerStats : MonoBehaviour
 	// Stores the name of the player that is given via an input field, at game start.
 	private string playerName = "Default";
 
+    // Needed for the menu sounds to work correctly...
+    private float hungerBeforeEat = 0.0f;
 
+    /// <summary>
+    /// Make the Player indestructible, create the inventory, make the initial coat and weapons and give the player 20 ammo for the rifle. 
+    /// </summary>
 	void Start ()
 	{
 		// Ensure that the Player object continues to exist in the next scene. This is needed because its stored info will need to be utilized in the OutroLogic script.
@@ -73,25 +83,24 @@ public class PlayerStats : MonoBehaviour
 
 		// Give the Player 20 rifle bullets to start with.
 		carriedAmmo = 20;
-
-		// Testing food item creation.
-		AddToInv (new FoodItem (10), "Seagull Meat");
-
+        
+        // NOTE: The weapons are not put in the inventory, because it's ultimately unnecessary. Same with coats, but we didn't realize this before making the quests etc.
 		pistol = new Weapon (1);
 		rifle = new Weapon (3);
 		currentWeapon = rifle;
 
 	}
 
-	/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  */
+    /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  */
 
-	/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   INVENTORY METHODS   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  */
+    /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   INVENTORY METHODS   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  */
 
-
-	// The method to add items to inventory.
-	// As typically only a small number of items will be created at once, imo it's not worth it to give a 'number' parameter to the method.
-	// One can simply call the method x number of times, if multiple items need to be created.
-	public void AddToInv (Item item, string itemName)
+    /// <summary>
+    /// The method to add items to inventory.
+    /// </summary>
+    // As typically only a small number of items will be created at once, imo it's not worth it to give a 'number' parameter to the method.
+    // One can simply call the method x number of times, if multiple items need to be created.
+    public void AddToInv (Item item, string itemName)
 	{
 
 		if (item is FoodItem) {
@@ -146,15 +155,22 @@ public class PlayerStats : MonoBehaviour
 
 	}
 
-	// Removes item from inventory.
+    /// <summary>
+	/// Removes item from inventory.
+    /// </summary>
 	public void RemoveFromInv (Item item)
 	{
 		inventory.Remove (item);
 	}
 
-	// Makes the player eat a specified food item.
-	public void EatFoodItem (FoodItem meat)
+    /// <summary>
+    /// Makes the player eat a specified food item.
+    /// </summary>
+    public void EatFoodItem (FoodItem meat)
 	{
+        // Stored for use in UI_Sound.cs; it's needed for the menu sounds to work correctly when eating food items.
+        hungerBeforeEat = hunger;
+
 		// The null check is needed for when the method is called from UI.cs (since the click is always possible, regardless if you have any food items or not).
 		// The hunger check makes eating impossible if hunger is already zero, preventing the player from wasting any meat items.
 		if (meat != null && hunger > 0) {
@@ -167,7 +183,7 @@ public class PlayerStats : MonoBehaviour
 				hunger = 0.0f;
 			}
 
-			// even without any checks, carriedFood should never go below zero, because it has previously been increased by the same amount (when adding the item to inventory)
+			// Even without any checks, carriedFood should never go below zero, because it has previously been increased by the same amount (when adding the item to inventory)
 			carriedFood -= meat.EatValue;
 
 			switch (GetItemName (meat)) {
@@ -210,19 +226,23 @@ public class PlayerStats : MonoBehaviour
 		}
 	}
 
-	/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  */
+    /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  */
 
-	/* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   HELPER METHODS   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  */
+    /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   HELPER METHODS   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  */
 
 
-	// Called upon adding new food items to inventory. Makes it so that if the picking up of a new food item would put the Player
-	// over the max carryable food amount, the 'extra' food gets substracted from the item's eatValue stat. As a further check,
-	// if the procedure in question would result in the food item having an eatValue of zero, it gets removed from the inventory
-	// instead. So, all the food items in the inventory will have an eatValue of at least one (1) at all times.
 
-	// Made into its own method simply for clarity's sake.
 
-	private void FoodItemCheck (FoodItem foodItem)
+    /// <summary>
+    /// Called upon adding new food items to inventory. Checks the new FoodItem's eatValue + carriedFood against maxCarriedFood to ensure correct inventory behaviour.
+    /// </summary>
+    // Makes it so that if the picking up of a new food item would put the Player
+    // over the max carryable food amount, the 'extra' food gets substracted from the item's eatValue stat. As a further check,
+    // if the procedure in question would result in the food item having an eatValue of zero, it gets removed from the inventory
+    // instead. So, all the food items in the inventory will have an eatValue of at least one (1) at all times.
+
+    // Made into its own method simply for clarity's sake.
+    private void FoodItemCheck (FoodItem foodItem)
 	{
 		if ((carriedFood + foodItem.EatValue) > maxCarriedFood) {
 			if (carriedFood == maxCarriedFood) {
@@ -236,8 +256,10 @@ public class PlayerStats : MonoBehaviour
 		carriedFood += foodItem.EatValue;
 	}
 
-	// Similarly to FoodItemCheck(), this check is called after adding a Coat item to inventory. If the new Coat's coldResistance value
-	// is bigger than the current Coat's, it replaces the current one as the 'active' coat. If not, it gets discarded instead.
+    /// <summary>
+    /// Similarly to FoodItemCheck(), this check is called after adding a Coat item to inventory. If the new Coat's coldResistance value 
+    /// is bigger than the current Coat's, it replaces the current one as the 'active' coat. If not, it gets discarded instead.
+    /// </summary>
 	private void CoatCheck (Coat coat)
 	{
 		if (currentCoat.ColdResistance < coat.ColdResistance) {
@@ -247,26 +269,33 @@ public class PlayerStats : MonoBehaviour
 		}
 	}
 
-	// Ensures that the player's carried amount of ammunition never rises above the designated max value. Called manually whenever ammo is increased (in Quests.cs).
-	// Unlike FoodItemCheck() and CoatCheck(), this method is public because the ammo stat is a bare int and so the method cannot be 'concealed' within AddToInv().
-	public void MaxAmmoCheck ()
+    /// <summary>
+    /// Ensures that the player's carried amount of ammunition never rises above the designated max value.  
+    /// </summary>
+    // Called manually whenever ammo is increased (in Quests.cs). Unlike FoodItemCheck() and CoatCheck(), this 
+    // method is public because the ammo stat is a bare int and so the method cannot be 'concealed' within AddToInv().
+    public void MaxAmmoCheck ()
 	{
 		if (carriedAmmo > maxCarriedAmmo) {
 			carriedAmmo = maxCarriedAmmo;
 		}
 	}
 
-	// Gets the name of the item from outside the class.
-	// (I don't know the right syntax for a property in this context, so I made this into a regular method instead.)
-	public string GetItemName (Item item)
+    /// <summary>
+    /// Gets the name of the item from outside the class.
+    /// </summary>
+    // (I don't know the right syntax for a property in this context, so I made this into a regular method instead.)
+    public string GetItemName (Item item)
 	{
 		return inventory [item];
 	}
 
-	// Returns the item (key) by its given name (value), from the inventory.
-	// This procedure is apparently frought with considerable peril when it comes to Dictionaries.
-	// Let's just hope that this thing works (I found it on the internet...), and get along, as time is of the essence.
-	public FoodItem GetFoodItem (string itemName)
+    /// <summary>
+    /// Returns the item (key) by its given name (value), from the inventory.
+    /// </summary>
+    // This procedure is apparently frought with considerable peril when it comes to Dictionaries.
+    // It seems to work though...
+    public FoodItem GetFoodItem (string itemName)
 	{
 		FoodItem key = (FoodItem)inventory.FirstOrDefault (x => x.Value == itemName).Key;
 		return key;
@@ -368,7 +397,16 @@ public class PlayerStats : MonoBehaviour
 		set { polarBearDeath = value; }
 	}
 
+    public float HungerBeforeEat
+    {
+        get { return hungerBeforeEat; }
+        set { hungerBeforeEat = value; }
+    }
 
+    /// <summary>
+    /// Hunger and cold are increased with the player's movement frames. 
+    /// Also, switch active weapon based on the amount of carried ammo (the pistol has unlimited ammunition).
+    /// </summary>
 	void Update ()
 	{
 		// Increase the hunger and cold values with elapsed movement frames.

@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A class for handling the quest sound effects.
+/// </summary>
+
 public class QuestSound : MonoBehaviour
 {
 
@@ -11,6 +15,7 @@ public class QuestSound : MonoBehaviour
      * Author: Ville Lohkovuori
      */
 
+    // For internal reference...
 	private PlayerMove playerMove;
 
 	public AudioClip[] questPopupSounds = new AudioClip[4];
@@ -19,26 +24,29 @@ public class QuestSound : MonoBehaviour
 
 	private AudioSource source;
 
-	private float questPitchLow = 0.75f;
+    // For controlling the pitch and volume of the audio source.
+    private float questPitchLow = 0.75f;
 	private float questPitchHigh = 1.25f;
 	private float volumeMin = 0.7f;
 	private float volumeMax = 1.0f;
 
-	// Use this for initialization
-	void Start ()
+    /// <summary>
+    /// Find and assign the audio source. Find the PlayerMove script and assign it to this script as a reference. 
+    /// (It seems you cannot do this in the inspector, even with prefabs,
+    /// as the reference is lost when the prefab is spawned from code.)
+    /// </summary>
+    void Start ()
 	{
-
-		// Find the audio source.
 		source = gameObject.GetComponent<AudioSource> ();
         
-		// Find the PlayerMove script and assign it to this script as a reference... It seems you cannot do this in the inspector, even with prefabs,
-		// as the reference is lost when the prefab is spawned from code.
 		PlayerMove script = GameObject.Find ("Player").GetComponent<PlayerMove> ();
 		playerMove = script;
 	}
 
-	// Upon collision with Player, play an appropriate sound effect, with varying pitch and volume.
-	void OnCollisionEnter2D (Collision2D collision)
+    /// <summary>
+    /// Upon collision of the quest icon with Player, play an appropriate sound effect, with varying pitch and volume.
+    /// </summary>
+    void OnCollisionEnter2D (Collision2D collision)
 	{
 		source.pitch = Random.Range (questPitchLow, questPitchHigh);
 
@@ -54,14 +62,17 @@ public class QuestSound : MonoBehaviour
 			source.PlayOneShot (shelterSound, Random.Range (volumeMin, volumeMax));
 		}
 
+        // The nuclear site (quest 12) has its own sound effect of a geiger counter ticking fiercely! :)
 		if (playerMove.CollidedTag == "nuke_site") {
 			source.pitch = questPitchHigh;
 			source.PlayOneShot (nukeSound, volumeMax);
 		}
 	}
 
-	// Called in Triggerer.cs to silence the sounds when the outro is triggered.
-	public void MuteQuestSound ()
+    /// <summary>
+    /// Called in Triggerer.cs to silence the sounds when the outro is triggered.
+    /// </summary>
+    public void MuteQuestSound ()
 	{
 		source.Stop ();
 	}

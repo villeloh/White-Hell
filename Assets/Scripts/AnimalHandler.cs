@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Class containing the methods that are used for making and killing different animals (called in Hunt.cs).
+/// Authors: Jimi Nikander + Ville Lohkovuori
+/// </summary>
+
 public class AnimalHandler : MonoBehaviour
 {
-
 
 	public GridManager GridManager;
 	public Hunt Hunt;
@@ -31,6 +35,9 @@ public class AnimalHandler : MonoBehaviour
 
 	private Vector3 spawnPos;
 
+    /// <summary>
+    /// Spawn a new Walrus animal.
+    /// </summary>
 	public void MakeWalrus ()
 	{
 		spawnPos = GridManager.RandomPosition ();
@@ -41,7 +48,10 @@ public class AnimalHandler : MonoBehaviour
 		walrusRef.AddComponent<WalrusBehaviour> ();
 	}
 
-	public void MakeSeagull ()
+    /// <summary>
+    /// Spawn a new Seagull animal.
+    /// </summary>
+    public void MakeSeagull ()
 	{
 		spawnPos = GridManager.RandomPosition ();
 		Transform obj = Instantiate (SeagullIcon, spawnPos, Quaternion.identity);
@@ -51,7 +61,10 @@ public class AnimalHandler : MonoBehaviour
 
 	}
 
-	public void MakeSeal ()
+    /// <summary>
+    /// Spawn a new Seal animal.
+    /// </summary>
+    public void MakeSeal ()
 	{
 		spawnPos = GridManager.RandomPosition ();
 		Transform obj = Instantiate (SealIcon, spawnPos, Quaternion.identity);
@@ -61,7 +74,10 @@ public class AnimalHandler : MonoBehaviour
 
 	}
 
-	public void MakeArcticFox ()
+    /// <summary>
+    /// Spawn a new Arctic Fox animal.
+    /// </summary>
+    public void MakeArcticFox ()
 	{
 		spawnPos = GridManager.RandomPosition ();
 		Transform obj = Instantiate (ArcticFoxIcon, spawnPos, Quaternion.identity);
@@ -71,7 +87,10 @@ public class AnimalHandler : MonoBehaviour
 
 	}
 
-	public void MakePolarBear ()
+    /// <summary>
+    /// Spawn a new Polar Bear animal.
+    /// </summary>
+    public void MakePolarBear ()
 	{
 		spawnPos = GridManager.RandomPosition ();
 		Transform obj = Instantiate (PolarBearIcon, spawnPos, Quaternion.identity);
@@ -81,6 +100,9 @@ public class AnimalHandler : MonoBehaviour
 
 	}
 
+    /// <summary>
+    /// Destroy any animal that exists at the moment.
+    /// </summary>
     // To avoid making so many Destroy()s, each animal should belong to a base class called 'Animal'... But the animal scripts are already MonoBehaviours, 
     // and afaik, multiple inheritance is impossible in C#. Thus, we have to try to destroy every animal whenever one of them is destroyed.
 	public void KillAnimal ()

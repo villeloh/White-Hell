@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-//Tells Random to use the Unity Engine random number generator.
-
+/// <summary>
+/// Class for controlling Seagull behaviour.
+/// </summary>
 
 public class SeagullBehaviour : MonoBehaviour
 {
@@ -21,7 +22,10 @@ public class SeagullBehaviour : MonoBehaviour
 
 	private Vector3 randomPosition;
 
-	void Start ()
+    /// <summary>
+    /// Get the needed GameObjects for internal reference.
+    /// </summary>
+    void Start ()
 	{
 		GameObject huntManager = GameObject.Find ("HuntManager");
 		animalHandler = huntManager.GetComponent<AnimalHandler> ();
@@ -40,7 +44,10 @@ public class SeagullBehaviour : MonoBehaviour
 		set { spentHealth = value; }
 	}
 
-	void OnMouseOver ()
+    /// <summary>
+    /// If a click/tap is registered while hovering over the animal, reduce its health by the weapon's damage stat.
+    /// </summary>
+    void OnMouseOver ()
 	{
 		if ((Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began) || (Input.GetMouseButtonDown (0))) {
             for (int i = 0; i < playerStats.CurrentWeapon.Damage; i++)
@@ -51,7 +58,10 @@ public class SeagullBehaviour : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// If animal's health reaches zero, kill it and the minigame.
+    /// Also causes the animal to move perpetually between random positions.
+    /// </summary>
     void Update ()
 	{
 

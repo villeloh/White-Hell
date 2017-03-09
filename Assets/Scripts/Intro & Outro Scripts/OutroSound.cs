@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A class for handling the sound effects that are played during the outro.
+/// </summary>
+
 public class OutroSound : MonoBehaviour
 {
 
@@ -10,7 +14,8 @@ public class OutroSound : MonoBehaviour
      * Attached to: OutroCanvas
      * Author: Ville Lohkovuori
      */
-
+    
+    // For internal reference.
 	private PlayerStats playerStats2;
 
 	public AudioClip[] savedSounds;
@@ -25,7 +30,9 @@ public class OutroSound : MonoBehaviour
 	private bool playedFirst = false;
 	private bool stopFlag = false;
 
-	// Use this for initialization
+	/// <summary>
+    /// Get and assign the audio source, and do the same for the PlayerStats script that's attached to the (indestructible) Player GameObject.
+    /// </summary>
 	void Start ()
 	{
 
@@ -36,11 +43,14 @@ public class OutroSound : MonoBehaviour
 		playerStats2 = player2.GetComponent<PlayerStats> ();
 
 	}
-	
-	// Play the various death and save sound effects, based on the same conditions as switching to the correct sprites and texts.
-	// Technically, this class' functionality could be contained in OutroLogic.cs. I'm not sure whether it's a good idea to put
-	// everything in one class, however. Sounds seems different enough from text and images to be in their own class.
-	void Update ()
+
+    /// <summary>
+    /// Play the various death and salvation sound effects, based on the same conditions as switching to the correct sprites and texts.
+    /// Move on to the credits music (on mouse-click/tap) after the appropriate initial sound effect has been played. 
+    /// </summary>
+    // Technically, this class' functionality could be contained in OutroLogic.cs. I'm not sure whether it's a good idea to put
+    // everything in one class, however. Sounds seems different enough from text and images to be in their own class.
+    void Update ()
 	{
 		// The clip is cut short if there's a tap / mouse click. This is needed because there's no scene change between these slides and the credits.
 		if ((Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began) || (Input.GetMouseButtonDown (0))) {

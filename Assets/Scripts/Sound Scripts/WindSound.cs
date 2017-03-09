@@ -2,35 +2,45 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+///  A class for handling wind sounds.
+/// </summary>
+
 public class WindSound : MonoBehaviour
 {
 
     /*
-     * A class for handling wind sounds. (Could have a more descriptive name, I suppose.)
+     * A class for handling wind sounds.
      * Attached to: GameHolder
      * Author: Ville Lohkovuori
      */
-
+    
+    // For internal reference.
     public PlayerMove PlayerMove;
 
     public AudioClip[] windSounds;
 
     private AudioSource source;
+
+    // For controlling the pitch and volume of the audio source.
     private float windPitchLow = 0.75f;
     private float windPitchHigh = 1.25f;
     private float volumeMin = 0.7f;
     private float volumeMax = 1.0f;
 
-    // Use this for initialization
+    /// <summary>
+    /// Find and assign to audio source.
+    /// </summary>
     void Start()
     {
         source = gameObject.GetComponent<AudioSource>();
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// The logic plays one of four wind sounds at random, at all times (in the main scene).
+    /// </summary>
     void Update()
     {
-        // Plays one of four wind sounds at random, at all times.
         // The pitch and volume of the wind sounds vary slightly at random, to give a more natural impression.
         if (!source.isPlaying)
         {

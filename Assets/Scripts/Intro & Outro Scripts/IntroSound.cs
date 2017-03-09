@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Class for managing the sound effect that occurs during the intro.
+/// </summary>
+
 public class IntroSound : MonoBehaviour {
 
     /*
@@ -16,15 +20,19 @@ public class IntroSound : MonoBehaviour {
 
     private AudioSource source;
 
-	// Use this for initialization.
+	/// <summary>
+    /// Get the audio source and assign it to a variable.
+    /// </summary>
 	void Start ()
     {
         source = gameObject.GetComponent<AudioSource> ();
 	}
 
+    /// <summary>
+    /// As soon as the title slide switches to slide #2, play the intro sound effect.
+    /// </summary>
     void Update()
     {   
-        // As soon as the title slide switches to slide 2, play the sound effect.
         if (IntroLogic.CurrentSprite == 2 && !source.isPlaying)
         {
             source.PlayOneShot(introSound, 1f);

@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Class for making 'FoodItem' items.
+/// </summary>
+
 public class FoodItem : Item
 {
 
@@ -13,8 +17,10 @@ public class FoodItem : Item
 
     private int eatValue;
 
-	// For creating food items.
-	public FoodItem (int givenEatValue)
+    /// <summary>
+    /// Create a new Item of type 'FoodItem', which has an eatValue parameter.
+    /// </summary>
+    public FoodItem (int givenEatValue)
 	{
 		this.eatValue = givenEatValue;
 	}

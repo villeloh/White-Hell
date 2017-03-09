@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Class for making 'Coat' items.
+/// </summary>
+
 public class Coat : Item
 {
 
@@ -13,8 +17,10 @@ public class Coat : Item
 
     private float coldResistance;
 
-	// Create new Item of type 'Coat'.
-	public Coat (float givenRes)
+    /// <summary>
+    /// Create a new Item of type 'Coat', which has a coldResistance parameter.
+    /// </summary>
+    public Coat (float givenRes)
 	{
 		this.coldResistance = givenRes;
 	}

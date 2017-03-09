@@ -3,26 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Class for controlling the spawning and ending of random animal encounters.
+/// Authors: Jimi Nikander + Ville Lohkovuori
+/// </summary>
 
 public class Hunt : MonoBehaviour
 {
-
 
 	private bool endFlag = false;
 
 	public ShootLogic ShootLogic;
 	public AnimalHandler AnimalHandler;
 	public GridManager GridManager;
-	// public PlayerMove PlayerMove;
 	public PlayerSound PlayerSound;
 	public CameraBehaviour CameraBehaviour;
 	public int randomNumber;
 	public int randomAnimal;
 	private bool repeatCombatTrigger = true;
-	/// <summary>
-	/// Start this instance.
-	/// </summary>
-	/// 
 
 	private PlayerMove playerMove;
 	private WalrusBehaviour walrusBehaviour;
@@ -30,6 +28,9 @@ public class Hunt : MonoBehaviour
 	private bool shootFlag = false;
 	private float timeOfLastHunt = 0.0f;
 
+    /// <summary>
+    /// Repeat the random dice roll for animal spawn once every second.
+    /// </summary>
 	void Start ()
 	{
 		// Starts function CombatTrigger() that repeats once every second.
@@ -39,6 +40,9 @@ public class Hunt : MonoBehaviour
 		playerMove = player.GetComponent<PlayerMove> ();
 	}
 
+    /// <summary>
+    /// Contains the logic for spawning random animal encounters.
+    /// </summary>
 	public void CombatTrigger ()
 	{
 		//When the player is moving there is a chance that a hunting encounter plays out.
@@ -49,7 +53,10 @@ public class Hunt : MonoBehaviour
 			print (randomNumber); // debug
 			if ((randomNumber < 20 && (Time.time - timeOfLastHunt) > 10.0f) || (Time.time - timeOfLastHunt) > 100.0f) {
 
-				timeOfLastHunt = Time.time;
+                // Stop the player's walking sound.
+                PlayerSound.MuteWalkSound ();
+
+                timeOfLastHunt = Time.time;
 
 				repeatCombatTrigger = false;
 
@@ -59,8 +66,7 @@ public class Hunt : MonoBehaviour
 
 				//Stops player from moving
 				playerMove.StopMove ();
-				print ("Hunt Triggers");        
-				//Stops walking sounds                  	
+				print ("Hunt Triggers");            	
 
 				endFlag = false;
 				randomAnimal = Random.Range (0, 100);
@@ -88,6 +94,9 @@ public class Hunt : MonoBehaviour
 		}                                       	
 	}
 
+    /// <summary>
+    /// Ends the hunting mini-game and returns to the main map view.
+    /// </summary>
 	public void EndHunt ()
 	{                                           		
 		// Returns the camera to the main play area and stops the shooting sounds from playing.

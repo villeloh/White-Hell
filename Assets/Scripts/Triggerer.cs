@@ -4,6 +4,10 @@ using UnityEngine;
 using QuestNamespace;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Class for triggering events based on various conditions.
+/// </summary>
+
 public class Triggerer : MonoBehaviour
 {
     /*
@@ -22,15 +26,12 @@ public class Triggerer : MonoBehaviour
     // Needed for triggering the outro.
     private bool outroFlag = false;
 
-    void Start ()
-    {
-        
-    } 
-
+    /// <summary>
+    /// The quests are triggered based on the name of the object that Player collided with.
+    /// </summary>
+    // To make the quest triggering work without putting the logic into 'Update()', I've attached Triggerer to the Player GameObject (instead of GameHolder). 
     void OnCollisionEnter2D(Collision2D coll)
     {
-        // The quests are triggered based on the name of the object that Player collided with.
-        // I've attached Triggerer to the Player GameObject (instead of GameHolder); this made the quest triggering work without putting the logic into 'Update()'.
 
         GameObject hitQuest = GameObject.FindGameObjectWithTag(PlayerMove.CollidedTag);
         questSound = hitQuest.GetComponent<QuestSound> ();
@@ -139,12 +140,12 @@ public class Triggerer : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    /// Trigger the player's death if hunger or cold reaches the maximum allowed value, or the player has missed 2 times while shooting a polar bear.
+    /// When the player has enough Radio Parts, the game ends in victory instead.
+    /// </summary>
     void Update()
     {
-
-        // Trigger Player's death if hunger or cold reaches the maximum allowed value. 
-        // When the player has enough Radio Parts, the game ends in victory instead.
         // The boolean 'outroFlag' is needed because since the Player object continues to exist, so will the scripts that are attached to it... 
         // Meaning that the Outro scene will be loaded every frame(!) unless that's prevented by using a flag such as this.
         if ((PlayerStats.Hunger >= PlayerStats.DeathHunger || PlayerStats.Cold >= PlayerStats.DeathCold || 

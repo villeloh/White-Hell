@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Class for creating the game-board for the shooting mini-game.
+/// Author: Jimi Nikander
+/// </summary>
+
 public class GridManager : MonoBehaviour
 {
-
-
 
 	public Hunt Hunt;
 	public int randomNumber;
@@ -16,16 +19,19 @@ public class GridManager : MonoBehaviour
 	//Array of grud prefabs.
 	public List <Vector3> gridPositions = new List <Vector3> ();
 	public GameObject WhiteGridPiece;
-	private int repeatCombatTrigger = 1;
 
-
+    /// <summary>
+    /// Create the game board (called in Awake() because of issues with the animal spawns).
+    /// </summary>
 	void Awake ()
 	{
 		CreateBoard ();
 	}
 
-	//RandomPosition returns a random position from our list gridPositions.
-	public Vector3 RandomPosition ()
+    /// <summary>
+    /// Returns a random position from our list gridPositions.
+    /// </summary>
+    public Vector3 RandomPosition ()
 	{
 		//Declare an integer randomIndex, set it's value to a random number between 0 and the count of items in our List gridPositions.
 		int randomIndex = Random.Range (0, gridPositions.Count);
@@ -42,10 +48,11 @@ public class GridManager : MonoBehaviour
 
 
 
-	//Make a grid for the hunting game
-	public void CreateBoard ()
+    /// <summary>
+    /// Make a grid for the shooting mini-game.
+    /// </summary>
+    public void CreateBoard ()
 	{
-		// repeatCombatTrigger = 0;
 		//Create The board
 		for (int i = 0; i < boardSize; i++) {
 			for (int j = 0; j < boardSize; j++) {

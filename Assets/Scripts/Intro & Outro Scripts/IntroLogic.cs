@@ -4,6 +4,10 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/// <summary>
+/// Class which handles the switching of texts and images for the intro slides, and the starting of the actual game.
+/// </summary>
+
 public class IntroLogic : MonoBehaviour
 {
 
@@ -23,6 +27,9 @@ public class IntroLogic : MonoBehaviour
 
     private List<string> introTexts = new List<string>();
 
+    /// <summary>
+    /// Add intro texts to a list and assign internal variables.
+    /// </summary>
     void Start()
     {
         // Locate the image subobject of the holder object; assign the first slide to it.
@@ -43,9 +50,12 @@ public class IntroLogic : MonoBehaviour
         set { currentSprite = value; }
     }
 
+    /// <summary>
+    /// At the end of the intro slides, a mouse-click/tap switches to the main scene.
+    /// Before that, it switches to the next slide (sprite) + text.
+    /// </summary>
     void Update()
     {
-
         // Loads the next scene, i.e. starts the actual game.
         if (currentSprite == 4 && (Input.GetKeyDown(KeyCode.Return) || Input.GetMouseButtonDown(0)))
         {

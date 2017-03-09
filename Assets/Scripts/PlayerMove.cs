@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Class for controlling the player character's movement on the main map.
+/// </summary>
+
 public class PlayerMove : MonoBehaviour
 {
 	/* 
@@ -37,7 +41,9 @@ public class PlayerMove : MonoBehaviour
 	// Determines the start position (Player's x and y (and z) coordinates).
 	private Vector3 startPos = new Vector3 (-2.8f, -2.4f, 0.0f);
 
-
+    /// <summary>
+    /// Put the player in the right starting point and disable movement (until it's enabled by inputting a name for the player).
+    /// </summary>
 	void Start ()
 	{   
 		// Puts the Player object in the right starting point.
@@ -52,9 +58,9 @@ public class PlayerMove : MonoBehaviour
     /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   COLLISION LOGIC  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  */
 
 
-    // What happens when the Player GameObject collides with another GameObject. Called automatically when Player collides with something (Unity behavior).
-    // Strictly speaking, this is not needed, because two bodies with colliders attached will stop automatically upon collision. However, it prevents
-    // movement stuttering, which is a good enough reason to have it.
+    /// <summary>
+    /// What happens when the Player GameObject collides with another GameObject. Called automatically when Player collides with something (Unity behavior).
+    /// </summary>
     void OnCollisionEnter2D (Collision2D coll)
 	{
 		// Debug. Prints confirmation that a collision has happened, and the names of the two collided objects (first one should always be 'Player').
@@ -77,9 +83,11 @@ public class PlayerMove : MonoBehaviour
 		}
 	}
 
-	// When the collision ends, set various stats to false/empty, to ensure appropriate behaviour until the next collision occurs.
-    // NOTE: does not work if the object is destroyed (counts as collided still)!!!
-	void OnCollisionExit2D (Collision2D coll2)
+    /// <summary>
+    /// When the collision ends, set various stats to false/empty, to ensure appropriate behaviour until the next collision occurs.
+    /// NOTE: does not work if the object is destroyed (counts as collided still)!!!
+    /// </summary>
+    void OnCollisionExit2D (Collision2D coll2)
 	{
 		collidedFlag = false;
 		collidedName = "";
@@ -135,10 +143,12 @@ public class PlayerMove : MonoBehaviour
 
     /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX   MOVEMENT LOGIC  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  */
 
-
+    /// <summary>
+    /// Contains the main movement logic. Rays are cast at the location of the mouse cursor/finger, and the player moves towards the hit location
+    /// for as long as certain conditions continue to apply.
+    /// </summary>
     void Update ()
-	{
-        
+	{   
 		// Check if the screen is touched / clicked.
 		if ((Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began) || (Input.GetMouseButtonDown (0))) {
 

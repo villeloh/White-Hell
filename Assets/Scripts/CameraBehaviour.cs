@@ -1,6 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Class for controlling camera behaviour (zooming and zoom speed + position).
+/// Author: Niko Eklund
+/// </summary>
+
 public class CameraBehaviour : MonoBehaviour
 {
 	// Tarvitaan, jotta voidaan viitata Playeriin. Huom. myös kiinnitettävä Player-objekti CameraBehaviouriin Unityssa.
@@ -15,13 +20,18 @@ public class CameraBehaviour : MonoBehaviour
 	private bool CameraMovement = false;
 
 
-
+    /// <summary>
+    /// Assign values that will be needed later on.
+    /// </summary>
 	void Start ()
 	{
 		targetOrtho = Camera.main.orthographicSize;
 		CameraMovement = true;
 	}
 
+    /// <summary>
+    /// Different zoom controls for desktop and mobile devices.
+    /// </summary>
 	void Update ()
 	{
 		if (CameraMovement) {
@@ -65,22 +75,34 @@ public class CameraBehaviour : MonoBehaviour
 		}
 	}
 
+    /// <summary>
+    /// Disables zoom.
+    /// </summary>
 	public void StopCameraBehaviour ()
 	{
 		CameraMovement = false;
 	}
 
+    /// <summary>
+    /// Enables zoom.
+    /// </summary>
 	public void StartCameraBehaviour ()
 	{
 		CameraMovement = true;
 	}
 
+    /// <summary>
+    /// Moves the camera to a new position over the minigame board and disables zoom.
+    /// </summary>
 	public void MoveToMiniGame ()
 	{
 		Camera.main.transform.position = new Vector3 (-46f, 26f, -10f);
 		StopCameraBehaviour ();
 	}
 
+    /// <summary>
+    /// Moves the camera back to the main map view and re-enables zoom.
+    /// </summary>
 	public void MoveToMainGame ()
 	{
 		StartCameraBehaviour ();

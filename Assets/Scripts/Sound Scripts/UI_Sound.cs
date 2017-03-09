@@ -2,15 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Class for managing UI sounds (button click & eat sounds).
+/// </summary>
+
 public class UI_Sound : MonoBehaviour
 {
 
 	/*
-     * Class for managing UI sounds (button clicks).
+     * Class for managing UI sounds (button click & eat sounds).
      * Attached to: Canvas
      * Author: Ville Lohkovuori
      */
-
+   
+    // For internal reference.
 	public AudioClip clickSound;
 	public AudioClip[] eatSounds;
 
@@ -19,22 +24,29 @@ public class UI_Sound : MonoBehaviour
 	private AudioSource source;
 
 
-	// Use this for initialization
-	void Start ()
+    /// <summary>
+    /// Find and assign the audio source.
+    /// </summary>
+    void Start ()
 	{
-
-		// Find the audio source.
 		source = gameObject.GetComponent<AudioSource> ();
 	}
-	
-	// Methods for playing the sounds (called from UI.cs on each button click).
-	public void PlayEatSound ()
+
+
+    /// <summary>
+    /// Method for playing the eating sounds (called from UI.cs on each button click).
+    /// </summary>
+    public void PlayEatSound ()
 	{
-		if (PlayerStats.Hunger > 0) {
+        // The check is needed in order for the eating sound not play when hunger is already zero at the start of eating.
+        if (PlayerStats.HungerBeforeEat > 0.0f) {
 			source.PlayOneShot (eatSounds [Random.Range (0, 1)], 1f);
 		}
 	}
 
+    /// <summary>
+    /// Method for playing the clicking sound (called from UI.cs on each button click).
+    /// </summary>
 	public void PlayClickSound ()
 	{
 		source.PlayOneShot (clickSound, 1f);

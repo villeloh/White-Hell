@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-//Tells Random to use the Unity Engine random number generator.
-
+/// <summary>
+/// Class for controlling Arctic Fox behaviour.
+/// </summary>
 
 public class ArcticFoxBehaviour : MonoBehaviour
 {
@@ -21,6 +22,9 @@ public class ArcticFoxBehaviour : MonoBehaviour
 
 	private Vector3 randomPosition;
 
+    /// <summary>
+    /// Get the needed GameObjects for internal reference.
+    /// </summary>
 	void Start ()
 	{
 		GameObject huntManager = GameObject.Find ("HuntManager");
@@ -40,6 +44,9 @@ public class ArcticFoxBehaviour : MonoBehaviour
 		set { spentHealth = value; }
 	}
 
+    /// <summary>
+    /// If a click/tap is registered while hovering over the animal, reduce its health by the weapon's damage stat.
+    /// </summary>
 	void OnMouseOver ()
 	{
 		if ((Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began) || (Input.GetMouseButtonDown (0))) {
@@ -50,7 +57,10 @@ public class ArcticFoxBehaviour : MonoBehaviour
 		}
 	}
 
-	// Update is called once per frame
+	/// <summary>
+    /// If animal's health reaches zero, kill it and the minigame.
+    /// Also causes the animal to move perpetually between random positions.
+    /// </summary>
 	void Update ()
 	{
 

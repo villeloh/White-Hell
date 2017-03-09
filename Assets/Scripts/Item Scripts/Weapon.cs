@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Class for making 'Weapon' items.
+/// </summary>
+
 public class Weapon : Item
 {
 
@@ -13,8 +17,10 @@ public class Weapon : Item
 
     private int damage;
 
-	// Create new Item of type 'Weapon'.
-	public Weapon (int givenDamage)
+    /// <summary>
+    /// Create a new Item of type 'Weapon', with a 'damage' parameter.
+    /// </summary>
+    public Weapon (int givenDamage)
 	{
 		this.damage = givenDamage;
 	}

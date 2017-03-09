@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Class for determining UI behaviour.
+/// Author: Niko Eklund
+/// </summary>
 
 public class UI : MonoBehaviour
 {
@@ -42,6 +46,10 @@ public class UI : MonoBehaviour
 	public UI_Sound UI_Sound;
 	Image menuBg;
 
+    /// <summary>
+    /// Assign the different GameObjects / components to variables. Alter the active status of certain GameObjects (for making them invisible).
+    /// Add listeners for clicks on the menu buttons.
+    /// </summary>
 	void Start ()
 	{
 		//haetaan eri gameobjectit
@@ -115,6 +123,9 @@ public class UI : MonoBehaviour
 		soundSwitch.onClick.AddListener (() => switchSounds (soundSwitch));
 	}
 
+    /// <summary>
+    /// When the 'Open Inventory' button is clicked, open the inventory menu.
+    /// </summary>
 	void openVisibility (Button eatFood)
 	{
 
@@ -123,7 +134,6 @@ public class UI : MonoBehaviour
 		PlayerMove.StopMove ();
 		Debug.Log ("painoit nappia " + eatFood);
         
-
 		eatFood.gameObject.SetActive (false);
 		closeMenu.gameObject.SetActive (true);
 		eatSeagul.gameObject.SetActive (true);
@@ -139,7 +149,10 @@ public class UI : MonoBehaviour
 		Debug.Log (PlayerMove.AllowMove);
 	}
 
-	void closeVisibility (Button closemenu)
+    /// <summary>
+    /// When the 'Close Inventory' button is clicked, close the inventory menu.
+    /// </summary>
+    void closeVisibility (Button closemenu)
 	{
 		UI_Sound.PlayClickSound ();
 
@@ -157,6 +170,9 @@ public class UI : MonoBehaviour
 		PlayerMove.AllowMove = true;
 	}
 
+    /// <summary>
+    /// Open the game options menu.
+    /// </summary>
 	void openMenu (Button menuButton)
 	{
 
@@ -170,6 +186,9 @@ public class UI : MonoBehaviour
 		eatFood.gameObject.SetActive (false);
 	}
 
+    /// <summary>
+    /// Close the game options menu.
+    /// </summary>
 	void backToGame (Button closeActualMenu)
 	{
 
@@ -182,6 +201,9 @@ public class UI : MonoBehaviour
 		PlayerMove.AllowMove = true;
 	}
 
+    /// <summary>
+    /// Open the prompt which asks if they player is sure to quit or not.
+    /// </summary>
 	void askToQuit (Button quitPrompt)
 	{
 		UI_Sound.PlayClickSound ();
@@ -194,7 +216,10 @@ public class UI : MonoBehaviour
 		quitPrompt.gameObject.SetActive (false);
 	}
 
-	void noToQuit (Button quitNo)
+    /// <summary>
+    /// Close the prompt which asks if they player is sure to quit or not.
+    /// </summary>
+    void noToQuit (Button quitNo)
 	{
 		UI_Sound.PlayClickSound ();
 
@@ -206,14 +231,18 @@ public class UI : MonoBehaviour
 		quitPrompt.gameObject.SetActive (true);
 	}
 
-	//aplikaation sammuttaminen
+	/// <summary>
+    /// Quits the game.
+    /// </summary>
 	void yesToQuit (Button quitYes)
 	{
 		Debug.Log ("quitting");
 		Application.Quit ();
 	}
 
-	//äänten vaihtaminen
+	/// <summary>
+    /// Toggles the game's sounds on or off.
+    /// </summary>
 	void switchSounds (Button soundSwitch)
 	{
 
@@ -230,8 +259,11 @@ public class UI : MonoBehaviour
 		}
 	}
 
-	// Update is called once per frame
-	void Update ()
+    /// <summary>
+    /// Logic for displaying the amounts of meat and ammo that the player has available, 
+    /// as well as the cold, hunger, radio part count, cold resistance, worn coat, and elapsed game day stats.
+    /// </summary>
+    void Update ()
 	{
 		if (PlayerStats.CarriedFood >= 0) {
 			inventorySpace.text = "Inventory: " + PlayerStats.CarriedFood;

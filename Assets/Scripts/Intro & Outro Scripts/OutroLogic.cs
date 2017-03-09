@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Class which handles the switching of texts and images for the outro slides, and quits the game after the credits slide.
+/// </summary>
+
 public class OutroLogic : MonoBehaviour
 {
 
 	/* 
-     * Handles the switching of texts and images for the outro slides.
+     * Handles the switching of texts and images for the outro slides, and quits the game after the credits slide.
      * Attached to: OutroCanvas
      * Author: Ville Lohkovuori
      */
@@ -25,7 +29,10 @@ public class OutroLogic : MonoBehaviour
 	private string saved_text;
 	private string death_day_text;
 
-	// Use this for initialization.
+	/// <summary>
+    /// Assign internal reference thingys to variables.
+    /// Vary the displayed sprite and text based on how the player got here (death by hunger, cold or polar bear, or salvation).
+    /// </summary>
 	void Start ()
 	{
 
@@ -85,9 +92,11 @@ HOME, after so long..! I can hardly BELIEVE it ...
 		}
 	}
 
+    /// <summary>
+    /// Move to the credits slide + text on mouse / enter click / finger tap.
+    /// </summary>
 	void Update ()
 	{
-		// Move to the credits slide + text on mouse / enter click / finger tap.
 		// The weird code structure is needed in order to prevent a premature application exit upon the mouseclick that switches to the credits slide.
 		// This way, only the second, distinct click performs the exit. There's probably a more elegant way to do this ...
 		if (Input.GetKeyDown (KeyCode.Return) || Input.GetMouseButtonDown (0)) {
@@ -139,6 +148,7 @@ Niko Eklund
 Jimi Nikander
 
 * Shooting Mini-Game
-* Shooting Encounter Trigger Logic";
+* Shooting Encounter Trigger Logic
+* Game Balance";
 
 }
