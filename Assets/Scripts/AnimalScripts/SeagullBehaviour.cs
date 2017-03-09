@@ -10,7 +10,7 @@ using Random = UnityEngine.Random;
 public class SeagullBehaviour : MonoBehaviour
 {
 
-	private float animalHealth = 1.0f;
+	private float animalHealth = 2.0f;
 	private float spentHealth = 0;
 	private AnimalHandler animalHandler;
 	private Hunt hunt;

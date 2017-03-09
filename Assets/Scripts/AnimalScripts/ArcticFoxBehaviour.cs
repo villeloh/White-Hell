@@ -10,7 +10,7 @@ using Random = UnityEngine.Random;
 public class ArcticFoxBehaviour : MonoBehaviour
 {
 
-	private float animalHealth = 2.0f;
+	private float animalHealth = 3.0f;
 	private float spentHealth = 0;
 	private AnimalHandler animalHandler;
 	private Hunt hunt;
@@ -18,7 +18,7 @@ public class ArcticFoxBehaviour : MonoBehaviour
 
 	private GridManager gridManager;
 
-	private float animalMoveMod = 17.0f;
+	private float animalMoveMod = 18.0f;
 
 	private Vector3 randomPosition;
 

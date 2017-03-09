@@ -13,6 +13,7 @@ public class Hunt : MonoBehaviour
 
 	private bool endFlag = false;
 
+    public GameTime GameTime;
 	public ShootLogic ShootLogic;
 	public AnimalHandler AnimalHandler;
 	public GridManager GridManager;
@@ -45,18 +46,18 @@ public class Hunt : MonoBehaviour
     /// </summary>
 	public void CombatTrigger ()
 	{
-		//When the player is moving there is a chance that a hunting encounter plays out.
-		// The time conditions make it so that encounters may only spawn every 10 seconds, and one will be forced to spawn 
-		// if there have been none in 100 seconds.
+		// When the player is moving there is a chance that a hunting encounter plays out.
+		// The time conditions make it so that encounters may only spawn every 2 days, and one will be forced to spawn 
+		// if there have been none in 8 days.
 		if (playerMove.ClickFlag == true && repeatCombatTrigger == true) {
 			int randomNumber = UnityEngine.Random.Range (0, 100);
 			print (randomNumber); // debug
-			if ((randomNumber < 20 && (Time.time - timeOfLastHunt) > 10.0f) || (Time.time - timeOfLastHunt) > 100.0f) {
+			if ((randomNumber < 10 && (GameTime.GetDays () - timeOfLastHunt) > 2.0f) || (GameTime.GetDays() - timeOfLastHunt) > 8.0f) {
 
                 // Stop the player's walking sound.
                 PlayerSound.MuteWalkSound ();
 
-                timeOfLastHunt = Time.time;
+                timeOfLastHunt = GameTime.GetDays ();
 
 				repeatCombatTrigger = false;
 
@@ -71,15 +72,15 @@ public class Hunt : MonoBehaviour
 				endFlag = false;
 				randomAnimal = Random.Range (0, 100);
 				 
-				if (randomAnimal < 30) {
+				if (randomAnimal < 25) {
 					AnimalHandler.MakeSeagull (); 
-				} else if (randomAnimal >= 30 && randomAnimal < 45) {
+				} else if (randomAnimal >= 25 && randomAnimal < 40) {
 					AnimalHandler.MakeWalrus ();
-				} else if (randomAnimal >= 45 && randomAnimal < 70) {
+				} else if (randomAnimal >= 40 && randomAnimal < 65) {
 					AnimalHandler.MakeSeal ();
-				} else if (randomAnimal >= 70 && randomAnimal < 95) {
+				} else if (randomAnimal >= 65 && randomAnimal < 90) {
 					AnimalHandler.MakeArcticFox ();
-				} else if (randomAnimal > 95) {
+				} else if (randomAnimal >= 90) {
 					AnimalHandler.MakePolarBear ();
 				}
 

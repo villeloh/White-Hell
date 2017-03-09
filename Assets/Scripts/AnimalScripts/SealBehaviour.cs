@@ -10,7 +10,7 @@ using Random = UnityEngine.Random;
 public class SealBehaviour : MonoBehaviour
 {
 
-	private float animalHealth = 4.0f;
+	private float animalHealth = 9.0f;
 	private float spentHealth = 0;
 	private AnimalHandler animalHandler;
 	private Hunt hunt;

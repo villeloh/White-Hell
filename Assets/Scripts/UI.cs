@@ -266,15 +266,15 @@ public class UI : MonoBehaviour
     void Update ()
 	{
 		if (PlayerStats.CarriedFood >= 0) {
-			inventorySpace.text = "Inventory: " + PlayerStats.CarriedFood;
+			inventorySpace.text = "Carried Meat: " + PlayerStats.CarriedFood + "/" + PlayerStats.MaxCarriedFood;
 		} else if (PlayerStats.CarriedFood >= PlayerStats.MaxCarriedFood) {
 			inventorySpace.text = "Inventory is full!";
 		}
 
 		if (PlayerStats.CarriedAmmo >= 0) {
-			ammoPouch.text = "Ammo pouch: " + PlayerStats.CarriedAmmo.ToString () + "/" + PlayerStats.MaxCarriedAmmo.ToString ();
+			ammoPouch.text = "Ammo Pouch: " + PlayerStats.CarriedAmmo.ToString () + "/" + PlayerStats.MaxCarriedAmmo.ToString ();
 		} else if (PlayerStats.CarriedAmmo >= PlayerStats.MaxCarriedAmmo) {
-			inventorySpace.text = "Ammo pouch is full";
+			inventorySpace.text = "Ammo Pouch is full";
 		}
 		wearing.text = "Currently wearing: " + PlayerStats.GetItemName (PlayerStats.CurrentCoat);
 		radioParts.text = "Radio Parts: " + PlayerStats.RadioPartCount + "/5";
@@ -285,33 +285,33 @@ public class UI : MonoBehaviour
 		// If lausekkeet painikkeiden tekstien muuttamiseen
 		//1. lokinlihapainike
 		if (PlayerStats.NumberOfSeagullMeats > 0) {
-			SeagullMeatText.text = PlayerStats.NumberOfSeagullMeats + " x Seagull meat (10)";
+			SeagullMeatText.text = PlayerStats.NumberOfSeagullMeats + " x Seagull Meat (10)";
 		} else if (PlayerStats.NumberOfSeagullMeats == 0) {
-			SeagullMeatText.text = "Out of seagull meat!";
+			SeagullMeatText.text = "Out of Seagull Meat!";
 		}
 		//2. hylkeenlihapainike
 		if (PlayerStats.NumberOfSealMeats > 0) {
-			SealMeatText.text = PlayerStats.NumberOfSealMeats + " x Seal meat (30)";
+			SealMeatText.text = PlayerStats.NumberOfSealMeats + " x Seal Meat (30)";
 		} else if (PlayerStats.NumberOfSealMeats == 0) {
-			SealMeatText.text = "Out of seal meat!";
+			SealMeatText.text = "Out of Seal Meat!";
 		}
 		//3. mursunlihapainike
 		if (PlayerStats.NumberOfWalrusMeats > 0) {
-			WalrusMeatText.text = PlayerStats.NumberOfWalrusMeats + " x Walrus meat (40)";
+			WalrusMeatText.text = PlayerStats.NumberOfWalrusMeats + " x Walrus Meat (40)";
 		} else if (PlayerStats.NumberOfWalrusMeats == 0) {
-			WalrusMeatText.text = "Out of Walrus meat!";
+			WalrusMeatText.text = "Out of Walrus Meat!";
 		}
 		//4. naalinlihapainike
 		if (PlayerStats.NumberOfPolarFoxMeats > 0) {
-			FoxMeatText.text = PlayerStats.NumberOfPolarFoxMeats + " x Arctic fox meat (20)";
+			FoxMeatText.text = PlayerStats.NumberOfPolarFoxMeats + " x Arctic Fox Meat (20)";
 		} else if (PlayerStats.NumberOfPolarFoxMeats == 0) {
-			FoxMeatText.text = "Out of Arctic fox meat!";
+			FoxMeatText.text = "Out of Arctic Fox Meat!";
 		}
 		//5. jääkarhunlihapainike
 		if (PlayerStats.NumberOfPolarBearMeats > 0) {
-			PolarBearMeatText.text = PlayerStats.NumberOfPolarBearMeats + " x Polarbear meat (60)";
+			PolarBearMeatText.text = PlayerStats.NumberOfPolarBearMeats + " x Polar Bear Meat (60)";
 		} else if (PlayerStats.NumberOfPolarBearMeats == 0) {
-			PolarBearMeatText.text = "Out of Polarbear meat!";
+			PolarBearMeatText.text = "Out of Polar Bear Meat!";
 		}
 
 	}

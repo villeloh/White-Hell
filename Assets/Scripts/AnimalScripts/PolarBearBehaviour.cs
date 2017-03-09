@@ -10,7 +10,7 @@ using Random = UnityEngine.Random;
 public class PolarBearBehaviour : MonoBehaviour
 {
 
-	private float animalHealth = 10.0f;
+	private float animalHealth = 15.0f;
 	private float spentHealth = 0;
 	private AnimalHandler animalHandler;
 	private Hunt hunt;
@@ -18,7 +18,7 @@ public class PolarBearBehaviour : MonoBehaviour
 
 	private GridManager gridManager;
 
-	private float animalMoveMod = 35.0f;
+	private float animalMoveMod = 31.0f;
 
 	private Vector3 randomPosition;
 

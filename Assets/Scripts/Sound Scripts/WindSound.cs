@@ -25,8 +25,8 @@ public class WindSound : MonoBehaviour
     // For controlling the pitch and volume of the audio source.
     private float windPitchLow = 0.75f;
     private float windPitchHigh = 1.25f;
-    private float volumeMin = 0.7f;
-    private float volumeMax = 1.0f;
+    private float volumeMin = 0.3f;
+    private float volumeMax = 0.6f;
 
     /// <summary>
     /// Find and assign to audio source.

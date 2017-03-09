@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// Class for determining quest logic.
-/// </summary>
+
 
 namespace QuestNamespace
 {
 
-	public class Quests : MonoBehaviour
+    /// <summary>
+    /// Class for determining quest logic.
+    /// </summary>
+
+    public class Quests : MonoBehaviour
 	{
 
 		/* 

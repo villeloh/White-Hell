@@ -30,7 +30,7 @@ public class PlayerStats : MonoBehaviour
 	private int carriedFood = 0;
 	private int maxCarriedFood = 100;
 	private int carriedAmmo;
-	private int maxCarriedAmmo = 50;
+	private int maxCarriedAmmo = 40;
 	private int radioPartCount = 0;
 	private Coat currentCoat;
 	private Weapon currentWeapon;
@@ -81,8 +81,8 @@ public class PlayerStats : MonoBehaviour
 
 		print ("Wearing: " + inventory [alkutakki]); // debug
 
-		// Give the Player 20 rifle bullets to start with.
-		carriedAmmo = 20;
+		// Give the Player 10 rifle bullets to start with.
+		carriedAmmo = 10;
         
         // NOTE: The weapons are not put in the inventory, because it's ultimately unnecessary. Same with coats, but we didn't realize this before making the quests etc.
 		pistol = new Weapon (1);
@@ -412,8 +412,8 @@ public class PlayerStats : MonoBehaviour
 		// Increase the hunger and cold values with elapsed movement frames.
 		// In addition, make it so that the cold value is affected by the coldResistance stat on the worn coat as well.
 		if (PlayerMove.ClickFlag == true) {
-			cold += 0.005f * (70.0f / currentCoat.ColdResistance); // 70.0f is the value of the best Coat, which should act to nullify the 'extra' effect of cold completely.
-			hunger += 0.01f; // hunger grows at about half the speed that cold does, which is ok
+			cold += (0.02f + 0.004f * (70.0f / currentCoat.ColdResistance)); // 70.0f is the value of the best Coat, which should act to nullify the 'extra' effect of cold completely.
+			hunger += 0.025f;
 		}
 
 		// Set movement rate according to cold and hunger values (the first value is the initial rate, as hunger and cold are zero in the beginning).

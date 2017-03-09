@@ -10,7 +10,7 @@ using Random = UnityEngine.Random;
 public class WalrusBehaviour : MonoBehaviour
 {
 
-	private float animalHealth = 7.0f;
+	private float animalHealth = 12.0f;
 	private float spentHealth = 0;
 	private AnimalHandler animalHandler;
 	private Hunt hunt;
