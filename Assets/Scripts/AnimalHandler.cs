@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Class containing the methods that are used for making and killing different animals (called in Hunt.cs).
+/// Class containing the methods that are used for making and killing different animals (called in Hunt.cs)
 /// Authors: Jimi Nikander + Ville Lohkovuori
 /// </summary>
 
 public class AnimalHandler : MonoBehaviour
 {
+
 
 	public GridManager GridManager;
 	public Hunt Hunt;
