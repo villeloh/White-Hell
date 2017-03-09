@@ -15,7 +15,7 @@ public class GridManager : MonoBehaviour
 	public int randomnuber2;
 	public PlayerMove PlayerMove;
 	public PlayerSound PlayerSound;
-	private static int boardSize = 5;
+	private static int boardSize = 8;
 	//Array of grud prefabs.
 	public List <Vector3> gridPositions = new List <Vector3> ();
 	public GameObject WhiteGridPiece;
