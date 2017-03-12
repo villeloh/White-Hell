@@ -24,6 +24,7 @@ public class AnimalHandler : MonoBehaviour
 	public Transform SealIcon;
 	public Transform ArcticFoxIcon;
 	public Transform PolarBearIcon;
+    public Transform TigerIcon;
 
 
 	private AnimalHandler animalHandler;
@@ -33,8 +34,11 @@ public class AnimalHandler : MonoBehaviour
 	private GameObject sealRef;
 	private GameObject arcticFoxRef;
 	private GameObject polarBearRef;
+    private GameObject tigerRef;
 
 	private Vector3 spawnPos;
+
+    private bool killFlagForMenu = false;
 
     /// <summary>
     /// Spawn a new Walrus animal.
@@ -102,11 +106,24 @@ public class AnimalHandler : MonoBehaviour
 	}
 
     /// <summary>
+    /// Spawn a new Tiger animal.
+    /// </summary>
+    public void MakeTiger()
+    {
+        spawnPos = GridManager.RandomPosition();
+        Transform obj = Instantiate(TigerIcon, spawnPos, Quaternion.identity);
+        obj.name = "tiger";
+        tigerRef = GameObject.Find("tiger");
+        tigerRef.AddComponent<TigerBehaviour>();
+
+    }
+
+    /// <summary>
     /// Destroy any animal that exists at the moment.
     /// </summary>
     // To avoid making so many Destroy()s, each animal should belong to a base class called 'Animal'... But the animal scripts are already MonoBehaviours, 
     // and afaik, multiple inheritance is impossible in C#. Thus, we have to try to destroy every animal whenever one of them is destroyed.
-	public void KillAnimal ()
+    public void KillAnimal ()
 	{
 		print ("animal killed!");
 		Destroy (walrusRef);
@@ -114,11 +131,19 @@ public class AnimalHandler : MonoBehaviour
 		Destroy (sealRef);
 		Destroy (arcticFoxRef);
 		Destroy (polarBearRef);
+        Destroy (tigerRef);
+        killFlagForMenu = true;
 	}
 
 	public Vector3 SpawnPos {
 		get { return spawnPos; }
 		set { spawnPos = value; }
 	}
+
+    public bool KillFlagForMenu
+    {
+        get { return killFlagForMenu; }
+        set { killFlagForMenu = value; }
+    }
 
 }

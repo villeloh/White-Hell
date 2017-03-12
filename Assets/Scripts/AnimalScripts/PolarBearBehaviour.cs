@@ -18,7 +18,7 @@ public class PolarBearBehaviour : MonoBehaviour
 
 	private GridManager gridManager;
 
-	private float animalMoveMod = 31.0f;
+	private float animalMoveMod = 28.0f;
 
 	private Vector3 randomPosition;
 
@@ -68,8 +68,9 @@ public class PolarBearBehaviour : MonoBehaviour
         if (this.animalHealth <= 0)
         {
             hunt.EndHunt();
+            hunt.EndFlag = true;
             animalHandler.KillAnimal();
-            playerStats.AddToInv(new FoodItem(60), "Polar Bear Meat");
+            playerStats.AddToInv(new FoodItem(50), "Polar Bear Meat");
         }
 
         // throws a new random destination whenever the animal reaches its destination.

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 /// <summary>
 /// Class for controlling the spawning and ending of random animal encounters.
 /// Authors: Jimi Nikander + Ville Lohkovuori
@@ -11,7 +12,7 @@ using UnityEngine.SceneManagement;
 public class Hunt : MonoBehaviour
 {
 
-	private bool endFlag = false;
+	private bool endFlag = true;
 
     public GameTime GameTime;
 	public ShootLogic ShootLogic;
@@ -19,9 +20,12 @@ public class Hunt : MonoBehaviour
 	public GridManager GridManager;
 	public PlayerSound PlayerSound;
 	public CameraBehaviour CameraBehaviour;
+    public PlayerStats PlayerStats;
 	public int randomNumber;
 	public int randomAnimal;
 	private bool repeatCombatTrigger = true;
+
+    private CircleCollider2D circleCollid;
 
 	private PlayerMove playerMove;
 	private WalrusBehaviour walrusBehaviour;
@@ -39,7 +43,7 @@ public class Hunt : MonoBehaviour
 
 		GameObject player = GameObject.Find ("Player");
 		playerMove = player.GetComponent<PlayerMove> ();
-	}
+    }
 
     /// <summary>
     /// Contains the logic for spawning random animal encounters.
@@ -52,7 +56,7 @@ public class Hunt : MonoBehaviour
 		if (playerMove.ClickFlag == true && repeatCombatTrigger == true) {
 			int randomNumber = UnityEngine.Random.Range (0, 100);
 			print (randomNumber); // debug
-			if ((randomNumber < 10 && (GameTime.GetDays () - timeOfLastHunt) > 2.0f) || (GameTime.GetDays() - timeOfLastHunt) > 8.0f) {
+			if ((randomNumber < 13 && (GameTime.GetDays () - timeOfLastHunt) > 1.0f) || (GameTime.GetDays() - timeOfLastHunt) > 1.0f) {
 
                 // Stop the player's walking sound.
                 PlayerSound.MuteWalkSound ();
@@ -70,28 +74,42 @@ public class Hunt : MonoBehaviour
 				print ("Hunt Triggers");            	
 
 				endFlag = false;
-				randomAnimal = Random.Range (0, 100);
-				 
-				if (randomAnimal < 25) {
-					AnimalHandler.MakeSeagull (); 
-				} else if (randomAnimal >= 25 && randomAnimal < 40) {
+                randomAnimal = Random.Range(0, 100);			 
+                
+                
+				if (randomAnimal < 23) {
+					AnimalHandler.MakeSeagull ();
+                } else if (randomAnimal >= 23 && randomAnimal < 46) {
+                    AnimalHandler.MakeArcticFox();
+                } else if (randomAnimal >= 46 && randomAnimal < 69) {
+                    AnimalHandler.MakeSeal();
+                } else if (randomAnimal >= 69 && randomAnimal < 86) {
 					AnimalHandler.MakeWalrus ();
-				} else if (randomAnimal >= 40 && randomAnimal < 65) {
-					AnimalHandler.MakeSeal ();
-				} else if (randomAnimal >= 65 && randomAnimal < 90) {
-					AnimalHandler.MakeArcticFox ();
-				} else if (randomAnimal >= 90) {
+				} else if (randomAnimal >= 86 && randomAnimal < 93) {
 					AnimalHandler.MakePolarBear ();
-				}
+				} else if (randomAnimal >= 93) {
+                    AnimalHandler.MakeTiger ();
+                }
 
-				// test case
-				/*
-				if (randomAnimal <= 100) {
-					AnimalHandler.MakePolarBear ();
+                // test case
+                /*
+				if (randomAnimal < 100) {
+					AnimalHandler.MakeTiger ();
 				} */
-                    
 
-			}
+                
+                // This check is needed in case the player has the shotgun equipped at the start of the hunt (which is usually the case).
+                if (PlayerStats.CurrentWeapon.Damage == 3)
+                {
+                    GameObject animal = GameObject.FindGameObjectWithTag("animal");
+                    animal.GetComponent<PolygonCollider2D>().enabled = false;
+                    animal.GetComponent<CircleCollider2D>().enabled = true;
+                } else if (PlayerStats.CurrentWeapon.Damage == 1) {
+                    GameObject animal = GameObject.FindGameObjectWithTag("animal");
+                    animal.GetComponent<CircleCollider2D>().enabled = false;
+                    animal.GetComponent<PolygonCollider2D>().enabled = true;
+                }
+            }
 		}                                       	
 	}
 
@@ -107,6 +125,7 @@ public class Hunt : MonoBehaviour
 		ShootLogic.SpentAmmo = 0;
 		Invoke ("LastShot", 0.1f);
 		repeatCombatTrigger = true;
+
 	}
 
 	// In order for the last shot sound to play, this method is needed (bare statements cannot be invoked with the Invoke() method).

@@ -54,6 +54,7 @@ public class SeagullBehaviour : MonoBehaviour
             {
                 this.animalHealth--;
                 this.spentHealth++;
+                print("lost one seagull health!");
             }
         }
     }
@@ -68,6 +69,7 @@ public class SeagullBehaviour : MonoBehaviour
         if (this.animalHealth <= 0)
         {
             hunt.EndHunt();
+            hunt.EndFlag = true;
             animalHandler.KillAnimal();
             playerStats.AddToInv(new FoodItem(10), "Seagull Meat");
         }

@@ -9,6 +9,7 @@ TagManager:
   - shelter
   - nuke_site
   - sea
+  - animal
   layers:
   - Default
   - TransparentFX

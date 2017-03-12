@@ -20,11 +20,12 @@ GameObject:
   m_Component:
   - component: {fileID: 4997228039363936}
   - component: {fileID: 212483436231153552}
-  - component: {fileID: 60274945135366512}
   - component: {fileID: 82234027221602780}
+  - component: {fileID: 60461991811633034}
+  - component: {fileID: 58229553358099780}
   m_Layer: 0
   m_Name: SeagullIcon
-  m_TagString: Untagged
+  m_TagString: animal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -36,14 +37,14 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1127687404599330}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -98.79405, y: -38.33164, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -45.78, y: 26.79, z: 0}
+  m_LocalScale: {x: 1.0895047, y: 1.192255, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!60 &60274945135366512
-PolygonCollider2D:
+--- !u!58 &58229553358099780
+CircleCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -54,18 +55,40 @@ PolygonCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.4
+--- !u!60 &60461991811633034
+PolygonCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1127687404599330}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
   m_Points:
     m_Paths:
-    - - {x: 0.085, y: 0.255}
-      - {x: 0.065, y: 0.265}
-      - {x: -0.16499999, y: 0.265}
-      - {x: -0.285, y: 0.195}
-      - {x: -0.33499998, y: 0.114999995}
-      - {x: -0.33499998, y: -0.225}
-      - {x: -0.285, y: -0.275}
-      - {x: 0.33499998, y: -0.275}
-      - {x: 0.345, y: -0.255}
-      - {x: 0.345, y: 0.044999998}
+    - - {x: 0.235, y: 0.195}
+      - {x: 0.145, y: 0.195}
+      - {x: 0.085, y: 0.175}
+      - {x: 0.035, y: 0.195}
+      - {x: -0.175, y: 0.195}
+      - {x: -0.305, y: 0.145}
+      - {x: -0.42499998, y: -0.015}
+      - {x: -0.42499998, y: -0.074999996}
+      - {x: -0.405, y: -0.114999995}
+      - {x: -0.315, y: -0.095}
+      - {x: -0.074999996, y: -0.044999998}
+      - {x: -0.024999999, y: -0.13499999}
+      - {x: 0.095, y: -0.13499999}
+      - {x: 0.185, y: -0.114999995}
+      - {x: 0.275, y: -0.13499999}
+      - {x: 0.355, y: -0.13499999}
+      - {x: 0.39499998, y: -0.114999995}
+      - {x: 0.39499998, y: -0.015}
 --- !u!82 &82234027221602780
 AudioSource:
   m_ObjectHideFlags: 1

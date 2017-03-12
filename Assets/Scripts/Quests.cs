@@ -329,10 +329,8 @@ namespace QuestNamespace
 				PlayerStats.CarriedAmmo += 10;
 				PlayerStats.MaxAmmoCheck ();
 
-				FoodItem SealMeat = new FoodItem (30);
+				FoodItem SealMeat = new FoodItem (25);
 				PlayerStats.AddToInv (SealMeat, "Seal Meat");
-				FoodItem SealMeat2 = new FoodItem (30);
-				PlayerStats.AddToInv (SealMeat2, "Seal Meat");
 
 				break;
 
@@ -371,7 +369,7 @@ namespace QuestNamespace
 				Coat CoalMinersJacket = new Coat (35.0f);
 				PlayerStats.AddToInv (CoalMinersJacket, "Coal Miner's Jacket");
 
-				FoodItem SealMeat3 = new FoodItem (30);
+				FoodItem SealMeat3 = new FoodItem (25);
 				PlayerStats.AddToInv (SealMeat3, "Seal Meat");
 
 				break;
@@ -382,7 +380,7 @@ namespace QuestNamespace
 				PlayerStats.CarriedAmmo += 5;
 				PlayerStats.MaxAmmoCheck ();
 
-				FoodItem PolarFoxMeat = new FoodItem (20);
+				FoodItem PolarFoxMeat = new FoodItem (15);
 				PlayerStats.AddToInv (PolarFoxMeat, "Arctic Fox Meat");
 
 				break;
@@ -395,7 +393,7 @@ namespace QuestNamespace
 					questText.text = questTexts [12];
 				}
 
-				PlayerStats.CarriedAmmo += 15;
+				PlayerStats.CarriedAmmo += 10;
 				PlayerStats.MaxAmmoCheck ();
 
 				Coat SeamansGreatCoat = new Coat (50.0f);
@@ -416,12 +414,10 @@ namespace QuestNamespace
 				PlayerStats.CarriedAmmo += 5;
 				PlayerStats.MaxAmmoCheck ();
 
-				FoodItem PolarFoxMeat2 = new FoodItem (20);
+				FoodItem PolarFoxMeat2 = new FoodItem (15);
 				PlayerStats.AddToInv (PolarFoxMeat2, "Arctic Fox Meat");
-				FoodItem PolarFoxMeat3 = new FoodItem (20);
+				FoodItem PolarFoxMeat3 = new FoodItem (15);
 				PlayerStats.AddToInv (PolarFoxMeat3, "Arctic Fox Meat");
-				FoodItem PolarFoxMeat4 = new FoodItem (20);
-				PlayerStats.AddToInv (PolarFoxMeat4, "Arctic Fox Meat");
 
 				Coat SturdyOldGreatCoat = new Coat (60.0f);
 				PlayerStats.AddToInv (SturdyOldGreatCoat, "Sturdy Old Greatcoat");
@@ -448,13 +444,13 @@ namespace QuestNamespace
 
 				PlayerStats.RadioPartCount += 1;
 
-				PlayerStats.CarriedAmmo += 20;
+				PlayerStats.CarriedAmmo += 15;
 				PlayerStats.MaxAmmoCheck ();
 
 				Coat SpecialForcesUniform = new Coat (70.0f);
 				PlayerStats.AddToInv (SpecialForcesUniform, "Special Forces Uniform");
 
-				for (int i = 0; i < 6; i++) {
+				for (int i = 0; i < 5; i++) {
 					PlayerStats.AddToInv (new FoodItem (10), "Seagull Meat");
 				}
 
@@ -491,7 +487,7 @@ Having removed his jacket, I pry open the small mail bag. His fingers make a fun
 In total I gather the following: 
 
  - 1 x Old Pilot Jacket (30)
- - 5 x Rifle Ammo
+ - 5 x Shells
  - 1 x Seagull Meat (canned)
 
 Alas, the plane is too cold to be used as a shelter, nor is there any fire-wood available.
@@ -505,8 +501,8 @@ At last, the old sealing camp appears on the horizon, Northeast from Half Moon B
 Hoping for a lucky break, it turns out I hit one, as I was able to salvage a small bounty of items: 
 
  - 1 x Seal-Skin Coat
- - 10 x Rifle Ammo
- - 2 x Seal Meat (canned)
+ - 10 x Shells
+ - 1 x Seal Meat (canned)
 
 I'm surprised by the lack of any radio parts. I wonder if someone else has salvaged them before me -- and if so, where did they head from here?
 
@@ -530,7 +526,7 @@ In the days when gold-mining was attempted on the island, one of the northern la
 It takes me a while to clear away the snow in front of the entrance, but the main building yields the following:
 
  - 1 x Radio Part (Antenna)
- - 5 x Rifle Ammo
+ - 5 x Shells
  - 2 x Seagull Meat (canned)
 
 Finding the antenna would've made me smile, were my lips less numb from the cold.
@@ -570,8 +566,8 @@ The mine is not much to write home about. It operated only briefly before closin
 
 Nevertheless, I manage the following salvages:
 
- - 5 x Rifle Ammo
- - 2 x Arctic Fox Meat (canned)
+ - 5 x Shells
+ - 1 x Arctic Fox Meat (canned)
 
 The mine contains too little firewood to be used as a shelter. Bummer.
 
@@ -585,7 +581,7 @@ Roberts was facing a mutiny and stored these supplies in case he'd be thrown out
 
 Breaking the frost-damaged lock with a single blow, I obtain the following: 
 
- - 15 x Rifle Ammo
+ - 10 x Shells
  - 1 x Seaman's Greatcoat
 
 How curious..! There's a hand-written note here, left by a US military Colonel named Caldwell: 
@@ -611,8 +607,8 @@ Snow-blind and half-dead from the cold, I stumble into the old camp of Cpt. Emer
 As I rummage through the bodies, it occurs to me that decency is a luxury affordable to angels alone. Regardless of any ill feelings, my search yields the following:
 
  - 1 x Sturdy Old Greatcoat (Emerson's)
- - 3 x Arctic Fox Meat (canned)
- - 5 x Rifle Ammo
+ - 2 x Arctic Fox Meat (canned)
+ - 5 x Shells
 
 Even better, I realize that this camp may be used as a shelter for future excursions, as there's still plenty of fire-wood available.
 
@@ -623,7 +619,7 @@ Oddly enough, no new locations of interest can be found on any of Emerson's old 
 It's clear to me upon arrival that this mining operation must've presented a major challenge. Whoever operated it had to brave 10-15 meter waves leaping across the sheer cliff faces surrounding the place in three directions. The salty water has corroded almost everything, yet a few trinkets linger in the stricken ruins:
 
  - 1 x Radio Part (Receiver)
- - 10 x Rifle Ammo
+ - 10 x Shells
 
 A most curious find! An note from a US army Colonel by the name of Caldwell:
 
@@ -638,9 +634,9 @@ I never expected to be delighted at the sight of radiation signs! While the blas
 I knew I wouldn't be disappointed, but this time the catch is truly remarkable:
 
  - 1 x Special Forces Uniform 
- - 20 x Rifle Ammo
+ - 15 x Shells
  - 1 x Radio Part (Transmitter)
- - 6 x Seagull Meat (canned)
+ - 5 x Seagull Meat (canned)
 
 Among the mummified remains of Col. Caldwell, I find his old diary, reading the final entry:
 
@@ -657,7 +653,7 @@ Roberts was facing a mutiny and stored these supplies in case he'd be thrown out
 
 Breaking the frost-damaged lock with a single blow, I obtain the following: 
 
- - 15 x Rifle Ammo
+ - 15 x Shells
  - 1 x Seaman's Greatcoat
 
 What a marvellous find! A note by the same Col. Caldwell who visited the uranium mine! He must've been stranded on the island after the nuclear tests somehow. With this new knowledge of the reach of his travels, along with the bearing of his departure from the mine, I should be able to pin-point the 'X-site's general location!";
@@ -667,7 +663,7 @@ What a marvellous find! A note by the same Col. Caldwell who visited the uranium
 It's clear to me upon arrival that this mining operation must've presented a major challenge. Whoever operated it had to brave 10-15 meter waves leaping across the sheer cliff faces surrounding the place in three directions. The salty water has corroded almost everything, yet a few trinkets linger in the stricken ruins:
 
  - 1 x RadioPart (Receiver)
- - 10 x Rifle Ammo
+ - 10 x Shells
 
 While the new radio part makes me shiver with joy (to bring a change from the cold), the real treasure of this site is another note by Col. Caldwell: 
 

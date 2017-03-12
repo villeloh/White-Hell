@@ -18,7 +18,7 @@ public class SealBehaviour : MonoBehaviour
 
 	private GridManager gridManager;
 
-	private float animalMoveMod = 47.0f;
+	private float animalMoveMod = 40.0f;
 
 	private Vector3 randomPosition;
 
@@ -66,8 +66,9 @@ public class SealBehaviour : MonoBehaviour
 
 		if (this.animalHealth <= 0) { 
 			hunt.EndHunt ();
-			animalHandler.KillAnimal ();
-			playerStats.AddToInv (new FoodItem (30), "Seal Meat");
+            hunt.EndFlag = true;
+            animalHandler.KillAnimal ();
+			playerStats.AddToInv (new FoodItem (25), "Seal Meat");
 		}
 
 

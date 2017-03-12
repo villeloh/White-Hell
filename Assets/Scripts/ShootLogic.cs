@@ -25,9 +25,15 @@ public class ShootLogic : MonoBehaviour
 	private SealBehaviour sealB;
 	private ArcticFoxBehaviour arcticB;
 	private PolarBearBehaviour polarB;
+    private TigerBehaviour tigerB;
 
-	// Needed to track the spent ammunition, for purposes of ending the encounter.
-	private int spentAmmo = 0;
+    private Weapon pistol = new Weapon(1);
+    private Weapon rifle = new Weapon(3);
+   
+    private CircleCollider2D circleColl;
+    
+    // Needed to track the spent ammunition, for purposes of ending the encounter.
+    private int spentAmmo = 0;
 
     // Property for accessing spentAmmo from outside the class.
 	public int SpentAmmo {
@@ -35,6 +41,36 @@ public class ShootLogic : MonoBehaviour
 		set { spentAmmo = value; }
 	}
 		
+
+    public void SwitchToRifle ()
+    {
+        if (PlayerStats.CarriedAmmo > 0 && PlayerStats.CurrentWeapon.Damage == 1)
+        {
+            PlayerStats.CurrentWeapon = rifle;
+
+            // Switch the animal's collider type according to the player's active weapon (shotgun has a circle collider applied to the animal because irl 
+            // its shells spread, making it much easier to hit with).
+            GameObject animal = GameObject.FindGameObjectWithTag("animal");
+            animal.GetComponent<PolygonCollider2D>().enabled = false;
+            animal.GetComponent<CircleCollider2D>().enabled = true;
+
+            print("switched to shotgun!");
+        }
+    }
+
+    public void SwitchToPistol()
+    {
+        if (PlayerStats.CurrentWeapon.Damage == 3)
+        {
+            PlayerStats.CurrentWeapon = pistol;
+     
+            GameObject animal = GameObject.FindGameObjectWithTag("animal");
+            animal.GetComponent<CircleCollider2D>().enabled = false;
+            animal.GetComponent<PolygonCollider2D>().enabled = true;
+
+            print("switched to pistol!");
+        }
+    }
 
 	/// <summary>
     /// If the player has any ammo, clicking/tapping to shoot reduces it by 1. If the player misses a shot two times in total, end the encounter and kill the animal.
@@ -44,70 +80,103 @@ public class ShootLogic : MonoBehaviour
 	void Update ()
 	{
 
-		if (Hunt.ShootFlag == true) {
+        if (PlayerStats.CarriedAmmo == 0)
+        {
+            SwitchToPistol ();
+        }
+
+        if (Hunt.ShootFlag == true) {
 			if (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began || Input.GetMouseButtonDown (0)) {
 				spentAmmo++; // for tracking pistol shots as well, this needs to be before the next 'if' statement!
-				if (PlayerStats.CarriedAmmo > 0) {
+				if (PlayerStats.CarriedAmmo > 0 && PlayerStats.CurrentWeapon.Damage == 3) {
 					PlayerStats.CarriedAmmo--;
 				}
 			}
 		}
 
-		// Check for ending the encounter if the player misses the shot 2 times.
-		if (GameObject.Find ("walrus") != null && !Hunt.EndFlag) {
-			GameObject walrusRefe = GameObject.Find ("walrus");
-			walrusB = walrusRefe.GetComponent<WalrusBehaviour> ();
+        // Check for ending the encounter if the player misses the shot 2 times.
+        if (GameObject.Find("walrus") != null && !Hunt.EndFlag)
+        {
+            GameObject walrusRefe = GameObject.Find("walrus");
+            walrusB = walrusRefe.GetComponent<WalrusBehaviour>();
 
-			if (spentAmmo >= 2 && walrusB.SpentHealth - spentAmmo < -1) {
-				AnimalHandler.KillAnimal ();
-				Hunt.EndHunt ();
-				Hunt.EndFlag = true;
+            if (spentAmmo >= 2 && walrusB.SpentHealth - spentAmmo < -1)
+            {
+                AnimalHandler.KillAnimal();
+                Hunt.EndHunt();
+                Hunt.EndFlag = true;
+                Hunt.ShootFlag = false;
+                PlayerStats.PolarBearDeath = true;
+            }
+        }
+        else if (GameObject.Find("seagull") != null && !Hunt.EndFlag)
+        {
+            GameObject seagullRef = GameObject.Find("seagull");
+            seagullB = seagullRef.GetComponent<SeagullBehaviour>();
 
-			}
-		} else if (GameObject.Find ("seagull") != null && !Hunt.EndFlag) {
-			GameObject seagullRef = GameObject.Find ("seagull");
-			seagullB = seagullRef.GetComponent<SeagullBehaviour> ();
+            if (spentAmmo >= 2 && seagullB.SpentHealth - spentAmmo < -1)
+            {
+                AnimalHandler.KillAnimal();
+                Hunt.EndHunt();
+                Hunt.EndFlag = true;
+                Hunt.ShootFlag = false;
 
-			if (spentAmmo >= 2 && seagullB.SpentHealth - spentAmmo < -1) {
-				AnimalHandler.KillAnimal ();
-				Hunt.EndHunt ();
-				Hunt.EndFlag = true;
+            }
+        }
+        else if (GameObject.Find("seal") != null && !Hunt.EndFlag)
+        {
+            GameObject sealRef = GameObject.Find("seal");
+            sealB = sealRef.GetComponent<SealBehaviour>();
 
-			}
-		} else if (GameObject.Find ("seal") != null && !Hunt.EndFlag) {
-			GameObject sealRef = GameObject.Find ("seal");
-			sealB = sealRef.GetComponent<SealBehaviour> ();
+            if (spentAmmo >= 2 && sealB.SpentHealth - spentAmmo < -1)
+            {
+                AnimalHandler.KillAnimal();
+                Hunt.EndHunt();
+                Hunt.EndFlag = true;
+                Hunt.ShootFlag = false;
 
-			if (spentAmmo >= 2 && sealB.SpentHealth - spentAmmo < -1) {
-				AnimalHandler.KillAnimal ();
-				Hunt.EndHunt ();
-				Hunt.EndFlag = true;
+            }
+        }
+        else if (GameObject.Find("arcticFox") != null && !Hunt.EndFlag)
+        {
+            GameObject arcticRef = GameObject.Find("arcticFox");
+            arcticB = arcticRef.GetComponent<ArcticFoxBehaviour>();
 
-			}
-		} else if (GameObject.Find ("arcticFox") != null && !Hunt.EndFlag) {
-			GameObject arcticRef = GameObject.Find ("arcticFox");
-			arcticB = arcticRef.GetComponent<ArcticFoxBehaviour> ();
+            if (spentAmmo >= 2 && arcticB.SpentHealth - spentAmmo < -1)
+            {
+                AnimalHandler.KillAnimal();
+                Hunt.EndHunt();
+                Hunt.EndFlag = true;
+                Hunt.ShootFlag = false;
 
-			if (spentAmmo >= 2 && arcticB.SpentHealth - spentAmmo < -1) {
-				AnimalHandler.KillAnimal ();
-				Hunt.EndHunt ();
-				Hunt.EndFlag = true;
+            }
+        }
+        else if (GameObject.Find("polarBear") != null && !Hunt.EndFlag)
+        {
+            GameObject polarBearRef = GameObject.Find("polarBear");
+            polarB = polarBearRef.GetComponent<PolarBearBehaviour>();
 
-			}
-		} else if (GameObject.Find ("polarBear") != null && !Hunt.EndFlag) {
-			GameObject polarBearRef = GameObject.Find ("polarBear");
-			polarB = polarBearRef.GetComponent<PolarBearBehaviour> ();
+            if (spentAmmo >= 2 && polarB.SpentHealth - spentAmmo < -1)
+            {
+                AnimalHandler.KillAnimal();
+                Hunt.EndHunt();
+                Hunt.EndFlag = true;
+                Hunt.ShootFlag = false;
+                PlayerStats.PolarBearDeath = true;
+            }
+        } else if (GameObject.Find("tiger") != null && !Hunt.EndFlag) {
+            GameObject tigerRef = GameObject.Find("tiger");
+            tigerB = tigerRef.GetComponent<TigerBehaviour>();
 
-			if (spentAmmo >= 2 && polarB.SpentHealth - spentAmmo < -1) {
-				AnimalHandler.KillAnimal ();
-				Hunt.EndHunt ();
-				Hunt.EndFlag = true;
-				PlayerStats.PolarBearDeath = true;
-				print ("kuolit karhuun! AAAARGH!");
-                print (PlayerStats.PolarBearDeath);
-			}
-		}
-
+            if (spentAmmo >= 2 && tigerB.SpentHealth - spentAmmo < -1)
+            {
+                AnimalHandler.KillAnimal();
+                Hunt.EndHunt();
+                Hunt.EndFlag = true;
+                Hunt.ShootFlag = false;
+                PlayerStats.PolarBearDeath = true;
+            }
+        }
 	}
 }
 

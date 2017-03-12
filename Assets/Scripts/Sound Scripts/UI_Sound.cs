@@ -18,6 +18,8 @@ public class UI_Sound : MonoBehaviour
     // For internal reference.
 	public AudioClip clickSound;
 	public AudioClip[] eatSounds;
+    public AudioClip reloadPistol;
+    public AudioClip reloadRifle;
 
 	public PlayerStats PlayerStats;
 
@@ -32,16 +34,81 @@ public class UI_Sound : MonoBehaviour
 		source = gameObject.GetComponent<AudioSource> ();
 	}
 
+    // sound for switching the weapon to pistol
+    public void ReloadPistol ()
+    {
+        source.PlayOneShot(reloadPistol, 1f);
+    }
+
+    // sound for switching the weapon to rifle/shotgun
+    public void ReloadRifle ()
+    {
+        source.PlayOneShot(reloadRifle, 1f);
+    }
 
     /// <summary>
     /// Method for playing the eating sounds (called from UI.cs on each button click).
     /// </summary>
-    public void PlayEatSound ()
+    public void PlayEatSound (string animalMeat)
 	{
-        // The check is needed in order for the eating sound not play when hunger is already zero at the start of eating.
-        if (PlayerStats.HungerBeforeEat > 0.0f) {
-			source.PlayOneShot (eatSounds [Random.Range (0, 1)], 1f);
-		}
+        
+        switch (animalMeat)
+        {
+            case "Seagull Meat":
+
+                if (PlayerStats.Hunger >= 1.0f && PlayerStats.NumberOfSeagullMeats > 0 && !source.isPlaying)
+                {
+                    source.PlayOneShot(eatSounds[Random.Range(0, 2)], 1f);
+                }
+
+                break;
+
+            case "Arctic Fox Meat":
+
+                if (PlayerStats.Hunger >= 1.0f && PlayerStats.NumberOfPolarFoxMeats > 0 && !source.isPlaying)
+                {
+                    source.PlayOneShot(eatSounds[Random.Range(0, 2)], 1f);
+                }
+
+                break;
+
+            case "Seal Meat":
+
+                if (PlayerStats.Hunger >= 1.0f && PlayerStats.NumberOfSealMeats > 0 && !source.isPlaying)
+                {
+                    source.PlayOneShot(eatSounds[Random.Range(0, 2)], 1f);
+                }
+
+                break;
+
+            case "Walrus Meat":
+
+                if (PlayerStats.Hunger >= 1.0f && PlayerStats.NumberOfWalrusMeats > 0 && !source.isPlaying)
+                {
+                    source.PlayOneShot(eatSounds[Random.Range(0, 2)], 1f);
+                }
+
+                break;
+
+            case "Polar Bear Meat":
+
+                if (PlayerStats.Hunger >= 1.0f && PlayerStats.NumberOfPolarBearMeats > 0 && !source.isPlaying)
+                {
+                    source.PlayOneShot(eatSounds[Random.Range(0, 2)], 1f);
+                }
+
+                break;
+
+            case "Tiger Meat":
+
+                if (PlayerStats.Hunger >= 1.0f && PlayerStats.NumberOfTigerMeats > 0 && !source.isPlaying)
+                {
+                    source.PlayOneShot(eatSounds[Random.Range(0, 2)], 1f);
+                }
+
+                break;
+        }
+ 
 	}
 
     /// <summary>

@@ -57,6 +57,12 @@ public class ShootSound : MonoBehaviour
 
 	}
 
+    public void StopShootSound ()
+    {
+        source.Stop ();
+        print("stopped shoot sound!");
+    }
+
     /// <summary>
     /// Switches between rifle and pistol sounds based on whether the player is carrying any ammo or not.
     /// </summary>
@@ -65,7 +71,7 @@ public class ShootSound : MonoBehaviour
 		if (Hunt.ShootFlag == true) {
 			if (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Began || Input.GetMouseButtonDown (0)) {
 			
-				if (PlayerStats.CarriedAmmo == 0) {
+				if (PlayerStats.CurrentWeapon.Damage == 1) {
 					print ("pistolshot!");
 					PistolShot ();
 				} else

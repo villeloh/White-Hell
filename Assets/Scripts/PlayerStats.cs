@@ -27,8 +27,8 @@ public class PlayerStats : MonoBehaviour
 	private float deathCold = 100.0f;
 	private float deathHunger = 100.0f;
 	private bool polarBearDeath = false;
-	private int carriedFood = 0;
-	private int maxCarriedFood = 100;
+	private float carriedFood = 0.0f;
+	private float maxCarriedFood = 100.0f;
 	private int carriedAmmo;
 	private int maxCarriedAmmo = 40;
 	private int radioPartCount = 0;
@@ -42,13 +42,7 @@ public class PlayerStats : MonoBehaviour
 	private int numberOfWalrusMeats = 0;
 	private int numberOfSealMeats = 0;
 	private int numberOfPolarBearMeats = 0;
-
-	// These ints need to be constants because the switch-case thingy won't work otherwise.
-	private const int seagullEatValue = 10;
-	private const int polarFoxEatValue = 20;
-	private const int sealEatValue = 30;
-	private const int walrusEatValue = 40;
-	private const int polarBearEatValue = 60;
+    private int numberOfTigerMeats = 0;
 
     // Helper flag for correcting inventory behaviour.
 	private bool removeFlag = false;
@@ -85,11 +79,10 @@ public class PlayerStats : MonoBehaviour
 		carriedAmmo = 10;
         
         // NOTE: The weapons are not put in the inventory, because it's ultimately unnecessary. Same with coats, but we didn't realize this before making the quests etc.
-		pistol = new Weapon (1);
 		rifle = new Weapon (3);
 		currentWeapon = rifle;
-
-	}
+        
+    }
 
     /* XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  */
 
@@ -142,7 +135,13 @@ public class PlayerStats : MonoBehaviour
 					numberOfPolarBearMeats++;
 
 					break;
-				}
+
+                    case "Tiger Meat":
+
+                        numberOfTigerMeats++;
+
+                        break;
+                }
 			}
 		} else if (item is Coat) {
 			inventory.Add (item, itemName + " (" + ((Coat)item).ColdResistance + ")");
@@ -173,7 +172,7 @@ public class PlayerStats : MonoBehaviour
 
 		// The null check is needed for when the method is called from UI.cs (since the click is always possible, regardless if you have any food items or not).
 		// The hunger check makes eating impossible if hunger is already zero, preventing the player from wasting any meat items.
-		if (meat != null && hunger > 0) {
+		if (meat != null && hunger >= 1.0f) {
 			print ("hunger ennen syöntiä:" + hunger); // debug
 
 			// Added a check to ensure that hunger won't go below zero under any circumstances.
@@ -218,9 +217,15 @@ public class PlayerStats : MonoBehaviour
 				numberOfPolarBearMeats--;
 
 				break;
-			}
+            
+            case "Tiger Meat":
 
-			RemoveFromInv (meat);
+				numberOfTigerMeats--;
+
+            break;
+        }
+
+        RemoveFromInv (meat);
 
 			print ("hunger syönnin jälkeen: " + hunger); // debug
 		}
@@ -244,15 +249,15 @@ public class PlayerStats : MonoBehaviour
     // Made into its own method simply for clarity's sake.
     private void FoodItemCheck (FoodItem foodItem)
 	{
-		if ((carriedFood + foodItem.EatValue) > maxCarriedFood) {
-			if (carriedFood == maxCarriedFood) {
-				RemoveFromInv (foodItem);
-				removeFlag = true;
-				return;
-			} else {
-				foodItem.EatValue = maxCarriedFood - carriedFood;
-			}
-		}
+        if (carriedFood == maxCarriedFood)
+        {
+            RemoveFromInv(foodItem);
+            removeFlag = true;
+            return;
+        } else if (carriedFood < maxCarriedFood && (carriedFood + foodItem.EatValue) > maxCarriedFood) {
+            foodItem.EatValue = maxCarriedFood - carriedFood;
+            removeFlag = false;
+        } 
 		carriedFood += foodItem.EatValue;
 	}
 
@@ -337,7 +342,7 @@ public class PlayerStats : MonoBehaviour
 		set { carriedAmmo = value; }
 	}
 
-	public int CarriedFood {
+	public float CarriedFood {
 		get { return carriedFood; }
 		set { carriedFood = value; }
 	}
@@ -377,14 +382,19 @@ public class PlayerStats : MonoBehaviour
 		set { numberOfPolarBearMeats = value; }
 	}
 
-	public int MaxCarriedAmmo {
+    public int NumberOfTigerMeats
+    {
+        get { return numberOfTigerMeats; }
+        set { numberOfTigerMeats = value; }
+    }
+
+    public int MaxCarriedAmmo {
 		get { return maxCarriedAmmo; }
 		set { maxCarriedAmmo = value; }
 	}
 
-	public int MaxCarriedFood {
+	public float MaxCarriedFood {
 		get { return maxCarriedFood; }
-		set { maxCarriedFood = value; }
 	}
 
 	public Weapon CurrentWeapon {
@@ -419,14 +429,6 @@ public class PlayerStats : MonoBehaviour
 		// Set movement rate according to cold and hunger values (the first value is the initial rate, as hunger and cold are zero in the beginning).
 		// The larger this value is, the slower the Player's movement speed becomes.
 		PlayerMove.MoveDuration = (50.0f + cold + hunger);
-
-		if (carriedAmmo == 0) {
-			currentWeapon = pistol;
-		}
-
-		if (carriedAmmo > 0) {
-			currentWeapon = rifle;
-		}
 
 	}
 

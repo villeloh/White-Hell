@@ -149,12 +149,13 @@ public class Triggerer : MonoBehaviour
         // The boolean 'outroFlag' is needed because since the Player object continues to exist, so will the scripts that are attached to it... 
         // Meaning that the Outro scene will be loaded every frame(!) unless that's prevented by using a flag such as this.
         if ((PlayerStats.Hunger >= PlayerStats.DeathHunger || PlayerStats.Cold >= PlayerStats.DeathCold || 
-            PlayerStats.RadioPartCount == 5 || PlayerStats.PolarBearDeath == true) && outroFlag == false)
+            (PlayerStats.RadioPartCount == 5 && (Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began))) 
+            || PlayerStats.PolarBearDeath == true) && outroFlag == false)
         {
             outroFlag = true;
             PlayerSound.MuteWalkSound ();
 
-            // Added a null check, for the case of death by polar bear (questSound doesn't exist in that case).
+            // Added a null check, for the case of death by animal (questSound doesn't exist in that case).
             if (questSound != null)
             {
                 questSound.MuteQuestSound();

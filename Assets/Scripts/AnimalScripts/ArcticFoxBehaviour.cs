@@ -10,7 +10,7 @@ using Random = UnityEngine.Random;
 public class ArcticFoxBehaviour : MonoBehaviour
 {
 
-	private float animalHealth = 3.0f;
+	private float animalHealth = 4.0f;
 	private float spentHealth = 0;
 	private AnimalHandler animalHandler;
 	private Hunt hunt;
@@ -64,10 +64,11 @@ public class ArcticFoxBehaviour : MonoBehaviour
 	void Update ()
 	{
 
-		if (this.animalHealth <= 0) {
+        if (this.animalHealth <= 0) {
 			hunt.EndHunt ();
-			animalHandler.KillAnimal ();
-			playerStats.AddToInv (new FoodItem (20), "Arctic Fox Meat");
+            hunt.EndFlag = true;
+            animalHandler.KillAnimal ();
+			playerStats.AddToInv (new FoodItem (15), "Arctic Fox Meat");
 		}
 
 		// throws a new random destination whenever the animal reaches its destination.
@@ -75,9 +76,11 @@ public class ArcticFoxBehaviour : MonoBehaviour
 			randomPosition = gridManager.RandomPosition ();
 		}
 
-		// Moves the walrus between two random positions.
-		gameObject.transform.position = Vector3.Lerp (gameObject.transform.position, randomPosition, 
+        // Moves the walrus between two random positions.
+        gameObject.transform.position = Vector3.Lerp (gameObject.transform.position, randomPosition, 
 			(1 / (animalMoveMod * (Vector3.Distance (gameObject.transform.position, randomPosition)))));
+
+
 	}
 }
 

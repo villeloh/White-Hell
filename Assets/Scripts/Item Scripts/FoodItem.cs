@@ -15,18 +15,18 @@ public class FoodItem : Item
  * Author: Ville Lohkovuori
  */
 
-    private int eatValue;
+    private float eatValue;
 
     /// <summary>
     /// Create a new Item of type 'FoodItem', which has an eatValue parameter.
     /// </summary>
-    public FoodItem (int givenEatValue)
+    public FoodItem (float givenEatValue)
 	{
 		this.eatValue = givenEatValue;
 	}
 
 	// Allows an item's eatValue to be accessed from outside the class.
-	public int EatValue {
+	public float EatValue {
 		get { return eatValue; }
 		set { eatValue = value; }
 	}

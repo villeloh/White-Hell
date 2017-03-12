@@ -18,9 +18,11 @@ public class WalrusBehaviour : MonoBehaviour
 
 	private GridManager gridManager;
 
-	private float animalMoveMod = 50.0f;
+	private float animalMoveMod = 42.0f;
 
 	private Vector3 randomPosition;
+
+
 
     /// <summary>
     /// Get the needed GameObjects for internal reference.
@@ -36,8 +38,7 @@ public class WalrusBehaviour : MonoBehaviour
 
 		gridManager = huntManager.GetComponent<GridManager> ();
 		randomPosition = gridManager.RandomPosition ();
-
-	}
+    }
 
 	public float SpentHealth {
 		get { return spentHealth; }
@@ -64,12 +65,12 @@ public class WalrusBehaviour : MonoBehaviour
     /// </summary>
     void Update ()
 	{
-
         if (this.animalHealth <= 0)
         {        
             hunt.EndHunt();
+            hunt.EndFlag = true;
             animalHandler.KillAnimal();
-            playerStats.AddToInv(new FoodItem(40), "Walrus Meat");
+            playerStats.AddToInv(new FoodItem(35), "Walrus Meat");
         }
 
         // throws a new random destination whenever the animal reaches its destination.

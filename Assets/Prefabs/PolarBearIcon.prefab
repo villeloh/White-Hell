@@ -20,11 +20,12 @@ GameObject:
   m_Component:
   - component: {fileID: 4874353835832412}
   - component: {fileID: 212435663212701400}
-  - component: {fileID: 60208970475055102}
   - component: {fileID: 82288257627511364}
+  - component: {fileID: 60817458259825482}
+  - component: {fileID: 58486330212612250}
   m_Layer: 0
   m_Name: PolarBearIcon
-  m_TagString: Untagged
+  m_TagString: animal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -36,14 +37,14 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1508454617125944}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -98.79405, y: -38.33164, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -45, y: 26.64, z: 0}
+  m_LocalScale: {x: 1.2507113, y: 1.4628538, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!60 &60208970475055102
-PolygonCollider2D:
+--- !u!58 &58486330212612250
+CircleCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -53,19 +54,39 @@ PolygonCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
+  m_Offset: {x: 0, y: -0.03}
+  serializedVersion: 2
+  m_Radius: 0.42500007
+--- !u!60 &60817458259825482
+PolygonCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1508454617125944}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   m_Points:
     m_Paths:
-    - - {x: 0.085, y: 0.255}
-      - {x: 0.065, y: 0.265}
-      - {x: -0.16499999, y: 0.265}
-      - {x: -0.285, y: 0.195}
-      - {x: -0.33499998, y: 0.114999995}
-      - {x: -0.33499998, y: -0.225}
-      - {x: -0.285, y: -0.275}
-      - {x: 0.33499998, y: -0.275}
-      - {x: 0.345, y: -0.255}
-      - {x: 0.345, y: 0.044999998}
+    - - {x: 0.42499998, y: -0.145}
+      - {x: 0.275, y: 0.13499999}
+      - {x: 0.145, y: 0.195}
+      - {x: -0.024999999, y: 0.185}
+      - {x: -0.095, y: 0.205}
+      - {x: -0.42499998, y: 0.205}
+      - {x: -0.42499998, y: 0.145}
+      - {x: -0.36499998, y: -0.035}
+      - {x: -0.42499998, y: -0.105}
+      - {x: -0.42499998, y: -0.275}
+      - {x: -0.285, y: -0.265}
+      - {x: -0.21499999, y: -0.285}
+      - {x: -0.095, y: -0.285}
+      - {x: -0.035, y: -0.255}
+      - {x: 0.024999999, y: -0.285}
+      - {x: 0.42499998, y: -0.285}
 --- !u!82 &82288257627511364
 AudioSource:
   m_ObjectHideFlags: 1
